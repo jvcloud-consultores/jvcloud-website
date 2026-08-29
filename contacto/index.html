@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contacto · JVCloud Consultores</title>
+    <meta name="description" content="Cuéntanos qué necesitas: migración, automatización, operación o una segunda opinión sobre tu arquitectura cloud." />
+    <link rel="canonical" href="https://jvcloud.cl/contacto/" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta name="theme-color" content="#145ff0" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Contacto · JVCloud Consultores" />
+    <meta property="og:description" content="Escríbenos y te respondemos dentro de un día hábil." />
+    <meta property="og:url" content="https://jvcloud.cl/contacto/" />
+    <meta property="og:image" content="https://jvcloud.cl/images/og-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <header id="nav"></header>
+
+    <main id="contenido">
+      <section class="hero">
+        <div class="container hero__inner">
+          <span class="hero__eyebrow">Contacto</span>
+          <h1>Cuéntanos qué necesitas</h1>
+          <p class="hero__lead">
+            Respondemos dentro de un día hábil. Si es urgente, escríbenos directo al correo.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="grid grid--2">
+            <div data-config-if="features.showContactForm">
+              <h2>Escríbenos</h2>
+              <form class="form" id="form-contacto" novalidate>
+                <div class="field">
+                  <label for="nombre">Nombre</label>
+                  <input id="nombre" name="nombre" type="text" autocomplete="name" required />
+                </div>
+
+                <div class="field">
+                  <label for="email">Correo</label>
+                  <input id="email" name="email" type="email" autocomplete="email" required />
+                </div>
+
+                <div class="field">
+                  <label for="empresa">Empresa <span class="text-muted">(opcional)</span></label>
+                  <input id="empresa" name="empresa" type="text" autocomplete="organization" />
+                </div>
+
+                <div class="field">
+                  <label for="mensaje">Mensaje</label>
+                  <textarea id="mensaje" name="mensaje" required></textarea>
+                  <p class="field__hint">Mientras más contexto, mejor: nube actual, tamaño del equipo y qué te está doliendo.</p>
+                </div>
+
+                <!-- Trampa antispam: los bots la rellenan, las personas no la ven. -->
+                <div class="visually-hidden" aria-hidden="true">
+                  <label for="sitio-web">No completar</label>
+                  <input id="sitio-web" name="sitio-web" type="text" tabindex="-1" autocomplete="off" />
+                </div>
+
+                <div>
+                  <button class="btn btn--primary" type="submit">Enviar mensaje</button>
+                </div>
+
+                <p class="form__status" id="estado-form" role="status" aria-live="polite"></p>
+              </form>
+            </div>
+
+            <div>
+              <h2>Datos directos</h2>
+              <dl class="info-list">
+                <div>
+                  <dt>Correo</dt>
+                  <dd style="margin:0">
+                    <a href="mailto:contacto@jvcloud.cl"
+                       data-config="contact.email"
+                       data-config-attr="href"
+                       data-config-prefix="mailto:">
+                      <span data-config="contact.email">contacto@jvcloud.cl</span>
+                    </a>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Teléfono</dt>
+                  <dd style="margin:0"><span data-config="contact.phone">+56 9 0000 0000</span></dd>
+                </div>
+                <div>
+                  <dt>Ubicación</dt>
+                  <dd style="margin:0"><span data-config="contact.city">Santiago, Chile</span></dd>
+                </div>
+                <div>
+                  <dt>Horario</dt>
+                  <dd style="margin:0">Lunes a viernes, 9:00 a 18:00 (GMT-4)</dd>
+                </div>
+              </dl>
+
+              <div class="card" style="margin-top: 2rem">
+                <h3>¿Prefieres una llamada?</h3>
+                <p>Escríbenos con dos o tres horarios que te acomoden y coordinamos una videollamada de 30 minutos, sin costo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer"></footer>
+
+    <script type="module">
+      // Lógica específica de esta página. El resto (CSS, nav, footer, config)
+      // ya lo cargó /src/main.js.
+      import { get } from '/src/lib/config.js'
+
+      const form = document.getElementById('form-contacto')
+      const estado = document.getElementById('estado-form')
+      const API = import.meta.env.VITE_API_URL
+
+      function mostrar(texto, tipo) {
+        estado.textContent = texto
+        estado.dataset.estado = tipo
+      }
+
+      form?.addEventListener('submit', async (evento) => {
+        evento.preventDefault()
+
+        if (form.elements['sitio-web'].value) return // bot
+        if (!form.checkValidity()) {
+          mostrar('Revisa los campos obligatorios.', 'error')
+          form.reportValidity()
+          return
+        }
+
+        const datos = Object.fromEntries(new FormData(form))
+        delete datos['sitio-web']
+
+        // Sin API configurada (VITE_API_URL vacía) caemos a un mailto:
+        // el formulario sigue siendo útil en un sitio 100% estático.
+        if (!API) {
+          const destino = get('contact.email', 'contacto@jvcloud.cl')
+          const asunto = encodeURIComponent(`Contacto web · ${datos.nombre}`)
+          const cuerpo = encodeURIComponent(
+            `Nombre: ${datos.nombre}\nCorreo: ${datos.email}\nEmpresa: ${datos.empresa || '-'}\n\n${datos.mensaje}`
+          )
+          window.location.href = `mailto:${destino}?subject=${asunto}&body=${cuerpo}`
+          mostrar('Abrimos tu cliente de correo para enviar el mensaje.', 'ok')
+          return
+        }
+
+        const boton = form.querySelector('button[type="submit"]')
+        boton.disabled = true
+        mostrar('Enviando…', '')
+
+        try {
+          const respuesta = await fetch(`${API.replace(/\/$/, '')}/contacto`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos),
+          })
+          if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`)
+          form.reset()
+          mostrar('¡Listo! Recibimos tu mensaje y te respondemos pronto.', 'ok')
+        } catch (error) {
+          console.error('[contacto]', error)
+          mostrar('No pudimos enviar el mensaje. Escríbenos directo al correo.', 'error')
+        } finally {
+          boton.disabled = false
+        }
+      })
+    </script>
+  </body>
+</html>

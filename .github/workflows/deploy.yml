@@ -1,0 +1,59 @@
+name: Deploy a GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Permite lanzar el despliegue a mano desde la pestaña Actions.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un despliegue a la vez; no cancelamos el que ya está corriendo.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Build
+        env:
+          # Definidas en Settings -> Secrets and variables -> Actions -> Variables.
+          # Solo valores públicos: terminan en texto plano dentro de dist/.
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_SITE_NAME: ${{ vars.VITE_SITE_NAME }}
+        run: npm run build
+
+      - name: Subir artefacto de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

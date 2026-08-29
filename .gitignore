@@ -1,0 +1,27 @@
+# Dependencias
+node_modules/
+
+# Build
+dist/
+dist-ssr/
+
+# Variables de entorno locales (nunca se versionan)
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Sistema operativo / editores
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Caché de Vite
+.vite/
