@@ -18,16 +18,33 @@ const DEFAULTS = {
   tagline: 'Arquitectura cloud, automatización y operación continua',
   description: '',
   domain: 'jvcloud.cl',
-  // Datos de contacto. `phone` se escribe legible ("+56 9 6860 4006"): de ahí
-  // se derivan solos `phoneHref` (tel:) y `whatsappHref` (wa.me), así que basta
-  // con cambiar el número en config.json. `whatsapp: false` esconde ese enlace.
+  // Datos de contacto oficiales. `phone` se escribe legible
+  // ("+56 9 6860 4006"): de ahí se derivan solos `phoneHref` (tel:) y
+  // `whatsappHref` (wa.me), así que basta con cambiar el número.
   contact: {
     name: '',
     email: 'josue.olivares@jvcloud.cl',
     phone: '',
     city: '',
     hours: '',
-    whatsapp: false,
+    // Telegram con el mismo número del teléfono. `false` quita el enlace.
+    telegram: false,
+  },
+  // Widget flotante de WhatsApp (abajo a la derecha). `enabled: false` lo apaga
+  // entero, botón y panel. `agents` es la lista de personas del panel: cada una
+  // con `label`, `phone` y, si conviene, `role` y un `message` propio. Vacía,
+  // se usa el teléfono de `contact`. `badge` es el numerito rojo ('' o 0 lo
+  // quitan) y `pulse` la onda alrededor del botón.
+  whatsapp: {
+    enabled: false,
+    title: '',
+    status: 'En línea',
+    messages: [],
+    message: '',
+    badge: '',
+    pulse: true,
+    label: 'Escríbenos por WhatsApp',
+    agents: [],
   },
   social: {},
   features: { showContactForm: true },
@@ -37,7 +54,8 @@ const DEFAULTS = {
   herramientas: [],
   // Barra de aviso sobre el nav. `enabled: false` o `text: ''` la apagan.
   announcement: { enabled: false, text: '', cta: { label: '', href: '/contacto/' } },
-  // Telón de entrada de la portada. `repeat`: always | session | once.
+  // Telón de entrada de la portada.
+  // `repeat`: always | session | once | daily (una vez, y no vuelve en un día).
   intro: { repeat: 'session' },
 }
 
@@ -65,23 +83,62 @@ function merge(base, extra) {
   return out
 }
 
+/** Enlace de wa.me a partir de un teléfono escrito como sea. */
+function enlaceWhatsapp(telefono, mensaje) {
+  const digitos = String(telefono ?? '').replace(/\D/g, '')
+  if (!digitos) return ''
+  return `https://wa.me/${digitos}${mensaje ? `?text=${encodeURIComponent(mensaje)}` : ''}`
+}
+
 /**
  * Rellena los valores que no se escriben a mano en config.json:
  *
  *   contact.phoneHref     -> "tel:+56968604006"
- *   contact.whatsappHref  -> "https://wa.me/56968604006"
+ *   contact.telegramHref  -> "https://t.me/+56968604006"
+ *   whatsapp.agents[].href -> "https://wa.me/56968604006?text=Hola…"
+ *   contact.whatsappHref  -> el enlace del primer contacto, que es el que
+ *                            usan el pie de página y la página de contacto.
  *
- * Se calculan desde `contact.phone`, salvo que config.json los traiga
- * explícitos (por ejemplo, un número de WhatsApp distinto del teléfono).
+ * Así el número se escribe una sola vez, en formato legible, y nadie tiene que
+ * mantener URLs de wa.me a mano.
  */
 function derivar(cfg) {
-  const digitos = String(cfg.contact?.phone ?? '').replace(/\D/g, '')
-  if (!digitos) return cfg
-
   const contact = { ...cfg.contact }
-  if (!contact.phoneHref) contact.phoneHref = `tel:+${digitos}`
-  if (!contact.whatsappHref && contact.whatsapp) contact.whatsappHref = `https://wa.me/${digitos}`
-  return { ...cfg, contact }
+  const digitos = String(contact.phone ?? '').replace(/\D/g, '')
+  if (digitos && !contact.phoneHref) contact.phoneHref = `tel:+${digitos}`
+
+  // Telegram sobre el mismo número: t.me/+<internacional>. Si en
+  // `social.telegram` hay un usuario (@jvcloud) o una URL, esa manda: un alias
+  // es mejor enlace que un teléfono, y no todo el mundo quiere publicarlo.
+  const alias = cfg.social?.telegram
+  if (!contact.telegramHref) {
+    if (alias) {
+      contact.telegramHref = /^https?:\/\//.test(alias)
+        ? alias
+        : `https://t.me/${String(alias).replace(/^@/, '')}`
+    } else if (digitos && contact.telegram) {
+      contact.telegramHref = `https://t.me/+${digitos}`
+    }
+  }
+
+  const whatsapp = { ...cfg.whatsapp }
+  // Sin lista de contactos, el del bloque `contact` es el único.
+  const lista = whatsapp.agents?.length
+    ? whatsapp.agents
+    : [{ label: contact.name || 'Escríbenos por WhatsApp', phone: contact.phone }]
+
+  whatsapp.agents = lista
+    .map((agente) => ({
+      ...agente,
+      href: agente.href || enlaceWhatsapp(agente.phone, agente.message ?? whatsapp.message),
+    }))
+    .filter((agente) => agente.href)
+
+  if (whatsapp.enabled && !contact.whatsappHref) {
+    contact.whatsappHref = whatsapp.agents[0]?.href ?? ''
+  }
+
+  return { ...cfg, contact, whatsapp }
 }
 
 /**

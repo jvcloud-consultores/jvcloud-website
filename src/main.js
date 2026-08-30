@@ -2,6 +2,7 @@ import { loadConfig, applyConfig, env } from './lib/config.js'
 import { renderAviso } from './components/aviso.js'
 import { renderNav } from './components/nav.js'
 import { renderFooter } from './components/footer.js'
+import { renderWhatsapp } from './components/whatsapp.js'
 
 /**
  * Punto de entrada común a todas las páginas.
@@ -20,6 +21,9 @@ async function iniciar() {
   renderNav()
   renderFooter()
   applyConfig()
+  // El último, y a propósito: es un accesorio. Si algo fallara al pintarlo, ya
+  // están puestos los datos de la página, que es lo que no se puede perder.
+  renderWhatsapp()
 
   document.documentElement.dataset.ready = 'true'
 

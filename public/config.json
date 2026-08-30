@@ -9,7 +9,27 @@
     "phone": "+56 9 6860 4006",
     "city": "Chile",
     "hours": "Lunes a viernes, 9:00 a 18:00 (GMT-4)",
-    "whatsapp": true
+    "telegram": true
+  },
+  "whatsapp": {
+    "enabled": true,
+    "title": "JVCloud Consultores",
+    "status": "En línea",
+    "messages": [
+      "Hola 👋 bienvenido a JVCloud Consultores",
+      "¿Cómo podemos ayudarte?"
+    ],
+    "message": "Hola, los contacto desde el sitio de JVCloud.",
+    "badge": 1,
+    "pulse": true,
+    "label": "Escríbenos por WhatsApp",
+    "agents": [
+      {
+        "label": "Josue Olivares",
+        "role": "Consultor",
+        "phone": "+56 9 6860 4006"
+      }
+    ]
   },
   "social": {
     "linkedin": "",
@@ -71,7 +91,7 @@
     "Elasticsearch"
   ],
   "intro": {
-    "repeat": "always"
+    "repeat": "daily"
   },
   "announcement": {
     "enabled": true,

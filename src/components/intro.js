@@ -15,6 +15,7 @@
  *   "always"   en cada carga de la portada
  *   "session"  una vez por pestaña (por defecto)
  *   "once"     una vez por navegador, hasta que se borren los datos del sitio
+ *   "daily"    una vez, y no vuelve hasta pasado un día
  *
  * Con una salvedad importante: el telón se monta antes del primer pintado
  * y config.json se lee con fetch(), así que la decisión de saltarlo NO se
@@ -34,19 +35,49 @@ import { loadConfig, get } from '../lib/config.js'
 const CLAVE = 'jvcloud:intro-visto'
 
 const MODO_POR_DEFECTO = 'session'
-const MODOS = new Set(['always', 'session', 'once'])
+const MODOS = new Set(['always', 'session', 'once', 'daily'])
+
+const DIA_MS = 24 * 60 * 60 * 1000
 
 const AUTO_MS = 4000          // la coreografía dura ~3.8 s
 const SALIDA_MS = 1100        // logotipo (.4 s) + fundido del telón (.35 + .7 s)
 const AUTO_MS_REDUCIDO = 1200
 const SALIDA_MS_REDUCIDO = 300
 
-// El almacenamiento puede fallar (modo privado, cookies bloqueadas). Si no
-// se puede recordar, el telón se vuelve a mostrar: molesta menos que romperse.
+/**
+ * El almacén pedido, o null si el navegador lo tiene cerrado. Va aparte porque
+ * con el sitio sin permiso para guardar nada, leer la propiedad `sessionStorage`
+ * ya lanza —antes de llegar a ningún setItem—, y esto corre dentro de un .then():
+ * sin atraparlo aquí, la excepción se pierde como promesa rechazada.
+ */
+function almacen(nombre) {
+  try { return window[nombre] } catch { return null }
+}
+
+// Si no se puede recordar, el telón se vuelve a mostrar: molesta menos que
+// romperse.
 function marcar(almacen, poner) {
+  if (!almacen) return
   try {
     if (poner) almacen.setItem(CLAVE, '1')
     else almacen.removeItem(CLAVE)
+  } catch { /* sin persistencia */ }
+}
+
+/**
+ * Marca con fecha de caducidad, para el modo "daily". El valor guardado es el
+ * instante en que vuelve a tocar telón, en milisegundos: así el <script> del
+ * <head> puede decidir con una comparación, sin saber cuánto dura el plazo.
+ *
+ * Si ya hay un plazo vigente no se toca. Renovarlo en cada carga escondería el
+ * telón para siempre a quien nos visita a diario, que es justo al revés de lo
+ * que pide el modo.
+ */
+function sellar(almacen) {
+  if (!almacen) return
+  try {
+    if (Number(almacen.getItem(CLAVE)) > Date.now()) return
+    almacen.setItem(CLAVE, String(Date.now() + DIA_MS))
   } catch { /* sin persistencia */ }
 }
 
@@ -64,8 +95,12 @@ function recordar() {
     console.warn('[intro] intro.repeat="%s" no es un modo válido; uso "%s"', modo, valido)
   }
 
-  marcar(sessionStorage, valido === 'session')
-  marcar(localStorage, valido === 'once')
+  const local = almacen('localStorage')
+  marcar(almacen('sessionStorage'), valido === 'session')
+
+  if (valido === 'once') marcar(local, true)
+  else if (valido === 'daily') sellar(local)
+  else marcar(local, false)
 }
 
 /**

@@ -56,10 +56,16 @@
          del primer pintado, para que cuando no toque no llegue ni a asomar.
          Se mira solo si la carga anterior dejó marca; cada cuánto se deja
          (y dónde) lo decide `intro.repeat` en config.json, que para cuando
-         se lee ya es tarde. Ver src/components/intro.js. -->
+         se lee ya es tarde. Ver src/components/intro.js.
+
+         La marca vale '1' cuando no caduca, o el instante en que vuelve a
+         tocar telón —modo "daily"—. Aquí no hace falta saber cuánto dura el
+         plazo: basta con compararlo con el reloj. -->
     <script>
       try {
-        if (sessionStorage.getItem('jvcloud:intro-visto') || localStorage.getItem('jvcloud:intro-visto')) {
+        var visto = sessionStorage.getItem('jvcloud:intro-visto')
+          || localStorage.getItem('jvcloud:intro-visto')
+        if (visto === '1' || +visto > Date.now()) {
           document.documentElement.dataset.intro = 'off'
         }
       } catch (e) { /* sin almacenamiento: se muestra igual */ }
@@ -150,7 +156,9 @@
             </p>
           </div>
           <ol class="h-nodos">
-            <li class="h-nodo">
+            <li class="h-nodo" style="--i: 0">
+              <!-- Consultoría: lupa sobre un documento -->
+              <svg class="h-nodo__icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5" pathLength="1"/><path d="M15.4 15.4 21 21" pathLength="1"/><path d="M8 9.5h5M8 12h3.5" pathLength="1"/></svg>
               <span class="h-num" aria-hidden="true">01</span>
               <h3>Consultoría y asesoría TI</h3>
               <p>Diagnóstico de lo que hay, decisiones técnicas con sus costos sobre la mesa y acompañamiento mientras se ejecutan. Trabajamos con empresas y también con particulares que necesitan una segunda opinión antes de comprometer un presupuesto.</p>
@@ -161,7 +169,9 @@
                 <li>Acompañamiento</li>
               </ul>
             </li>
-            <li class="h-nodo">
+            <li class="h-nodo" style="--i: 1">
+              <!-- Desarrollo: los signos de mayor y menor del código -->
+              <svg class="h-nodo__icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 7.5 4 12l5 4.5" pathLength="1"/><path d="M15 7.5 20 12l-5 4.5" pathLength="1"/><path d="M13.2 5.5 10.8 18.5" pathLength="1"/></svg>
               <span class="h-num" aria-hidden="true">02</span>
               <h3>Desarrollo a medida</h3>
               <p>Software, plataformas web y aplicaciones móviles, del levantamiento a la puesta en marcha. Se entrega de dos formas: llave en mano —el código y la documentación quedan contigo— o como servicio, si prefieres que la operemos nosotros.</p>
@@ -172,7 +182,9 @@
                 <li>Llave en mano o como servicio</li>
               </ul>
             </li>
-            <li class="h-nodo">
+            <li class="h-nodo" style="--i: 2">
+              <!-- Servicios listos: una caja ya armada -->
+              <svg class="h-nodo__icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.2 20.5 7.6v8.8L12 20.8 3.5 16.4V7.6Z" pathLength="1"/><path d="M3.5 7.6 12 12l8.5-4.4" pathLength="1"/><path d="M12 12v8.8" pathLength="1"/></svg>
               <span class="h-num" aria-hidden="true">03</span>
               <h3>Servicios listos para usar</h3>
               <p>No todo hay que construirlo desde cero: tenemos servicios propios ya en marcha, para personas y para empresas. Te registras o contratas el plan y empiezas a usarlos; la operación, el soporte y las actualizaciones corren por nuestra cuenta.</p>
@@ -181,7 +193,9 @@
                 <li>Diferentes tipos de rubros</li>
               </ul>
             </li>
-            <li class="h-nodo">
+            <li class="h-nodo" style="--i: 3">
+              <!-- Automatización: el ciclo que se repite solo -->
+              <svg class="h-nodo__icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 0 1 8-8 8 8 0 0 1 6.9 4" pathLength="1"/><path d="M19 4.2V8h-3.8" pathLength="1"/><path d="M20 12a8 8 0 0 1-8 8 8 8 0 0 1-6.9-4" pathLength="1"/><path d="M5 19.8V16h3.8" pathLength="1"/></svg>
               <span class="h-num" aria-hidden="true">04</span>
               <h3>Automatización e IA</h3>
               <p>Lo que hoy se hace a mano y se repite —planillas, correos, traspasos entre sistemas— convertido en flujos que corren solos y avisan cuando algo falla. Ahí entran también los agentes de IA: el detalle está más abajo.</p>
@@ -192,7 +206,9 @@
                 <li>Alertas</li>
               </ul>
             </li>
-            <li class="h-nodo">
+            <li class="h-nodo" style="--i: 4">
+              <!-- Infraestructura: la nube -->
+              <svg class="h-nodo__icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 18.5h9.2a4.3 4.3 0 0 0 .6-8.55 6 6 0 0 0-11.4-1.2A4.15 4.15 0 0 0 7.5 18.5Z" pathLength="1"/></svg>
               <span class="h-num" aria-hidden="true">05</span>
               <h3>Infraestructura cloud</h3>
               <p>Arquitectura, migración por olas y entornos reproducibles en AWS, Azure y Google Cloud. Si un ambiente no se puede recrear desde cero, todavía no está terminado.</p>
@@ -203,7 +219,9 @@
                 <li>CI/CD</li>
               </ul>
             </li>
-            <li class="h-nodo">
+            <li class="h-nodo" style="--i: 5">
+              <!-- Soporte: los audífonos de la mesa de ayuda -->
+              <svg class="h-nodo__icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 15v-3a7.5 7.5 0 0 1 15 0v3" pathLength="1"/><rect x="2.8" y="14" width="4" height="6" rx="2" pathLength="1"/><rect x="17.2" y="14" width="4" height="6" rx="2" pathLength="1"/></svg>
               <span class="h-num" aria-hidden="true">06</span>
               <h3>Soporte y mantención</h3>
               <p>Mesa de ayuda, mantención de plataformas, monitoreo con responsables definidos y revisión de costos con acciones concretas, no solo gráficos. También sobre el software comercial de terceros que ya tengas contratado.</p>
@@ -234,9 +252,8 @@
             <div class="h-ia__item">
               <span class="h-num" aria-hidden="true">01</span>
               <h3>Agentes que hacen tareas</h3>
-              <p>Atienden consultas, completan formularios y mueven datos entre sistemas. Con los mismos permisos que tendría una persona en ese puesto.</p>
+              <p>Atienden consultas y mueven datos entre sistemas.</p>
               <ul class="h-tags">
-                <li>Consultas</li>
                 <li>Tareas repetitivas</li>
                 <li>Permisos acotados</li>
               </ul>
@@ -245,7 +262,7 @@
             <div class="h-ia__item">
               <span class="h-num" aria-hidden="true">02</span>
               <h3>Conectada a tus datos</h3>
-              <p>Los modelos leen lo que tu empresa ya tiene, y queda registro de qué se consultó. Sin sacar los datos de donde deben estar.</p>
+              <p>Leen lo que tu empresa ya tiene, sin sacarlo de donde debe estar.</p>
               <ul class="h-tags">
                 <li>Datos propios</li>
                 <li>Permisos</li>
@@ -256,7 +273,7 @@
             <div class="h-ia__item">
               <span class="h-num" aria-hidden="true">03</span>
               <h3>Un paso, no el producto</h3>
-              <p>La IA entra dentro de un flujo que ya automatizamos, corre donde ya corre tu plataforma y con el gasto acotado de antemano.</p>
+              <p>Entra dentro de un flujo que ya automatizamos, no encima de él.</p>
               <ul class="h-tags">
                 <li>Dentro del flujo</li>
                 <li>Límites de gasto</li>
@@ -266,7 +283,7 @@
             <div class="h-ia__item">
               <span class="h-num" aria-hidden="true">04</span>
               <h3>Medir antes de creer</h3>
-              <p>Una demo que funciona no es un sistema que funciona. Definimos con qué casos se evalúa y quién decide si mejoró.</p>
+              <p>Una demo que funciona no es un sistema que funciona.</p>
               <ul class="h-tags">
                 <li>Casos de prueba</li>
                 <li>Revisión humana</li>
@@ -359,7 +376,7 @@
                 <path d="M26 32 60 14 94 32" pathLength="1" />
               </svg>
               <h3>Empresas públicas</h3>
-              <p>Procesos formales, plazos y documentación como parte del encargo, no como estorbo.</p>
+              <p>Servicios públicos y municipios, donde los plazos y la documentación son parte del encargo.</p>
             </li>
             <li class="h-clientes__item" style="--i: 2">
               <svg class="h-clientes__dibujo" viewBox="0 0 120 84" aria-hidden="true" focusable="false">
@@ -402,8 +419,11 @@
           <img class="h-cierre__logo" src="/images/logo.svg" alt="JVCloud" width="103" height="110" />
           <h2>¿Conversamos?</h2>
           <p>
-            Cuéntanos qué tienes hoy y qué te está doliendo. Respondemos con un
-            diagnóstico acotado y una estimación, no con una presentación de ventas.
+            Cuéntanos qué tienes hoy y qué te está dando problemas. Respondemos con un
+            diagnóstico acotado y una estimación. Te comunico con nuestro consultor.
+          </p>
+          <p class="h-persona" data-config-if="contact.name">
+            <span class="h-persona__nombre" data-config="contact.name">Josue Olivares</span>
           </p>
           <p>
             <a

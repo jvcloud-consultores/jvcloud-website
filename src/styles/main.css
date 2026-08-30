@@ -875,6 +875,9 @@ html[data-menu="abierto"] body { overflow: hidden; }
 }
 .footer__brand { display: block; color: var(--logo-ink); margin: 0 0 .9rem; }
 .footer__brand svg { height: 56px; width: auto; }
+/* El nombre y la ciudad son la misma clase de dato: se pintan igual, y con
+   una sola regla no se separan al retocar una de las dos. */
+.footer__persona,
 .footer__muted { color: var(--text-muted); margin: 0 0 .25rem; }
 .footer__title { font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin: 0 0 .7rem; font-weight: 700; }
 .footer__list { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
@@ -899,3 +902,304 @@ html[data-menu="abierto"] body { overflow: hidden; }
 .text-muted { color: var(--text-muted); }
 .mt-0 { margin-top: 0; }
 .mb-0 { margin-bottom: 0; }
+
+/* ============================================================
+   Widget flotante de WhatsApp
+   El marcado lo pone src/components/whatsapp.js al final del <body>:
+   un botón redondo abajo a la derecha y, sobre él, un panel con el
+   saludo y un enlace por cada contacto.
+   ============================================================ */
+
+.wa {
+  --wa-verde: #25d366;
+  --wa-verde-fuerte: #1da851;
+  --wa-lado: 56px;
+
+  position: fixed;
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  /* Por encima de la barra de navegación (50) y por debajo del telón de
+     entrada (200): mientras la portada se está abriendo, no asoma. */
+  z-index: 90;
+  display: grid;
+  justify-items: end;
+  gap: .75rem;
+  font-family: inherit;
+}
+
+/* --------------------------------------------------- botón redondo */
+.wa__fab {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--wa-lado);
+  height: var(--wa-lado);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--wa-verde);
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgb(37 211 102 / 35%), 0 2px 6px rgb(15 28 46 / 18%);
+  transition: transform .22s cubic-bezier(.2, .7, .3, 1), background-color .22s ease, box-shadow .22s ease;
+}
+.wa__fab:hover,
+.wa__fab:focus-visible {
+  background: var(--wa-verde-fuerte);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 26px rgb(37 211 102 / 45%), 0 3px 8px rgb(15 28 46 / 22%);
+}
+.wa__fab:active { transform: translateY(0) scale(.97); }
+
+/* Los dos iconos comparten celda de la rejilla y se turnan: así el botón no
+   cambia de tamaño al alternar entre el logo y la aspa. */
+.wa__glifo,
+.wa__x {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  transition: opacity .2s ease, transform .28s cubic-bezier(.2, .7, .3, 1);
+}
+.wa__glifo svg { width: 30px; height: 30px; fill: #fff; }
+.wa__x svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+.wa__x { opacity: 0; transform: rotate(-90deg) scale(.6); }
+.wa[data-abierto="true"] .wa__glifo { opacity: 0; transform: rotate(90deg) scale(.6); }
+.wa[data-abierto="true"] .wa__x { opacity: 1; transform: none; }
+
+/* Distintivo de "mensaje sin leer": es un adorno, no información —de ahí el
+   aria-hidden en el marcado— y se va en cuanto el panel se abre. */
+.wa__marca {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 5px;
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+  background: #e5484d;
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.wa[data-abierto="true"] .wa__marca,
+.wa[data-visto="true"] .wa__marca { opacity: 0; transform: scale(.4); }
+
+/* ------------------------------------------------------------ onda */
+/* Dos anillos del mismo verde que crecen y se apagan, desfasados medio ciclo
+   para que no haya huecos.
+
+   Van detrás del botón (`z-index: -1`) por dos razones: el glifo blanco tiene
+   que quedar encima, y sobre el círculo el anillo es verde sobre verde —o sea,
+   invisible— así que solo se ve la parte que se sale. Ser hijos absolutos los
+   deja además fuera de la rejilla del botón, sin descolocar el icono. */
+.wa--onda .wa__fab::before,
+.wa--onda .wa__fab::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--wa-verde);
+  animation: wa-onda 2.4s cubic-bezier(.25, .6, .4, 1) infinite;
+}
+.wa--onda .wa__fab::after { animation-delay: 1.2s; }
+/* Con el panel abierto la onda sobra: ya tiene la atención. */
+.wa[data-abierto="true"] .wa__fab::before,
+.wa[data-abierto="true"] .wa__fab::after { animation: none; opacity: 0; }
+
+@keyframes wa-onda {
+  from { transform: scale(1); opacity: .4; }
+  to   { transform: scale(1.45); opacity: 0; }
+}
+
+/* ----------------------------------------------------------- panel */
+.wa__panel {
+  width: min(20rem, calc(100vw - 2.5rem));
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-alt);
+  box-shadow: 0 18px 50px rgb(15 28 46 / 22%), 0 2px 8px rgb(15 28 46 / 10%);
+
+  /* Crece desde la esquina del botón. `visibility` en vez de `display` para
+     poder animarlo y, a la vez, sacarlo del recorrido del teclado. */
+  transform-origin: bottom right;
+  transform: translateY(12px) scale(.92);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .22s ease, transform .28s cubic-bezier(.2, .7, .3, 1), visibility 0s linear .28s;
+}
+.wa[data-abierto="true"] .wa__panel {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .22s ease, transform .28s cubic-bezier(.2, .7, .3, 1);
+}
+
+.wa__cab {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .9rem 1rem;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--ink) 100%);
+  color: #fff;
+}
+.wa__avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 14%);
+}
+.wa__avatar svg { width: 22px; height: 22px; fill: #fff; }
+
+.wa__id { min-width: 0; flex: 1; }
+.wa__titulo {
+  margin: 0;
+  font-size: .98rem;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wa__estado {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  margin: .15rem 0 0;
+  font-size: .78rem;
+  color: rgb(255 255 255 / 78%);
+}
+.wa__estado::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--wa-verde);
+}
+
+.wa__cerrar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 14%);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+.wa__cerrar:hover,
+.wa__cerrar:focus-visible { background: rgb(255 255 255 / 28%); }
+.wa__cerrar svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+
+.wa__cuerpo {
+  display: grid;
+  gap: .55rem;
+  padding: 1rem;
+}
+
+/* Burbujas: entran escalonadas, como si las fueran escribiendo. */
+.wa__burbuja {
+  justify-self: start;
+  max-width: 92%;
+  margin: 0;
+  padding: .7rem .9rem;
+  border-radius: 4px 14px 14px 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  font-size: .92rem;
+  line-height: 1.45;
+}
+.wa[data-abierto="true"] .wa__burbuja {
+  animation: wa-burbuja .3s cubic-bezier(.2, .7, .3, 1) both;
+  animation-delay: calc(var(--i) * .09s + .12s);
+}
+@keyframes wa-burbuja {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.wa__agentes { display: grid; gap: .5rem; margin-top: .45rem; }
+
+.wa__agente {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .8rem 1rem;
+  border-radius: 999px;
+  background: var(--wa-verde);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgb(37 211 102 / 28%);
+  transition: background-color .2s ease, transform .18s ease, box-shadow .2s ease;
+}
+.wa__agente:hover,
+.wa__agente:focus-visible {
+  background: var(--wa-verde-fuerte);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgb(37 211 102 / 36%);
+}
+.wa__agente-texto { display: grid; min-width: 0; }
+.wa__agente-nombre {
+  font-size: .95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wa__agente-rol {
+  font-size: .76rem;
+  font-weight: 500;
+  color: rgb(255 255 255 / 82%);
+}
+.wa__avion { flex: none; width: 18px; height: 18px; fill: #fff; }
+
+/* Con el menú desplegado el widget estorba: se va mientras dure el telón.
+   Se oculta con `visibility` y no con `opacity` a propósito: las animaciones
+   de dentro tienen `fill: both` y su valor final ganaría a la opacidad
+   declarada aquí. */
+html[data-menu="abierto"] .wa {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* En pantallas bajas el panel no cabe sobre el botón: se ancla arriba y se
+   deja desplazar. */
+@media (max-height: 34rem) {
+  .wa__panel { max-height: calc(100vh - var(--wa-lado) - 3.5rem); overflow-y: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa--onda .wa__fab::before,
+  .wa--onda .wa__fab::after { animation: none; opacity: 0; }
+  .wa[data-abierto="true"] .wa__burbuja { animation: none; }
+  .wa__panel { transition: opacity .2s ease, visibility 0s linear .2s; transform: none; }
+  .wa[data-abierto="true"] .wa__panel { transform: none; }
+  .wa__fab,
+  .wa__fab:hover,
+  .wa__fab:focus-visible,
+  .wa__fab:active { transition: background-color .2s ease; transform: none; }
+  .wa__glifo,
+  .wa__x { transition: opacity .2s ease; transform: none; }
+  .wa[data-abierto="true"] .wa__glifo { transform: none; }
+}

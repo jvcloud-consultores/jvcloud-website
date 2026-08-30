@@ -210,10 +210,48 @@
   border: 1px solid var(--azul);
 }
 @media (min-width: 880px) {
-  .h-nodo::before { left: auto; }
+  /* Centro del icono: 2rem de padding + la mitad de sus 30px. */
+  .h-nodo::before { left: auto; top: 2.95rem; }
   .h-nodo:nth-child(odd)::before { right: -4.5px; left: auto; }
   .h-nodo:nth-child(even)::before { left: -4.5px; }
 }
+/* Pictograma de cada nodo: el mismo trazo fino de los dibujos de "A quiénes
+   servimos". Va como inline-block, no como bloque, para que obedezca solo la
+   alineación que el eje ya impone a cada lado —a la derecha en la columna
+   izquierda, a la izquierda en la otra— sin una regla por lado. */
+.h-nodo__icono {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-bottom: .3rem;
+  color: var(--azul-300);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Se dibujan al entrar la sección, uno detrás de otro siguiendo el eje. */
+.h-nodo__icono > * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset .9s cubic-bezier(.45, 0, .25, 1);
+  transition-delay: calc(var(--i, 0) * 110ms + 200ms);
+}
+.h-reveal.is-visible .h-nodo__icono > * { stroke-dashoffset: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Dibujados desde el principio: la espera de --i los dejaría invisibles un
+     rato aunque la regla global recorte la duración. */
+  .h-nodo__icono > * {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    transition: none;
+    transition-delay: 0s;
+  }
+}
+
 .h-nodo .h-num { margin-bottom: .5rem; }
 .h-nodo h3 { font-size: clamp(1.35rem, 1.15rem + .9vw, 1.9rem); font-weight: 300; }
 .h-nodo p { margin: .6rem 0 0; color: var(--gris); }

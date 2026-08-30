@@ -79,3 +79,6 @@
 /* --- cierre del último bloque -------------------------------------- */
 .a-contacto { display: grid; justify-items: start; gap: 1.5rem; }
 .a-contacto .h-correo { font-size: clamp(1.1rem, .95rem + .8vw, 1.5rem); }
+/* El nombre pertenece al correo de abajo, así que se le pega en vez de
+   quedarse a la distancia general de la columna. */
+.a-contacto .h-persona { margin-bottom: -1rem; }

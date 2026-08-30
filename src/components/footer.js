@@ -19,10 +19,12 @@ export function renderFooter(destino = document.getElementById('footer')) {
   if (!destino) return
 
   const nombre = get('siteName', 'JVCloud Consultores')
+  const persona = get('contact.name')
   const email = get('contact.email')
   const telefono = get('contact.phone')
   const telHref = get('contact.phoneHref')
   const whatsapp = get('contact.whatsappHref')
+  const telegram = get('contact.telegramHref')
   const ciudad = get('contact.city')
   const linkedin = get('social.linkedin')
   const github = get('social.github')
@@ -33,6 +35,7 @@ export function renderFooter(destino = document.getElementById('footer')) {
 
   const redes = [
     whatsapp && `<li><a href="${escapar(whatsapp)}" rel="noopener noreferrer" target="_blank">WhatsApp</a></li>`,
+    telegram && `<li><a href="${escapar(telegram)}" rel="noopener noreferrer" target="_blank">Telegram</a></li>`,
     linkedin && `<li><a href="${escapar(linkedin)}" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>`,
     github && `<li><a href="${escapar(github)}" rel="noopener noreferrer" target="_blank">GitHub</a></li>`,
   ].filter(Boolean).join('')
@@ -43,6 +46,7 @@ export function renderFooter(destino = document.getElementById('footer')) {
       <div class="footer__col">
         <a class="footer__brand" href="/" title="${escapar(nombre)}">${logo}</a>
         ${ciudad ? `<p class="footer__muted">${escapar(ciudad)}</p>` : ''}
+        ${persona ? `<p class="footer__persona">${escapar(persona)}</p>` : ''}
         ${email ? `<p><a href="mailto:${escapar(email)}">${escapar(email)}</a></p>` : ''}
         ${telefono ? `<p><a href="${escapar(telHref || `tel:${telefono.replace(/\D/g, '')}`)}">${escapar(telefono)}</a></p>` : ''}
       </div>

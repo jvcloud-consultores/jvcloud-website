@@ -135,6 +135,18 @@ body:where(.jv) :where(h1, h2, h3) {
 .h-enlace:hover { color: var(--azul); border-color: var(--azul); text-decoration: none; }
 .h-enlace:hover::after { transform: translateX(3px); }
 
+/* Nombre y cargo de quien contesta. Va donde se muestran los datos de
+   contacto: un correo suelto no dice con quién se habla. */
+.h-persona {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: inherit;
+  gap: .1rem .55rem;
+  margin: 0;
+}
+.h-persona__nombre { color: var(--tinta); font-family: var(--display); font-size: 1.05rem; }
+
 .h-correo {
   display: inline-block;
   color: var(--azul);
@@ -339,6 +351,9 @@ body:where(.jv) :where(h1, h2, h3) {
 .h-cierre__logo { height: clamp(80px, 9vw, 108px); width: auto; margin: 0 auto 2.5rem; }
 .h-cierre h2 { font-size: clamp(2.4rem, 1.5rem + 3.8vw, 4.6rem); font-weight: 200; }
 .h-cierre p { margin: 1.75rem auto 0; max-width: 42ch; color: var(--gris); }
+.h-cierre .h-persona { margin-top: 2.25rem; justify-content: center; }
+.h-cierre .h-persona + p { margin-top: .4rem; }
+.h-cierre .h-persona + p .h-correo { margin-top: 0; }
 .h-cierre .h-correo { margin-top: 2.25rem; font-size: clamp(1.25rem, 1rem + 1.4vw, 2rem); }
 .h-cierre__tel { margin-top: .75rem; font-size: 1.05rem; }
 .h-cierre__tel a { color: var(--gris); text-decoration: none; transition: color .2s ease; }
