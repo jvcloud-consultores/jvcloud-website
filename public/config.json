@@ -22,7 +22,7 @@
     "enabled": true,
     "text": "Cuéntanos qué necesitas y te respondemos con una estimación acotada.",
     "cta": {
-      "label": "Cotiza",
+      "label": "Cotiza aquí",
       "href": "/contacto/"
     }
   }
