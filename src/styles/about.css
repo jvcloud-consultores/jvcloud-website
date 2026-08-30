@@ -1,0 +1,81 @@
+/* ============================================================
+   Acerca de — estilos exclusivos de "/about/"
+   Va encima de jv.css, que trae los tokens y las piezas comunes.
+   Clases con prefijo `a-`.
+   ============================================================ */
+
+/* --- cabecera de página ------------------------------------------- */
+.a-portada { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem); }
+.a-portada .h-label { margin-bottom: 1.5rem; }
+.a-portada h1 {
+  max-width: 14ch;
+  font-size: clamp(2.4rem, 1.5rem + 3.4vw, 4rem);
+  font-weight: 200;
+  letter-spacing: -.035em;
+  line-height: 1.03;
+}
+.a-portada__lead { margin: 1.75rem 0 0; max-width: 52ch; color: var(--gris); font-size: 1.06rem; }
+
+/* --- bloques -------------------------------------------------------
+   Mismo esqueleto que las fichas de /portafolio/: el encabezado se va a
+   una columna estrecha a la izquierda y el texto ocupa la otra. Las dos
+   páginas se leen como hermanas sin repetir una sola regla. */
+.a-bloque {
+  padding-block: clamp(2.5rem, 5vw, 3.75rem);
+  border-top: 1px solid var(--linea);
+}
+.a-bloque:last-of-type { border-bottom: 1px solid var(--linea); }
+
+.a-grid { display: grid; gap: 1.25rem; }
+@media (min-width: 880px) {
+  .a-grid {
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+}
+
+.a-bloque__cab { align-content: start; }
+.a-bloque__cab h2 {
+  margin: .9rem 0 0;
+  font-size: clamp(1.4rem, 1.15rem + .9vw, 1.85rem);
+  font-weight: 200;
+  letter-spacing: -.02em;
+}
+
+.a-bloque__cuerpo > p { margin: 0 0 1rem; max-width: 62ch; color: var(--gris); }
+.a-bloque__cuerpo > p:last-child { margin-bottom: 0; }
+
+/* --- principios ---------------------------------------------------- */
+.a-principios { display: grid; gap: 1.75rem; list-style: none; margin: 0; padding: 0; }
+@media (min-width: 700px) {
+  .a-principios { grid-template-columns: 1fr 1fr; gap: 2rem clamp(2rem, 4vw, 3rem); }
+}
+.a-principios li { padding-top: 1.1rem; border-top: 1px solid var(--azul-300); }
+.a-principios b {
+  display: block;
+  margin-bottom: .4rem;
+  color: var(--tinta);
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+.a-principios span { color: var(--gris); font-size: .96rem; }
+
+/* --- cita ----------------------------------------------------------
+   Sin comillas ni caja: un filete a la izquierda y la display en su peso
+   más ligero, que es como el resto del sitio destaca sin gritar. */
+.a-cita {
+  margin: 2rem 0 0;
+  padding-left: clamp(1.25rem, 3vw, 2rem);
+  border-left: 1px solid var(--azul-300);
+  max-width: 34ch;
+  color: var(--tinta);
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 1.05rem + 1.1vw, 1.9rem);
+  font-weight: 200;
+  line-height: 1.3;
+  letter-spacing: -.02em;
+}
+
+/* --- cierre del último bloque -------------------------------------- */
+.a-contacto { display: grid; justify-items: start; gap: 1.5rem; }
+.a-contacto .h-correo { font-size: clamp(1.1rem, .95rem + .8vw, 1.5rem); }

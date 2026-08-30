@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Acerca de · JVCloud Consultores</title>
-    <meta name="description" content="Quiénes somos, cómo trabajamos y con qué tecnologías: JVCloud Consultores, consultoría cloud independiente en Chile." />
+    <meta name="description" content="Quiénes somos, cómo trabajamos y con qué herramientas: JVCloud Consultores, consultoría cloud independiente en Chile." />
     <link rel="canonical" href="https://jvcloud.cl/about/" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/images/icon.svg" type="image/svg+xml" />
@@ -42,77 +42,142 @@
          navegación. El orden manda: main.css es la base, jv.css el diseño
          nuevo y la última es la de esta página. -->
     <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="stylesheet" href="/src/styles/jv.css" />
+    <link rel="stylesheet" href="/src/styles/about.css" />
 
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/about.js"></script>
   </head>
-  <body>
+  <body class="jv">
     <div id="aviso"></div>
     <header id="nav"></header>
 
     <main id="contenido">
-      <section class="hero">
-        <div class="container hero__inner">
-          <span class="hero__eyebrow">Acerca de</span>
+      <!-- ======================================================== portada -->
+      <section class="a-portada">
+        <div class="container">
+          <p class="h-label">Acerca de</p>
           <h1>Consultoría cloud sin humo</h1>
-          <p class="hero__lead">
+          <p class="a-portada__lead">
             Somos un equipo pequeño de ingenieros de infraestructura. Trabajamos con pocos
             clientes a la vez para poder meternos de verdad en sus problemas.
           </p>
         </div>
       </section>
 
-      <section class="section">
-        <div class="container">
-          <div class="prose">
+      <!-- ======================================================== creencias -->
+      <section class="a-bloque">
+        <div class="container a-grid h-reveal">
+          <div class="a-bloque__cab">
+            <p class="h-num" aria-hidden="true">01</p>
             <h2>En qué creemos</h2>
+          </div>
+          <div class="a-bloque__cuerpo">
             <p>
-              La mayoría de los problemas de infraestructura no se resuelven con más herramientas,
-              sino con decisiones explícitas: qué se automatiza, quién responde una alerta a las 3 AM
-              y cuánto cuesta cada ambiente. Ese es el trabajo que hacemos.
+              La mayoría de los problemas de infraestructura no se resuelven con más
+              herramientas, sino con decisiones explícitas: qué se automatiza, quién
+              responde una alerta a las 3 AM y cuánto cuesta cada ambiente. Ese es el
+              trabajo que hacemos.
             </p>
+          </div>
+        </div>
+      </section>
 
-            <h3>Principios</h3>
-            <ul>
-              <li><strong>Reproducible antes que rápido.</strong> Si no está en código, no existe.</li>
-              <li><strong>Documentación en el repositorio.</strong> Nada de conocimiento encerrado en una consultora.</li>
-              <li><strong>Costos visibles.</strong> Cada decisión de arquitectura tiene un precio mensual; lo ponemos sobre la mesa.</li>
-              <li><strong>Salida limpia.</strong> El éxito es que tu equipo no nos necesite para operar.</li>
+      <!-- ======================================================== principios -->
+      <section class="a-bloque">
+        <div class="container a-grid h-reveal">
+          <div class="a-bloque__cab">
+            <p class="h-num" aria-hidden="true">02</p>
+            <h2>Principios</h2>
+          </div>
+          <div class="a-bloque__cuerpo">
+            <ul class="a-principios">
+              <li>
+                <b>Reproducible antes que rápido</b>
+                <span>Si no está en código, no existe.</span>
+              </li>
+              <li>
+                <b>Documentación en el repositorio</b>
+                <span>Nada de conocimiento encerrado en una consultora.</span>
+              </li>
+              <li>
+                <b>Costos visibles</b>
+                <span>Cada decisión de arquitectura tiene un precio mensual; lo ponemos sobre la mesa.</span>
+              </li>
+              <li>
+                <b>Salida limpia</b>
+                <span>El éxito es que tu equipo no nos necesite para operar.</span>
+              </li>
             </ul>
+          </div>
+        </div>
+      </section>
 
+      <!-- ======================================================== stack -->
+      <section class="a-bloque">
+        <div class="container a-grid h-reveal">
+          <div class="a-bloque__cab">
+            <p class="h-num" aria-hidden="true">03</p>
             <h2>Stack habitual</h2>
-            <div class="grid grid--3" style="margin: 1.5rem 0 2rem">
-              <article class="card">
+          </div>
+          <div class="a-bloque__cuerpo">
+            <ul class="h-tres">
+              <li>
                 <h3>Nubes</h3>
                 <p>AWS, Azure, Google Cloud. Multi-cloud solo cuando hay una razón concreta.</p>
-              </article>
-              <article class="card">
+              </li>
+              <li>
                 <h3>Plataforma</h3>
-                <p>Terraform, Kubernetes, contenedores, GitHub Actions y GitLab CI.</p>
-              </article>
-              <article class="card">
+                <p>Contenedores y GitLab CI.</p>
+              </li>
+              <li>
                 <h3>Observabilidad</h3>
                 <p>Prometheus, Grafana, OpenTelemetry y las herramientas nativas de cada nube.</p>
-              </article>
-            </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
+      <!-- ======================================================== historia -->
+      <section class="a-bloque">
+        <div class="container a-grid h-reveal">
+          <div class="a-bloque__cab">
+            <p class="h-num" aria-hidden="true">04</p>
             <h2>Historia</h2>
+          </div>
+          <div class="a-bloque__cuerpo">
             <p>
-              JVCloud nace de años operando plataformas en producción, del lado de quien recibe
-              la llamada cuando algo se cae. Esa perspectiva define cómo diseñamos: primero la
-              operación, después la arquitectura bonita.
+              JVCloud nace de años operando plataformas en producción, del lado de quien
+              recibe la llamada cuando algo se cae. Esa perspectiva define cómo diseñamos:
+              primero la operación, después la arquitectura bonita.
             </p>
-
-            <blockquote>
+            <blockquote class="a-cita">
               Un sistema que nadie sabe operar es un incidente esperando fecha.
             </blockquote>
+          </div>
+        </div>
+      </section>
 
+      <!-- ======================================================== conversemos -->
+      <section class="a-bloque">
+        <div class="container a-grid h-reveal">
+          <div class="a-bloque__cab">
+            <p class="h-num" aria-hidden="true">05</p>
             <h2>Conversemos</h2>
+          </div>
+          <div class="a-bloque__cuerpo a-contacto">
             <p>
               Si tienes una migración pendiente, una cuenta cloud que creció sin control o
-              simplemente quieres una segunda opinión, escríbenos a
-              <a data-config="contact.email" data-config-attr="href" data-config-prefix="mailto:" href="mailto:contacto@jvcloud.cl"><span data-config="contact.email">contacto@jvcloud.cl</span></a>
-              o usa el <a href="/contacto/">formulario de contacto</a>.
+              simplemente quieres una segunda opinión, escríbenos.
             </p>
+            <a
+              class="h-correo"
+              href="mailto:josue.olivares@jvcloud.cl"
+              data-config="contact.email"
+              data-config-attr="href"
+              data-config-prefix="mailto:"
+            ><span data-config="contact.email">josue.olivares@jvcloud.cl</span></a>
+            <a class="h-enlace" href="/contacto/">Usa el formulario</a>
           </div>
         </div>
       </section>

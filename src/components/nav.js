@@ -117,6 +117,15 @@ function activarPanel(nav) {
     // Si el auto-ocultar la había retirado, la barra vuelve: el botón de
     // cerrar tiene que estar a la vista.
     nav.classList.remove('is-hidden')
+
+    // Dónde está la barra ahora mismo y cuánto ocupa. Con el telón arriba deja
+    // de ser sticky —el scroll bloqueado se lo lleva por delante— y pasa a
+    // fijarse en este punto; el tope se recorta a 0 porque si venía fuera de
+    // pantalla, lo que toca es traerla, no repetir el mismo escondite.
+    const caja = nav.getBoundingClientRect()
+    nav.style.setProperty('--nav-alto', `${caja.height}px`)
+    nav.style.setProperty('--nav-top', `${Math.max(0, caja.top)}px`)
+
     nav.classList.add('is-abierto')
     panel.classList.add('is-open')
     boton.setAttribute('aria-expanded', 'true')
@@ -133,8 +142,13 @@ function activarPanel(nav) {
     boton.setAttribute('aria-expanded', 'false')
     boton.setAttribute('aria-label', 'Abrir menú')
     etiqueta.textContent = 'Menú'
+    nav.style.removeProperty('--nav-alto')
+    nav.style.removeProperty('--nav-top')
     delete raiz.dataset.menu
-    if (devolverFoco) boton.focus()
+    // `preventScroll` porque el botón ya está donde el ojo lo tiene: sin eso,
+    // el navegador lo cree fuera de la vista —la barra aún no ha recuperado su
+    // sitio de sticky— y se lleva la página de vuelta al principio.
+    if (devolverFoco) boton.focus({ preventScroll: true })
   }
 
   boton.addEventListener('click', () => (abierto ? cerrar({ devolverFoco: true }) : abrir()))

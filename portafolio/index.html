@@ -42,26 +42,30 @@
          navegación. El orden manda: main.css es la base, jv.css el diseño
          nuevo y la última es la de esta página. -->
     <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="stylesheet" href="/src/styles/jv.css" />
+    <link rel="stylesheet" href="/src/styles/portafolio.css" />
 
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/portafolio.js"></script>
   </head>
-  <body>
+  <body class="jv">
     <div id="aviso"></div>
     <header id="nav"></header>
 
     <main id="contenido">
-      <section class="hero">
-        <div class="container hero__inner">
-          <span class="hero__eyebrow">Portafolio</span>
+      <!-- ======================================================== portada -->
+      <section class="p-portada">
+        <div class="container">
+          <p class="h-label">Portafolio</p>
           <h1>Proyectos, no capturas de pantalla</h1>
-          <p class="hero__lead">
+          <p class="p-portada__lead">
             Qué había cuando llegamos, qué decidimos y qué cambió después. Los nombres de
             los clientes se omiten cuando el contrato lo pide; los números, no.
           </p>
         </div>
       </section>
 
-      <section class="section">
+      <!-- ======================================================== proyectos -->
+      <section class="p-proyectos-seccion">
         <div class="container">
           <!--
             CONTENIDO DE EJEMPLO: los cuatro proyectos de abajo son plantillas
@@ -69,110 +73,100 @@
 
             Cada proyecto es un <li> con esta forma. No hay página de detalle:
             si más adelante quieres una, crea portafolio/mi-proyecto/index.html
-            y envuelve el <article> en un enlace.
+            y envuelve el bloque en un enlace.
           -->
-          <ul class="proyectos">
-            <li>
-              <article class="proyecto">
-                <p class="proyecto__meta">
-                  <span class="tag">Retail</span>
-                  <span>2026 · 5 meses</span>
-                </p>
-                <h3>Migración de una plataforma de e-commerce a AWS</h3>
-                <p class="proyecto__desc">
-                  Tres servidores físicos con despliegues manuales y una ventana de mantenimiento
-                  mensual. Rediseñamos la arquitectura, la movimos por olas y dejamos el catálogo
-                  y el checkout en servicios administrados.
-                </p>
-                <ul class="proyecto__stack">
-                  <li>AWS</li>
-                  <li>Terraform</li>
-                  <li>RDS</li>
-                  <li>CloudFront</li>
-                  <li>GitHub Actions</li>
+          <ol class="p-proyectos">
+            <li class="p-proyecto h-reveal">
+              <div class="p-proyecto__ficha">
+                <p class="h-num" aria-hidden="true">01</p>
+                <p class="h-label">Retail</p>
+                <p class="p-proyecto__fecha">2026 · 5 meses</p>
+              </div>
+              <div class="p-proyecto__cuerpo">
+                <h2>Migración de una plataforma de e-commerce a AWS</h2>
+                <p class="p-proyecto__desc">Tres servidores físicos con despliegues manuales y una ventana de mantenimiento mensual. Rediseñamos la arquitectura, la movimos por olas y dejamos el catálogo y el checkout en servicios administrados.</p>
+                <ul class="h-tags">
+                <li>AWS</li>
+                <li>RDS</li>
+                <li>CloudFront</li>
                 </ul>
-                <p class="proyecto__resultado">
+                <p class="p-proyecto__resultado">
+                  <b>Resultado</b>
                   Despliegues de una vez al mes a varios por día, sin ventana de mantenimiento.
                 </p>
-              </article>
+              </div>
             </li>
 
-            <li>
-              <article class="proyecto">
-                <p class="proyecto__meta">
-                  <span class="tag">Servicios financieros</span>
-                  <span>2025 · 3 meses</span>
-                </p>
-                <h3>Entornos reproducibles con infraestructura como código</h3>
-                <p class="proyecto__desc">
-                  Cuatro ambientes que habían divergido entre sí y que nadie sabía recrear.
-                  Los reescribimos en Terraform con módulos compartidos y un entorno efímero
-                  por cada pull request.
-                </p>
-                <ul class="proyecto__stack">
-                  <li>Terraform</li>
-                  <li>Azure</li>
-                  <li>Kubernetes</li>
-                  <li>GitLab CI</li>
+            <li class="p-proyecto h-reveal">
+              <div class="p-proyecto__ficha">
+                <p class="h-num" aria-hidden="true">02</p>
+                <p class="h-label">Servicios financieros</p>
+                <p class="p-proyecto__fecha">2025 · 3 meses</p>
+              </div>
+              <div class="p-proyecto__cuerpo">
+                <h2>Entornos reproducibles con infraestructura como código</h2>
+                <p class="p-proyecto__desc">Cuatro ambientes que habían divergido entre sí y que nadie sabía recrear. Los reescribimos como código, con módulos compartidos y un entorno efímero por cada pull request.</p>
+                <ul class="h-tags">
+                <li>Azure</li>
+                <li>GitLab CI</li>
                 </ul>
-                <p class="proyecto__resultado">
+                <p class="p-proyecto__resultado">
+                  <b>Resultado</b>
                   Levantar un ambiente completo pasó de dos semanas a 40 minutos.
                 </p>
-              </article>
+              </div>
             </li>
 
-            <li>
-              <article class="proyecto">
-                <p class="proyecto__meta">
-                  <span class="tag">Salud</span>
-                  <span>2025 · continuo</span>
-                </p>
-                <h3>Observabilidad y respuesta a incidentes</h3>
-                <p class="proyecto__desc">
-                  Alertas que nadie miraba porque saltaban a todas horas. Redefinimos qué
-                  merece despertar a alguien, le pusimos dueño a cada alerta y escribimos
-                  los procedimientos de respuesta junto al equipo interno.
-                </p>
-                <ul class="proyecto__stack">
-                  <li>Prometheus</li>
-                  <li>Grafana</li>
-                  <li>Loki</li>
-                  <li>OpenTelemetry</li>
+            <li class="p-proyecto h-reveal">
+              <div class="p-proyecto__ficha">
+                <p class="h-num" aria-hidden="true">03</p>
+                <p class="h-label">Salud</p>
+                <p class="p-proyecto__fecha">2025 · continuo</p>
+              </div>
+              <div class="p-proyecto__cuerpo">
+                <h2>Observabilidad y respuesta a incidentes</h2>
+                <p class="p-proyecto__desc">Alertas que nadie miraba porque saltaban a todas horas. Redefinimos qué merece despertar a alguien, le pusimos dueño a cada alerta y escribimos los procedimientos de respuesta junto al equipo interno.</p>
+                <ul class="h-tags">
+                <li>Prometheus</li>
+                <li>Grafana</li>
+                <li>Loki</li>
+                <li>OpenTelemetry</li>
                 </ul>
-                <p class="proyecto__resultado">
+                <p class="p-proyecto__resultado">
+                  <b>Resultado</b>
                   Ruido de alertas a la baja y tiempo de detección medido, no supuesto.
                 </p>
-              </article>
+              </div>
             </li>
 
-            <li>
-              <article class="proyecto">
-                <p class="proyecto__meta">
-                  <span class="tag">Logística</span>
-                  <span>2025 · 6 semanas</span>
-                </p>
-                <h3>Revisión de costos de una cuenta que creció sola</h3>
-                <p class="proyecto__desc">
-                  Una factura que subía todos los meses sin que nadie supiera por qué.
-                  Etiquetamos los recursos, atribuimos el gasto por equipo y apagamos lo que
-                  llevaba meses encendido sin usarse.
-                </p>
-                <ul class="proyecto__stack">
-                  <li>AWS</li>
-                  <li>Cost Explorer</li>
-                  <li>Terraform</li>
+            <li class="p-proyecto h-reveal">
+              <div class="p-proyecto__ficha">
+                <p class="h-num" aria-hidden="true">04</p>
+                <p class="h-label">Logística</p>
+                <p class="p-proyecto__fecha">2025 · 6 semanas</p>
+              </div>
+              <div class="p-proyecto__cuerpo">
+                <h2>Revisión de costos de una cuenta que creció sola</h2>
+                <p class="p-proyecto__desc">Una factura que subía todos los meses sin que nadie supiera por qué. Etiquetamos los recursos, atribuimos el gasto por equipo y apagamos lo que llevaba meses encendido sin usarse.</p>
+                <ul class="h-tags">
+                <li>AWS</li>
+                <li>Cost Explorer</li>
                 </ul>
-                <p class="proyecto__resultado">
+                <p class="p-proyecto__resultado">
+                  <b>Resultado</b>
                   Gasto mensual a la baja y un responsable por cada línea de la factura.
                 </p>
-              </article>
+              </div>
             </li>
-          </ul>
+          </ol>
+        </div>
+      </section>
 
-          <p class="text-muted" style="margin-top: 2rem">
-            ¿Tienes un caso parecido? <a href="/contacto/">Cuéntanos qué tienes hoy</a> y
-            te respondemos con un diagnóstico acotado.
-          </p>
+      <!-- ======================================================== cierre -->
+      <section class="p-cierre">
+        <div class="container h-reveal">
+          <p>¿Tienes un caso parecido? Te respondemos con un diagnóstico acotado.</p>
+          <p><a class="h-enlace" href="/contacto/">Cuéntanos qué tienes hoy</a></p>
         </div>
       </section>
     </main>

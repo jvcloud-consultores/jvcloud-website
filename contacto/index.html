@@ -119,19 +119,37 @@
               </div>
 
               <dl class="c-lista">
+                <div data-config-if="contact.name">
+                  <dt>Contacto</dt>
+                  <dd><span data-config="contact.name">Josue Olivares</span></dd>
+                </div>
                 <div>
                   <dt>Correo</dt>
                   <dd>
                     <a class="h-correo"
-                       href="mailto:contacto@jvcloud.cl"
+                       href="mailto:josue.olivares@jvcloud.cl"
                        data-config="contact.email"
                        data-config-attr="href"
-                       data-config-prefix="mailto:"><span data-config="contact.email">contacto@jvcloud.cl</span></a>
+                       data-config-prefix="mailto:"><span data-config="contact.email">josue.olivares@jvcloud.cl</span></a>
                   </dd>
                 </div>
                 <div>
                   <dt>Teléfono</dt>
-                  <dd><span data-config="contact.phone">+56 9 0000 0000</span></dd>
+                  <dd>
+                    <a href="tel:+56968604006"
+                       data-config="contact.phoneHref"
+                       data-config-attr="href"><span data-config="contact.phone">+56 9 6860 4006</span></a>
+                  </dd>
+                </div>
+                <div data-config-if="contact.whatsappHref">
+                  <dt>WhatsApp</dt>
+                  <dd>
+                    <a href="https://wa.me/56968604006"
+                       rel="noopener noreferrer"
+                       target="_blank"
+                       data-config="contact.whatsappHref"
+                       data-config-attr="href"><span data-config="contact.phone">+56 9 6860 4006</span></a>
+                  </dd>
                 </div>
                 <div>
                   <dt>Ubicación</dt>
@@ -139,7 +157,7 @@
                 </div>
                 <div>
                   <dt>Horario</dt>
-                  <dd>Lunes a viernes, 9:00 a 18:00 (GMT-4)</dd>
+                  <dd><span data-config="contact.hours">Lunes a viernes, 9:00 a 18:00 (GMT-4)</span></dd>
                 </div>
               </dl>
             </div>

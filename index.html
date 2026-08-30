@@ -115,67 +115,10 @@
           </div>
 
           <div class="h-hero__visual">
-            <!-- La escena la dibuja src/components/stack.js. Es decorativa:
-                 la lista de abajo es la que leen buscadores y lectores de
-                 pantalla, y además es de donde el componente saca los
-                 nombres, así que no hay dos fuentes que mantener. -->
+            <!-- La escena la dibuja src/components/stack.js y es decorativa.
+                 Los nombres que caen salen de `herramientas` en
+                 public/config.json, igual que la sección del final. -->
             <div class="h-stack" id="stack"></div>
-            <h2 class="visually-hidden">Tecnologías que utilizamos</h2>
-            <ul class="visually-hidden" data-tecnologias>
-              <li>Laravel</li>
-              <li>Vue</li>
-              <li>React</li>
-              <li>Node.js</li>
-              <li>Python</li>
-              <li>PHP</li>
-              <li>TypeScript</li>
-              <li>Go</li>
-              <li>Azure</li>
-              <li>AWS</li>
-              <li>IBM Cloud</li>
-              <li>Cloudflare</li>
-              <li>DigitalOcean</li>
-              <li>MySQL</li>
-              <li>PostgreSQL</li>
-              <li>MariaDB</li>
-              <li>Redis</li>
-              <li>MongoDB</li>
-              <li>SQLite</li>
-              <li>Docker</li>
-              <li>Kubernetes</li>
-              <li>Nginx</li>
-              <li>Apache</li>
-              <li>Kong</li>
-              <li>Linux</li>
-              <li>Ubuntu</li>
-              <li>Debian</li>
-              <li>Git</li>
-              <li>GitHub</li>
-              <li>GitHub Actions</li>
-              <li>Terraform</li>
-              <li>Ansible</li>
-              <li>Prometheus</li>
-              <li>Grafana</li>
-              <li>Loki</li>
-              <li>Uptime Kuma</li>
-              <li>Playwright</li>
-              <li>Selenium</li>
-              <li>Vite</li>
-              <li>Tailwind</li>
-              <li>Inertia</li>
-              <li>Livewire</li>
-              <li>Telegram API</li>
-              <li>WhatsApp API</li>
-              <li>Gemini</li>
-              <li>OpenAI</li>
-              <li>Claude</li>
-              <li>Transbank</li>
-              <li>SII / DTE</li>
-              <li>WordPress</li>
-              <li>Stripe</li>
-              <li>RabbitMQ</li>
-              <li>Elasticsearch</li>
-            </ul>
           </div>
         </div>
       </section>
@@ -184,12 +127,9 @@
       <section class="h-plataformas">
         <div class="container">
           <ul>
-            <li>AWS</li>
-            <li>Azure</li>
             <li>Google Cloud</li>
-            <li>Terraform</li>
-            <li>Kubernetes</li>
-            <li>GitHub Actions</li>
+            <li>Microsoft Azure</li>
+            <li>Amazon Web Services</li>
           </ul>
         </div>
       </section>
@@ -203,39 +143,75 @@
           <div class="h-hito">
             <p class="h-label">Servicios</p>
             <h2>Qué hacemos</h2>
+            <p class="h-lead">
+              Consultoría, desarrollo y operación. En la práctica un proyecto toca
+              varios de estos frentes a la vez; si lo tuyo no calza exacto en
+              ninguno, cuéntanos igual.
+            </p>
           </div>
           <ol class="h-nodos">
             <li class="h-nodo">
               <span class="h-num" aria-hidden="true">01</span>
-              <h3>Arquitectura y migración</h3>
-              <p>Levantamiento del estado actual, diseño objetivo y un plan de migración por olas, con criterios de corte y rollback definidos antes de mover nada.</p>
+              <h3>Consultoría y asesoría TI</h3>
+              <p>Diagnóstico de lo que hay, decisiones técnicas con sus costos sobre la mesa y acompañamiento mientras se ejecutan. Trabajamos con empresas y también con particulares que necesitan una segunda opinión antes de comprometer un presupuesto.</p>
               <ul class="h-tags">
-                <li>Levantamiento</li>
-                <li>Diseño objetivo</li>
-                <li>Plan por olas</li>
-                <li>Rollback</li>
+                <li>Diagnóstico</li>
+                <li>Decisiones técnicas</li>
+                <li>Segunda opinión</li>
+                <li>Acompañamiento</li>
               </ul>
             </li>
             <li class="h-nodo">
               <span class="h-num" aria-hidden="true">02</span>
-              <h3>Automatización e IaC</h3>
-              <p>Terraform, pipelines de CI/CD y entornos reproducibles. Si un ambiente no se puede recrear desde cero, todavía no está terminado.</p>
+              <h3>Desarrollo a medida</h3>
+              <p>Software, plataformas web y aplicaciones móviles, del levantamiento a la puesta en marcha. Se entrega de dos formas: llave en mano —el código y la documentación quedan contigo— o como servicio, si prefieres que la operemos nosotros.</p>
               <ul class="h-tags">
-                <li>Terraform</li>
-                <li>CI/CD</li>
-                <li>Entornos efímeros</li>
-                <li>Revisión de código</li>
+                <li>Plataformas web</li>
+                <li>Apps móviles</li>
+                <li>Integraciones</li>
+                <li>Llave en mano o como servicio</li>
               </ul>
             </li>
             <li class="h-nodo">
               <span class="h-num" aria-hidden="true">03</span>
-              <h3>Operación y FinOps</h3>
-              <p>Monitoreo, alertas con dueño, respuesta a incidentes y revisión mensual de costos con acciones concretas, no solo gráficos.</p>
+              <h3>Servicios listos para usar</h3>
+              <p>No todo hay que construirlo desde cero: tenemos servicios propios ya en marcha, para personas y para empresas. Te registras o contratas el plan y empiezas a usarlos; la operación, el soporte y las actualizaciones corren por nuestra cuenta.</p>
               <ul class="h-tags">
+                <li>Disponibles hoy</li>
+                <li>Diferentes tipos de rubros</li>
+              </ul>
+            </li>
+            <li class="h-nodo">
+              <span class="h-num" aria-hidden="true">04</span>
+              <h3>Automatización e IA</h3>
+              <p>Lo que hoy se hace a mano y se repite —planillas, correos, traspasos entre sistemas— convertido en flujos que corren solos y avisan cuando algo falla. Ahí entran también los agentes de IA: el detalle está más abajo.</p>
+              <ul class="h-tags">
+                <li>Flujos de trabajo</li>
+                <li>Agentes de IA</li>
+                <li>Integraciones</li>
+                <li>Alertas</li>
+              </ul>
+            </li>
+            <li class="h-nodo">
+              <span class="h-num" aria-hidden="true">05</span>
+              <h3>Infraestructura cloud</h3>
+              <p>Arquitectura, migración por olas y entornos reproducibles en AWS, Azure y Google Cloud. Si un ambiente no se puede recrear desde cero, todavía no está terminado.</p>
+              <ul class="h-tags">
+                <li>AWS</li>
+                <li>Azure</li>
+                <li>Google Cloud</li>
+                <li>CI/CD</li>
+              </ul>
+            </li>
+            <li class="h-nodo">
+              <span class="h-num" aria-hidden="true">06</span>
+              <h3>Soporte y mantención</h3>
+              <p>Mesa de ayuda, mantención de plataformas, monitoreo con responsables definidos y revisión de costos con acciones concretas, no solo gráficos. También sobre el software comercial de terceros que ya tengas contratado.</p>
+              <ul class="h-tags">
+                <li>Soporte</li>
+                <li>Mantención</li>
                 <li>Monitoreo</li>
-                <li>Alertas con dueño</li>
-                <li>Incidentes</li>
-                <li>Revisión de costos</li>
+                <li>Software de terceros</li>
               </ul>
             </li>
           </ol>
@@ -257,19 +233,19 @@
 
             <div class="h-ia__item">
               <span class="h-num" aria-hidden="true">01</span>
-              <h3>Infraestructura para modelos</h3>
-              <p>Dónde corre la inferencia, cuánto cuesta cada llamada y qué pasa el día que el proveedor no responde. Las mismas preguntas que le hacemos a cualquier otra pieza de la plataforma.</p>
+              <h3>Agentes que hacen tareas</h3>
+              <p>Atienden consultas, completan formularios y mueven datos entre sistemas. Con los mismos permisos que tendría una persona en ese puesto.</p>
               <ul class="h-tags">
-                <li>Inferencia</li>
-                <li>Límites de gasto</li>
-                <li>Plan de respaldo</li>
+                <li>Consultas</li>
+                <li>Tareas repetitivas</li>
+                <li>Permisos acotados</li>
               </ul>
             </div>
 
             <div class="h-ia__item">
               <span class="h-num" aria-hidden="true">02</span>
-              <h3>Integración con tus datos</h3>
-              <p>Conectar modelos a lo que tu empresa ya tiene, respetando los permisos que ya existen y dejando registro de qué se consultó. Sin sacar los datos de donde deben estar.</p>
+              <h3>Conectada a tus datos</h3>
+              <p>Los modelos leen lo que tu empresa ya tiene, y queda registro de qué se consultó. Sin sacar los datos de donde deben estar.</p>
               <ul class="h-tags">
                 <li>Datos propios</li>
                 <li>Permisos</li>
@@ -279,79 +255,144 @@
 
             <div class="h-ia__item">
               <span class="h-num" aria-hidden="true">03</span>
-              <h3>Medir antes de creer</h3>
-              <p>Una demo que funciona no es un sistema que funciona. Definimos con qué casos se evalúa la respuesta, cómo se compara entre versiones y quién decide si mejoró o empeoró.</p>
+              <h3>Un paso, no el producto</h3>
+              <p>La IA entra dentro de un flujo que ya automatizamos, corre donde ya corre tu plataforma y con el gasto acotado de antemano.</p>
               <ul class="h-tags">
-                <li>Casos de prueba</li>
-                <li>Evaluación</li>
-                <li>Revisión humana</li>
+                <li>Dentro del flujo</li>
+                <li>Límites de gasto</li>
               </ul>
             </div>
 
-            <div class="h-ia__item h-ia__item--nota">
-              <p>¿Tienes un caso en mente y no sabes si la IA aporta algo?</p>
-              <p><a class="h-enlace" href="/contacto/">Cuéntanos</a></p>
+            <div class="h-ia__item">
+              <span class="h-num" aria-hidden="true">04</span>
+              <h3>Medir antes de creer</h3>
+              <p>Una demo que funciona no es un sistema que funciona. Definimos con qué casos se evalúa y quién decide si mejoró.</p>
+              <ul class="h-tags">
+                <li>Casos de prueba</li>
+                <li>Revisión humana</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ======================================================== principios -->
-      <section class="h-seccion">
+      <!-- ======================================================== método -->
+      <!-- Los pasos van sobre un riel horizontal, no sobre el eje vertical de
+           Servicios: son dos lecturas distintas y con la misma forma se
+           confundían. En móvil el riel se endereza y baja en columna. -->
+      <section id="metodo" class="h-seccion">
         <div class="container h-reveal">
           <div class="h-seccion__cab">
-            <p class="h-label">Principios</p>
-            <h2>Lo que no negociamos</h2>
+            <p class="h-label">Método</p>
+            <h2>Cómo trabajamos</h2>
+            <p class="h-lead">
+              El mismo camino para un desarrollo, una automatización o una
+              migración. A veces se recorre entero y a veces basta el primer
+              paso —o ninguno, si ya está listo para contratar.
+            </p>
           </div>
-          <ul class="h-tres">
-            <li>
-              <span class="h-num" aria-hidden="true">01</span>
-              <h3>Reproducible antes que rápido</h3>
-              <p>Si no está en código, no existe. Un ambiente que no se puede recrear desde cero es deuda, no infraestructura.</p>
+          <ol class="h-riel">
+            <li class="h-riel__paso" style="--i: 0">
+              <span class="h-riel__num" aria-hidden="true">01</span>
+              <h3>Diagnóstico</h3>
+              <p>Dos semanas acotadas</p>
             </li>
-            <li>
-              <span class="h-num" aria-hidden="true">02</span>
-              <h3>Documentación en el repositorio</h3>
-              <p>Nada de conocimiento encerrado en una consultora. Lo que aprendemos queda escrito donde tu equipo lo va a buscar.</p>
+            <li class="h-riel__paso" style="--i: 1">
+              <span class="h-riel__num" aria-hidden="true">02</span>
+              <h3>Propuesta</h3>
+              <p>Alcance, diseño y el costo de operarlo</p>
             </li>
-            <li>
-              <span class="h-num" aria-hidden="true">03</span>
-              <h3>Costos visibles</h3>
-              <p>Cada decisión de arquitectura tiene un precio mensual. Lo ponemos sobre la mesa antes de tomarla, no después.</p>
+            <li class="h-riel__paso" style="--i: 2">
+              <span class="h-riel__num" aria-hidden="true">03</span>
+              <h3>Construcción</h3>
+              <p>Entregas parciales que se pueden usar</p>
+            </li>
+            <li class="h-riel__paso" style="--i: 3">
+              <span class="h-riel__num" aria-hidden="true">04</span>
+              <h3>Puesta en marcha</h3>
+              <p>Salida a producción y capacitación</p>
+            </li>
+            <li class="h-riel__paso" style="--i: 4">
+              <span class="h-riel__num" aria-hidden="true">05</span>
+              <h3>Después</h3>
+              <p>Te lo transferimos o lo operamos</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ======================================================== clientes -->
+      <!-- Tratamiento propio de esta sección: tres pictogramas de línea que se
+           dibujan solos al asomar, con el mismo recurso que el logotipo del
+           telón de entrada (pathLength="1" y el trazo descubriéndose). Son
+           decorativos; lo que la sección dice está en los textos. -->
+      <section id="clientes" class="h-seccion">
+        <div class="container h-reveal">
+          <div class="h-seccion__cab">
+            <p class="h-label">Clientes</p>
+            <h2>Nuestros tipos de clientes</h2>
+            <p class="h-lead">
+              Tres realidades distintas entre sí. Cambia el tamaño, el proceso y
+              los plazos —no el criterio con el que se hace el trabajo.
+            </p>
+          </div>
+          <ul class="h-clientes">
+            <li class="h-clientes__item" style="--i: 0">
+              <svg class="h-clientes__dibujo" viewBox="0 0 120 84" aria-hidden="true" focusable="false">
+                <path d="M12 72h96" pathLength="1" />
+                <rect x="30" y="16" width="32" height="56" pathLength="1" />
+                <rect x="62" y="36" width="26" height="36" pathLength="1" />
+                <path d="M30 28h32M30 40h32M30 52h32M30 64h32" pathLength="1" />
+                <path d="M46 16v56" pathLength="1" />
+                <path d="M62 48h26M62 60h26" pathLength="1" />
+              </svg>
+              <h3>Empresas privadas</h3>
+              <p>Desde el equipo de dos personas hasta la operación con su propia área de TI.</p>
+            </li>
+            <li class="h-clientes__item" style="--i: 1">
+              <svg class="h-clientes__dibujo" viewBox="0 0 120 84" aria-hidden="true" focusable="false">
+                <path d="M12 72h96" pathLength="1" />
+                <path d="M20 67h80" pathLength="1" />
+                <path d="M24 62h72" pathLength="1" />
+                <path d="M34 34v28M47 34v28M60 34v28M73 34v28M86 34v28" pathLength="1" />
+                <path d="M24 32h72" pathLength="1" />
+                <path d="M26 32 60 14 94 32" pathLength="1" />
+              </svg>
+              <h3>Empresas públicas</h3>
+              <p>Procesos formales, plazos y documentación como parte del encargo, no como estorbo.</p>
+            </li>
+            <li class="h-clientes__item" style="--i: 2">
+              <svg class="h-clientes__dibujo" viewBox="0 0 120 84" aria-hidden="true" focusable="false">
+                <path d="M12 72h96" pathLength="1" />
+                <circle cx="60" cy="30" r="12" pathLength="1" />
+                <path d="M34 72a26 26 0 0 1 52 0" pathLength="1" />
+              </svg>
+              <h3>Personas particulares</h3>
+              <p>Profesionales y emprendimientos con algo concreto que resolver.</p>
             </li>
           </ul>
         </div>
       </section>
 
-      <!-- ======================================================== método -->
-      <section id="metodo">
-        <div class="container h-eje h-reveal">
-          <div class="h-hito">
-            <p class="h-label">Método</p>
-            <h2>Cómo trabajamos</h2>
+      <!-- ======================================================== herramientas -->
+      <!-- La lista no está escrita aquí: sale de `herramientas` en
+           public/config.json y el JS llena este <ul>, que es de donde la toma
+           también la escena del stack del hero. Si la config no trae ninguna,
+           la sección entera se retira en vez de quedar con el título y un
+           hueco debajo. -->
+      <section id="herramientas" class="h-seccion">
+        <div class="container h-reveal">
+          <div class="h-seccion__cab">
+            <p class="h-label">Herramientas</p>
+            <h2>Con qué lo hacemos</h2>
+            <p class="h-lead">
+              ¿Eres una persona más técnica y quieres saber con qué herramientas hacemos nuestro trabajo?
+              Te respondemos sin problemas y sin rodeos. No tenemos un stack favorito. 
+              La herramienta se elige según el problema que hay que resolver.
+            </p>
+            <p class="h-herramientas__cuenta" data-herramientas-cuenta></p>
           </div>
-          <ol class="h-nodos">
-            <li class="h-nodo">
-              <span class="h-num" aria-hidden="true">01</span>
-              <h3>Diagnóstico</h3>
-              <p>Dos semanas acotadas: qué hay, qué duele y qué se puede arreglar rápido.</p>
-            </li>
-            <li class="h-nodo">
-              <span class="h-num" aria-hidden="true">02</span>
-              <h3>Diseño</h3>
-              <p>Arquitectura objetivo, estimaciones y prioridades. Sin propuestas genéricas.</p>
-            </li>
-            <li class="h-nodo">
-              <span class="h-num" aria-hidden="true">03</span>
-              <h3>Ejecución</h3>
-              <p>Migración por olas o automatización incremental, con rollback definido.</p>
-            </li>
-            <li class="h-nodo">
-              <span class="h-num" aria-hidden="true">04</span>
-              <h3>Transferencia</h3>
-              <p>Todo queda en tu cuenta y tu repositorio: tu equipo lo opera sin nosotros.</p>
-            </li>
-          </ol>
+          <ul class="h-herramientas" data-herramientas></ul>
         </div>
       </section>
 
@@ -367,11 +408,18 @@
           <p>
             <a
               class="h-correo"
-              href="mailto:contacto@jvcloud.cl"
+              href="mailto:josue.olivares@jvcloud.cl"
               data-config="contact.email"
               data-config-attr="href"
               data-config-prefix="mailto:"
-            ><span data-config="contact.email">contacto@jvcloud.cl</span></a>
+            ><span data-config="contact.email">josue.olivares@jvcloud.cl</span></a>
+          </p>
+          <p class="h-cierre__tel">
+            <a
+              href="tel:+56968604006"
+              data-config="contact.phoneHref"
+              data-config-attr="href"
+            ><span data-config="contact.phone">+56 9 6860 4006</span></a>
           </p>
           <div class="h-acciones">
             <a class="btn btn--primary" href="/contacto/">Escríbenos</a>

@@ -1,0 +1,84 @@
+/* ============================================================
+   Portafolio — estilos exclusivos de "/portafolio/"
+   Va encima de jv.css, que trae los tokens y las piezas comunes.
+   Clases con prefijo `p-`.
+   ============================================================ */
+
+/* --- cabecera de página ------------------------------------------- */
+.p-portada { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem); }
+.p-portada .h-label { margin-bottom: 1.5rem; }
+.p-portada h1 {
+  max-width: 16ch;
+  font-size: clamp(2.4rem, 1.5rem + 3.4vw, 4rem);
+  font-weight: 200;
+  letter-spacing: -.035em;
+  line-height: 1.03;
+}
+.p-portada__lead { margin: 1.75rem 0 0; max-width: 52ch; color: var(--gris); font-size: 1.06rem; }
+
+/* --- proyectos -----------------------------------------------------
+   Cada proyecto es una franja separada por un filete, no una tarjeta: el
+   diseño separa con líneas de un píxel y no con marcos. A partir de 880px
+   la ficha —número, rubro y fecha— se va a una columna propia a la
+   izquierda y el relato ocupa la otra. */
+.p-proyectos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--linea);
+}
+
+.p-proyecto {
+  display: grid;
+  gap: 1.25rem;
+  padding-block: clamp(2.5rem, 5vw, 3.75rem);
+  border-bottom: 1px solid var(--linea);
+}
+@media (min-width: 880px) {
+  .p-proyecto {
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+}
+
+.p-proyecto__ficha { align-content: start; display: grid; gap: .5rem; }
+.p-proyecto__ficha .h-num { margin-bottom: .35rem; }
+.p-proyecto__fecha { margin: 0; color: var(--gris-claro); font-size: .92rem; }
+
+.p-proyecto__cuerpo h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.9rem);
+  font-weight: 300;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+}
+.p-proyecto__desc { margin: .9rem 0 0; max-width: 62ch; color: var(--gris); }
+.p-proyecto__cuerpo .h-tags { margin-top: 1.25rem; }
+
+/* El resultado es el remate de cada proyecto: va aparte, con su propio
+   filete y en azul, para que se lea aunque solo se recorra la página. */
+.p-proyecto__resultado {
+  margin: 1.5rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--azul-100);
+  max-width: 62ch;
+  color: var(--azul);
+}
+.p-proyecto__resultado b {
+  display: block;
+  margin-bottom: .4rem;
+  color: var(--gris-claro);
+  font-family: var(--display);
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* --- cierre -------------------------------------------------------- */
+.p-cierre {
+  padding-block: clamp(3rem, 7vw, 5rem);
+  text-align: center;
+}
+.p-cierre p { margin: 0; color: var(--gris); }
+.p-cierre .h-enlace { margin-top: 1.25rem; }

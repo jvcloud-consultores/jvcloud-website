@@ -351,6 +351,22 @@ main { flex: 1 0 auto; }
 html[data-menu="abierto"],
 html[data-menu="abierto"] body { overflow: hidden; }
 
+/* Y como deja de desplazarse, la barra pierde su sitio: `position: sticky`
+   solo se sostiene mientras hay scroll, así que al bloquearlo la barra se cae
+   a donde la dejó el flujo —el tope del documento— y si habías bajado se va
+   fuera de la pantalla, llevándose el botón de cerrar.
+
+   Mientras el telón está arriba, entonces, la barra se fija al viewport en el
+   mismo punto donde estaba (lo mide el JS y lo deja en --nav-top), y el hueco
+   que deja se reserva con su propia altura para que el fondo no pegue un
+   salto durante el fundido. */
+.nav.is-abierto { height: var(--nav-alto); }
+.nav.is-abierto .nav__inner {
+  position: fixed;
+  top: var(--nav-top, 0px);
+  inset-inline: 0;
+}
+
 .nav__panel-inner {
   min-height: 100%;
   max-width: var(--max);
@@ -848,7 +864,14 @@ html[data-menu="abierto"] body { overflow: hidden; }
   gap: 2rem;
 }
 @media (min-width: 720px) {
-  .footer__inner { grid-template-columns: 2fr 1fr 1fr; }
+  /* Solo la pista de la marca es fija; las demás las crean las columnas que
+     existan. Con redes configuradas queda igual que antes (2fr 1fr 1fr) y sin
+     ellas no sobra una pista vacía a la derecha. */
+  .footer__inner {
+    grid-template-columns: 2fr;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
 }
 .footer__brand { display: block; color: var(--logo-ink); margin: 0 0 .9rem; }
 .footer__brand svg { height: 56px; width: auto; }

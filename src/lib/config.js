@@ -18,9 +18,23 @@ const DEFAULTS = {
   tagline: 'Arquitectura cloud, automatización y operación continua',
   description: '',
   domain: 'jvcloud.cl',
-  contact: { email: 'contacto@jvcloud.cl', phone: '', city: '' },
+  // Datos de contacto. `phone` se escribe legible ("+56 9 6860 4006"): de ahí
+  // se derivan solos `phoneHref` (tel:) y `whatsappHref` (wa.me), así que basta
+  // con cambiar el número en config.json. `whatsapp: false` esconde ese enlace.
+  contact: {
+    name: '',
+    email: 'josue.olivares@jvcloud.cl',
+    phone: '',
+    city: '',
+    hours: '',
+    whatsapp: false,
+  },
   social: {},
   features: { showContactForm: true },
+  // Nombres de la sección "Herramientas" y de la escena del stack de la
+  // portada. Es la única fuente: vacío significa que no hay ninguna, y la
+  // sección no se pinta.
+  herramientas: [],
   // Barra de aviso sobre el nav. `enabled: false` o `text: ''` la apagan.
   announcement: { enabled: false, text: '', cta: { label: '', href: '/contacto/' } },
   // Telón de entrada de la portada. `repeat`: always | session | once.
@@ -52,6 +66,25 @@ function merge(base, extra) {
 }
 
 /**
+ * Rellena los valores que no se escriben a mano en config.json:
+ *
+ *   contact.phoneHref     -> "tel:+56968604006"
+ *   contact.whatsappHref  -> "https://wa.me/56968604006"
+ *
+ * Se calculan desde `contact.phone`, salvo que config.json los traiga
+ * explícitos (por ejemplo, un número de WhatsApp distinto del teléfono).
+ */
+function derivar(cfg) {
+  const digitos = String(cfg.contact?.phone ?? '').replace(/\D/g, '')
+  if (!digitos) return cfg
+
+  const contact = { ...cfg.contact }
+  if (!contact.phoneHref) contact.phoneHref = `tel:+${digitos}`
+  if (!contact.whatsappHref && contact.whatsapp) contact.whatsappHref = `https://wa.me/${digitos}`
+  return { ...cfg, contact }
+}
+
+/**
  * Carga `/config.json` una sola vez. Si falla (red, JSON inválido, 404)
  * devuelve los valores por defecto y deja un aviso en consola: la página
  * nunca se queda en blanco por culpa de la config.
@@ -68,6 +101,7 @@ export function loadConfig() {
       config = merge(config, remoto)
       // VITE_SITE_NAME manda sobre config.json cuando está definida en el build.
       if (import.meta.env.VITE_SITE_NAME) config.siteName = import.meta.env.VITE_SITE_NAME
+      config = derivar(config)
       return config
     })
     .catch((error) => {

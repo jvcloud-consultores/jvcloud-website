@@ -117,9 +117,6 @@
 .h-ia__item p { margin: 0; color: var(--gris); font-size: .96rem; }
 .h-ia__item .h-tags { margin-top: .9rem; }
 
-.h-ia__item--nota p { color: var(--tinta); }
-.h-ia__item--nota p + p { margin-top: 1rem; }
-
 @media (min-width: 880px) {
   .h-ia__grid {
     /* El centro se lleva casi el doble que cada lado: con las columnas más
@@ -227,7 +224,7 @@
 
 
 /* --- rótulo flotante ---------------------------------------------- */
-/* Los tres textos entran juntos, cuando cae la primera tecnología: hasta
+/* Los tres textos entran juntos, cuando cae la primera herramienta: hasta
    entonces "Utilizamos" se quedaba solo, encabezando un hueco vacío. Se
    oculta con opacidad y no con display, para que en móvil —donde el rótulo
    va en el flujo— el sitio ya esté reservado y nada dé un salto. */
@@ -326,7 +323,7 @@
   letter-spacing: .22em; text-transform: uppercase; text-anchor: middle;
 }
 
-/* --- capas (cada tecnología) --------------------------------------- */
+/* --- capas (cada herramienta) --------------------------------------- */
 .h-stack .layer .top { fill: #fff; stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; }
 .h-stack .layer .left { fill: var(--navy-12); stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; }
 .h-stack .layer .right { fill: var(--navy-25); stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; }
@@ -392,4 +389,206 @@
      más unidades para acabar en el mismo tamaño real. 18px es el techo:
      "RESPALDOS" queda a pocas unidades del chasis del servidor. */
   .h-stack .scene-label { font-size: 18px; }
+}
+
+/* ---------------------------------------------------------- clientes
+   Tres pictogramas dibujados a línea, uno por tipo. Se trazan solos al asomar
+   la sección: cada forma lleva pathLength="1", así que su contorno mide 1
+   pase lo que pase con su tamaño y basta con descubrirlo de 1 a 0. */
+.h-clientes {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 3.5rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+@media (min-width: 760px) {
+  .h-clientes { grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3.5rem); }
+}
+
+/* `align-content: start` y no el reparto que trae el grid por defecto: los
+   tres bloques miden lo mismo —los estira la rejilla de arriba— pero uno tiene
+   una línea más de texto, y el sobrante de los otros dos se colaba entre el
+   dibujo y el título, dejando los tres encabezados a distinta altura. */
+.h-clientes__item {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+}
+
+.h-clientes__dibujo {
+  width: 100%;
+  max-width: 190px;
+  height: auto;
+  color: var(--azul-300);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: color .25s ease;
+}
+
+/* El filete separa el dibujo del texto y se estira al pasar por encima, que
+   es toda la respuesta que necesita: no es un enlace ni lleva a nada. */
+.h-clientes__item h3 {
+  position: relative;
+  margin: 1.6rem 0 .5rem;
+  padding-top: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+.h-clientes__item h3::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2.5rem;
+  height: 1px;
+  background: var(--azul-100);
+  transform: translateX(-50%);
+  transition: width .3s cubic-bezier(.2, .7, .3, 1), background-color .25s ease;
+}
+.h-clientes__item p {
+  max-width: 30ch;
+  margin: 0;
+  color: var(--gris);
+  font-size: .96rem;
+}
+
+@media (hover: hover) {
+  .h-clientes__item:hover .h-clientes__dibujo { color: var(--azul); }
+  .h-clientes__item:hover h3::before { width: 5.5rem; background: var(--azul); }
+}
+
+/* El trazo se descubre de a poco, y cada pictograma espera su turno. */
+.h-clientes__dibujo > * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1s cubic-bezier(.45, 0, .25, 1);
+  transition-delay: calc(var(--i, 0) * 260ms + 150ms);
+}
+.h-reveal.is-visible .h-clientes__dibujo > * { stroke-dashoffset: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Dibujados desde el principio: la regla global recorta la duración, pero la
+     espera de --i seguiría dejándolos invisibles un rato. */
+  .h-clientes__dibujo > * {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    transition: none;
+    transition-delay: 0s;
+  }
+  .h-clientes__item h3::before { transition: none; }
+}
+
+/* ---------------------------------------------------------- herramientas
+   La lista escrita en el HTML es el punto de partida —y lo que queda si el JS
+   no llega—: una lista corrida, sin más. src/components/cinta.js la cambia
+   por la cinta de tres filas. */
+.h-herramientas__cuenta {
+  margin: 1.4rem 0 0;
+  font-family: var(--display);
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gris-claro);
+}
+
+.h-herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--display);
+  font-weight: 300;
+  color: var(--azul);
+}
+
+/* --- la cinta ------------------------------------------------------
+   Tres filas que corren solas en sentidos alternos. El desvanecido de los
+   bordes evita que los nombres aparezcan y desaparezcan de golpe. */
+.h-cinta {
+  --sep: clamp(1.6rem, 3.5vw, 3rem);
+  display: grid;
+  gap: clamp(.6rem, 1.6vw, 1.1rem);
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+/* `width: max-content` es lo que deja que la fila mida sus dos pasadas
+   enteras; sin eso la caja se ajustaría al contenedor y no habría qué
+   desplazar. */
+.h-cinta__fila {
+  display: flex;
+  width: max-content;
+  animation: h-cinta-corre var(--dur, 60s) linear infinite;
+}
+.h-cinta__fila--rev { animation-direction: reverse; }
+
+/* Justo la mitad: ahí la segunda pasada queda donde empezó la primera. */
+@keyframes h-cinta-corre {
+  to { transform: translateX(-50%); }
+}
+
+.h-cinta__tira {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* El aire va dentro de cada nombre, no como hueco de la fila: si fuera hueco,
+   entre una pasada y otra faltaría uno y la costura se notaría. */
+.h-cinta__tira li {
+  position: relative;
+  padding: .35rem calc(var(--sep) / 2);
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(1.05rem, .95rem + .35vw, 1.35rem);
+  color: var(--azul);
+  white-space: nowrap;
+  transition: color .2s ease;
+}
+/* Punto separador, centrado en el aire que queda entre dos nombres. */
+.h-cinta__tira li::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 50%;
+  background: var(--azul-100);
+}
+
+@media (hover: hover) {
+  /* Al acercarse, la cinta se detiene y el azul se retira de todos los
+     nombres menos del que tiene el puntero encima. */
+  .h-cinta:hover .h-cinta__fila { animation-play-state: paused; }
+  .h-cinta:hover .h-cinta__tira li { color: var(--azul-300); }
+  .h-cinta:hover .h-cinta__tira li::after { background: var(--azul-50); }
+  /* La apuntada tiene que colgar de `.h-cinta:hover` igual que la regla que
+     apaga: escrita como `.h-cinta__tira li:hover` pesa menos y el apagado le
+     ganaba también a ella. */
+  .h-cinta:hover .h-cinta__tira li:hover { color: var(--azul); }
+  .h-cinta:hover .h-cinta__tira li:hover::after { background: var(--azul-100); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Quieta, cada fila se recorre a mano. La copia sobra y se retira: sin
+     movimiento solo sería la lista repetida dos veces. */
+  .h-cinta { mask-image: none; }
+  .h-cinta__fila {
+    animation: none;
+    width: auto;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .h-cinta__tira[aria-hidden="true"] { display: none; }
+  .h-cinta__tira li { transition: none; }
 }

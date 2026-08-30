@@ -40,7 +40,7 @@ function activarFormulario() {
     delete datos['sitio-web']
 
     if (!API) {
-      const destino = get('contact.email', 'contacto@jvcloud.cl')
+      const destino = get('contact.email', 'josue.olivares@jvcloud.cl')
       const asunto = encodeURIComponent(`Contacto web · ${datos.nombre}`)
       const cuerpo = encodeURIComponent(
         `Nombre: ${datos.nombre}\nCorreo: ${datos.email}\nEmpresa: ${datos.empresa || '-'}\n\n${datos.mensaje}`,

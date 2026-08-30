@@ -158,6 +158,172 @@ body:where(.jv) :where(h1, h2, h3) {
 .h-seccion__cab { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
 .h-seccion__cab h2 { margin-top: 1.25rem; font-size: clamp(1.9rem, 1.35rem + 2.2vw, 3rem); font-weight: 200; }
 
+/* Bajada de sección: enmarca lo que viene y recoge lo que no cabe en ello. */
+.h-lead {
+  max-width: 52ch;
+  margin: .9rem auto 0;
+  color: var(--gris);
+  line-height: 1.7;
+}
+
+/* ---------------------------------------------------------- riel
+   Pasos sobre una línea con marcas. En móvil la línea baja por la
+   izquierda; desde 880px se tumba y los pasos se reparten en fila.
+
+   La línea de cada paso llega hasta el siguiente cruzando el hueco de la
+   rejilla, así que el hueco es una variable y no un número suelto. */
+.h-riel {
+  --hueco: clamp(1.25rem, 2.5vw, 2.25rem);
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.h-riel__paso {
+  position: relative;
+  padding: 0 0 2.1rem 3rem;
+}
+/* El tramo de línea hacia el paso siguiente. */
+.h-riel__paso::before {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  top: .75rem;
+  bottom: 0;
+  width: 1px;
+  background: var(--linea);
+}
+/* El último no arrastra línea: no lleva a ninguna parte. */
+.h-riel__paso:last-child::before { display: none; }
+/* La marca sobre la línea. */
+.h-riel__paso::after {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  top: .75rem;
+  width: 9px;
+  height: 9px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--azul);
+}
+
+.h-riel__num {
+  display: block;
+  font-family: var(--display);
+  font-weight: 200;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--azul-300);
+}
+.h-riel h3 { margin: .6rem 0 .3rem; font-size: 1.1rem; font-weight: 400; }
+.h-riel p { margin: 0; color: var(--gris); font-size: .95rem; }
+
+@media (min-width: 880px) {
+  .h-riel {
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--hueco);
+  }
+  /* El número ocupa la banda de arriba y la línea cruza a su altura. */
+  .h-riel__paso { padding: 3.4rem 0 0; }
+  .h-riel__paso::before {
+    left: 0;
+    right: calc(var(--hueco) * -1);
+    top: 3.4rem;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+  }
+  .h-riel__paso:last-child::before { display: block; right: 0; }
+  .h-riel__paso::after { left: 0; top: 3.4rem; }
+  .h-riel__num {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: clamp(1.8rem, 1.2rem + 1.3vw, 2.5rem);
+  }
+  .h-riel h3 { margin-top: 1.15rem; }
+}
+
+/* --- entrada -------------------------------------------------------
+   El riel se traza tramo a tramo cuando la sección asoma: primero avanza la
+   línea, al llegar brota la marca y detrás entra el texto del paso. El turno
+   lo lleva --i, que escribe el HTML.
+
+   Por eso el <li> no se desvanece entero y sí sus hijos: la línea y la marca
+   son sus pseudoelementos, y una opacidad en el <li> los arrastraría a los
+   tres a la vez, que es justo lo que no queremos. */
+.h-riel { --turno: 130ms; }
+
+.h-riel__paso > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .45s ease, transform .45s cubic-bezier(.2, .7, .3, 1);
+  transition-delay: calc(var(--i, 0) * var(--turno) + 200ms);
+}
+.h-reveal.is-visible .h-riel__paso > * { opacity: 1; transform: none; }
+
+/* La línea crece hacia abajo (en móvil el riel es vertical). */
+.h-riel__paso::before {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .5s cubic-bezier(.3, .7, .4, 1);
+  transition-delay: calc(var(--i, 0) * var(--turno));
+}
+.h-reveal.is-visible .h-riel__paso::before { transform: scaleY(1); }
+
+/* La marca brota cuando la línea ya llegó. */
+.h-riel__paso::after {
+  transform: scale(0);
+  transition:
+    transform .35s cubic-bezier(.2, 1.4, .4, 1),
+    background-color .2s ease,
+    box-shadow .2s ease;
+  transition-delay: calc(var(--i, 0) * var(--turno) + 120ms);
+}
+.h-reveal.is-visible .h-riel__paso::after { transform: scale(1); }
+
+/* --- al pasar por encima -------------------------------------------
+   El paso apuntado se queda en primer plano y los demás retroceden. No es un
+   enlace ni lleva a ninguna parte, así que el gesto se queda en destacar:
+   la marca se rellena y el número toma el azul de marca. */
+@media (hover: hover) {
+  .h-riel__paso { transition: opacity .25s ease; }
+  .h-riel:hover .h-riel__paso { opacity: .45; }
+  .h-riel:hover .h-riel__paso:hover { opacity: 1; }
+
+  .h-riel__paso:hover::after {
+    background: var(--azul);
+    box-shadow: 0 0 0 5px var(--azul-50);
+  }
+  .h-riel__num { transition: color .25s ease; }
+  .h-riel__paso:hover .h-riel__num { color: var(--azul); }
+}
+
+@media (min-width: 880px) {
+  /* Tumbado, la línea avanza hacia la derecha. */
+  .h-riel__paso::before { transform: scaleX(0); transform-origin: left; }
+  .h-reveal.is-visible .h-riel__paso::before { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Sin el retardo explícito los pasos seguirían llegando de a uno, solo que
+     de golpe cada uno: la regla global recorta la duración, no la espera. */
+  .h-riel__paso > *,
+  .h-riel__paso::before,
+  .h-riel__paso::after {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0s;
+  }
+  /* El destacado se queda, sin el desvanecido de los demás. */
+  .h-riel:hover .h-riel__paso { opacity: 1; }
+}
+
 .h-tres { display: grid; gap: 2.5rem; list-style: none; margin: 0; padding: 0; }
 @media (min-width: 880px) { .h-tres { grid-template-columns: repeat(3, 1fr); gap: 3rem; } }
 .h-tres > li { padding-top: 1.25rem; border-top: 1px solid var(--azul-300); }
@@ -174,6 +340,9 @@ body:where(.jv) :where(h1, h2, h3) {
 .h-cierre h2 { font-size: clamp(2.4rem, 1.5rem + 3.8vw, 4.6rem); font-weight: 200; }
 .h-cierre p { margin: 1.75rem auto 0; max-width: 42ch; color: var(--gris); }
 .h-cierre .h-correo { margin-top: 2.25rem; font-size: clamp(1.25rem, 1rem + 1.4vw, 2rem); }
+.h-cierre__tel { margin-top: .75rem; font-size: 1.05rem; }
+.h-cierre__tel a { color: var(--gris); text-decoration: none; transition: color .2s ease; }
+.h-cierre__tel a:hover { color: var(--azul); }
 .h-cierre .h-acciones { margin-top: 2.5rem; }
 
 

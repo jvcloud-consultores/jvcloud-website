@@ -1,15 +1,18 @@
 /**
  * Punto de entrada exclusivo de la portada.
  *
- * Monta lo que solo existe en la portada: el telón de entrada, la escena del
- * stack y la red neuronal de la sección de IA.
+ * Monta lo que solo existe en la portada: el telón de entrada, la lista de
+ * herramientas con la escena del stack que la anima, y la red neuronal de la
+ * sección de IA.
  *
  * Las hojas de estilo (main, jv, home e intro) van enlazadas en el <head> del
  * HTML, no importadas aquí: tienen que estar aplicadas en el primer frame.
  */
 import './main.js'
+import { loadConfig, get } from './lib/config.js'
 import { activarApariciones } from './lib/apariciones.js'
 import { renderIntro } from './components/intro.js'
+import { renderCinta } from './components/cinta.js'
 import { renderRed } from './components/red.js'
 import { renderStack } from './components/stack.js'
 
@@ -31,19 +34,55 @@ function telonFuera() {
   return new Promise((listo) => document.addEventListener('intro:done', listo, { once: true }))
 }
 
-/** Monta la escena del stack leyendo la lista de tecnologías del HTML. */
-function activarStack() {
-  const lista = document.querySelector('[data-tecnologias]')
+/**
+ * Trae la lista de herramientas y se la reparte a quien la usa: la sección
+ * "Herramientas" y la escena del stack del hero.
+ *
+ * La única fuente es `herramientas` en public/config.json, así que la lista se
+ * cambia sin recompilar y no hay una segunda copia en el HTML que pueda
+ * quedarse atrás. El precio de eso: sin JS —o si config.json no se puede
+ * cargar— no hay nombres que mostrar, y entonces la sección se retira entera
+ * en vez de quedar con el título encabezando un hueco.
+ */
+function activarHerramientas() {
+  const lista = document.querySelector('[data-herramientas]')
   if (!lista) return
-  const tecnologias = [...lista.querySelectorAll('li')].map((li) => li.textContent.trim())
-  // La escena se dibuja ya (si no, la portada daría un salto al aparecer),
-  // pero su animación de entrada espera a que el telón se haya ido.
-  renderStack(document.getElementById('stack'), tecnologias, telonFuera())
+  const escena = document.getElementById('stack')
+
+  // Se pide antes de esperar a la config: si no, el telón podría irse mientras
+  // tanto y esta página se suscribiría al evento cuando ya pasó.
+  const telon = telonFuera()
+
+  // Esperar a la config no retrasa nada visible: la animación de entrada de la
+  // escena arranca cuando se va el telón, bastante después.
+  loadConfig().then(() => {
+    const nombres = get('herramientas', []).map((n) => String(n).trim()).filter(Boolean)
+
+    if (!nombres.length) {
+      lista.closest('section')?.remove()
+      return
+    }
+
+    lista.replaceChildren(...nombres.map((nombre) => {
+      const li = document.createElement('li')
+      li.textContent = nombre
+      return li
+    }))
+
+    const cuenta = document.querySelector('[data-herramientas-cuenta]')
+    if (cuenta) cuenta.textContent = `${nombres.length} herramientas`
+
+    // La lista se convierte en cinta; si eso no sale adelante, se queda la
+    // lista corrida, que se lee igual.
+    renderCinta(lista, nombres)
+
+    if (escena) renderStack(escena, nombres, telon)
+  })
 }
 
 function iniciar() {
   activarApariciones()
-  activarStack()
+  activarHerramientas()
   renderRed(document.getElementById('red'))
 }
 

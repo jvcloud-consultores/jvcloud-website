@@ -2,7 +2,7 @@
  * Escena isométrica del stack tecnológico (portada).
  *
  * Dibuja un servidor sobre el que van cayendo capas, cada una con el
- * nombre de una tecnología, y las va absorbiendo por abajo. Alrededor,
+ * nombre de una herramienta, y las va absorbiendo por abajo. Alrededor,
  * los equipos y servicios conectados con pistas por las que viaja una
  * señal.
  *
@@ -10,9 +10,9 @@
  * apareciendo los objetos encima y se levanta la torre— y solo entonces
  * empieza el ciclo de siempre.
  *
- * La lista de tecnologías NO vive aquí: se lee del `<ul data-tecnologias>`
- * del HTML, que además queda visible para lectores de pantalla y
- * buscadores aunque el JS no llegue a ejecutarse.
+ * La lista de herramientas NO vive aquí: sale de `herramientas` en
+ * public/config.json y se la pasa src/home.js, que es quien la reparte entre
+ * esta escena y la sección "Herramientas".
  *
  * Todo el dibujo es decorativo: el <svg> va con aria-hidden.
  */
@@ -90,13 +90,13 @@ const EASE = {
 /**
  * Monta la escena dentro de `destino` y arranca el ciclo.
  * @param {HTMLElement} destino
- * @param {string[]} tecnologias
+ * @param {string[]} herramientas
  * @param {Promise<void>} [esperar] se aguarda antes de la animación de
  *   entrada (no antes de dibujar). La portada pasa aquí el final del telón,
  *   para que la entrada no se represente tapada.
  */
-export function renderStack(destino, tecnologias = [], esperar = Promise.resolve()) {
-  if (!destino || !tecnologias.length) return
+export function renderStack(destino, herramientas = [], esperar = Promise.resolve()) {
+  if (!destino || !herramientas.length) return
 
   const sinMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -429,7 +429,7 @@ export function renderStack(destino, tecnologias = [], esperar = Promise.resolve
 
   let mazo = []
   const siguiente = () => {
-    if (!mazo.length) mazo = barajar([...tecnologias])
+    if (!mazo.length) mazo = barajar([...herramientas])
     return mazo.pop()
   }
 
@@ -470,25 +470,25 @@ export function renderStack(destino, tecnologias = [], esperar = Promise.resolve
     torre.push(g)
   }
 
-  // El rótulo entra entero con la primera tecnología. Si no, "Utilizamos" se
+  // El rótulo entra entero con la primera herramienta. Si no, "Utilizamos" se
   // queda colgado en el aire mientras la escena se monta, sin nada debajo.
   const mostrar = (nombre) => {
     const s = document.createElement('span')
     s.className = 'in'
     s.textContent = nombre
     nombreEl.replaceChildren(s)
-    contadorEl.textContent = `${++cuenta} tecnologías`
+    contadorEl.textContent = `${++cuenta} herramientas`
     hudEl.classList.add('is-visible')
   }
 
   if (sinMovimiento) {
-    // Sin movimiento: la escena queda montada y quieta, con una tecnología.
+    // Sin movimiento: la escena queda montada y quieta, con una herramienta.
     capasIniciales.forEach(ponerCapa)
     const g = crearCapa(siguiente())
     colocar(g, alturaDe(torre.length))
     $('jvInterior').appendChild(g)
-    contadorEl.textContent = `${tecnologias.length} tecnologías`
-    nombreEl.textContent = tecnologias[0]
+    contadorEl.textContent = `${herramientas.length} herramientas`
+    nombreEl.textContent = herramientas[0]
     hudEl.classList.add('is-visible')
     return
   }
