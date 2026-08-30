@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portafolio · JVCloud Consultores</title>
+    <meta name="description" content="Proyectos de arquitectura, migración y operación cloud: qué había, qué hicimos y qué cambió." />
+    <link rel="canonical" href="https://jvcloud.cl/portafolio/" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/images/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Open Graph. Lo consumen Facebook, LinkedIn, WhatsApp, Slack, Telegram y
+         casi cualquier cosa que despliegue una tarjeta al pegar un enlace.
+         `og:url` tiene que ser absoluta y coincidir con el canonical. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="JVCloud Consultores" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:title" content="Portafolio · JVCloud Consultores" />
+    <meta property="og:description" content="Proyectos de arquitectura, migración y operación cloud: qué había cuando llegamos, qué decidimos y qué cambió después." />
+    <meta property="og:url" content="https://jvcloud.cl/portafolio/" />
+    <meta property="og:image" content="https://jvcloud.cl/images/og-cover.png" />
+    <meta property="og:image:secure_url" content="https://jvcloud.cl/images/og-cover.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JVCloud Consultores · consultoría cloud independiente" />
+
+    <!-- Twitter Card. X cae a las etiquetas og: cuando falta una twitter:, pero
+         declararlas permite afinar el texto por red sin tocar el resto.
+         Sin `twitter:site` ni `twitter:creator`: no hay cuenta en X que citar. -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Portafolio · JVCloud Consultores" />
+    <meta name="twitter:description" content="Proyectos de arquitectura, migración y operación cloud: qué había cuando llegamos, qué decidimos y qué cambió después." />
+    <meta name="twitter:image" content="https://jvcloud.cl/images/og-cover.png" />
+    <meta name="twitter:image:alt" content="JVCloud Consultores · consultoría cloud independiente" />
+
+    <!-- Las hojas van enlazadas y no importadas desde el JS: así bloquean el
+         primer pintado y la página nunca asoma sin estilos. Importadas, en
+         `npm run dev` llegarían con el bundle y se vería un parpadeo en cada
+         navegación. El orden manda: main.css es la base, jv.css el diseño
+         nuevo y la última es la de esta página. -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <div id="aviso"></div>
+    <header id="nav"></header>
+
+    <main id="contenido">
+      <section class="hero">
+        <div class="container hero__inner">
+          <span class="hero__eyebrow">Portafolio</span>
+          <h1>Proyectos, no capturas de pantalla</h1>
+          <p class="hero__lead">
+            Qué había cuando llegamos, qué decidimos y qué cambió después. Los nombres de
+            los clientes se omiten cuando el contrato lo pide; los números, no.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <!--
+            CONTENIDO DE EJEMPLO: los cuatro proyectos de abajo son plantillas
+            con datos inventados. Reemplázalos por los reales.
+
+            Cada proyecto es un <li> con esta forma. No hay página de detalle:
+            si más adelante quieres una, crea portafolio/mi-proyecto/index.html
+            y envuelve el <article> en un enlace.
+          -->
+          <ul class="proyectos">
+            <li>
+              <article class="proyecto">
+                <p class="proyecto__meta">
+                  <span class="tag">Retail</span>
+                  <span>2026 · 5 meses</span>
+                </p>
+                <h3>Migración de una plataforma de e-commerce a AWS</h3>
+                <p class="proyecto__desc">
+                  Tres servidores físicos con despliegues manuales y una ventana de mantenimiento
+                  mensual. Rediseñamos la arquitectura, la movimos por olas y dejamos el catálogo
+                  y el checkout en servicios administrados.
+                </p>
+                <ul class="proyecto__stack">
+                  <li>AWS</li>
+                  <li>Terraform</li>
+                  <li>RDS</li>
+                  <li>CloudFront</li>
+                  <li>GitHub Actions</li>
+                </ul>
+                <p class="proyecto__resultado">
+                  Despliegues de una vez al mes a varios por día, sin ventana de mantenimiento.
+                </p>
+              </article>
+            </li>
+
+            <li>
+              <article class="proyecto">
+                <p class="proyecto__meta">
+                  <span class="tag">Servicios financieros</span>
+                  <span>2025 · 3 meses</span>
+                </p>
+                <h3>Entornos reproducibles con infraestructura como código</h3>
+                <p class="proyecto__desc">
+                  Cuatro ambientes que habían divergido entre sí y que nadie sabía recrear.
+                  Los reescribimos en Terraform con módulos compartidos y un entorno efímero
+                  por cada pull request.
+                </p>
+                <ul class="proyecto__stack">
+                  <li>Terraform</li>
+                  <li>Azure</li>
+                  <li>Kubernetes</li>
+                  <li>GitLab CI</li>
+                </ul>
+                <p class="proyecto__resultado">
+                  Levantar un ambiente completo pasó de dos semanas a 40 minutos.
+                </p>
+              </article>
+            </li>
+
+            <li>
+              <article class="proyecto">
+                <p class="proyecto__meta">
+                  <span class="tag">Salud</span>
+                  <span>2025 · continuo</span>
+                </p>
+                <h3>Observabilidad y respuesta a incidentes</h3>
+                <p class="proyecto__desc">
+                  Alertas que nadie miraba porque saltaban a todas horas. Redefinimos qué
+                  merece despertar a alguien, le pusimos dueño a cada alerta y escribimos
+                  los procedimientos de respuesta junto al equipo interno.
+                </p>
+                <ul class="proyecto__stack">
+                  <li>Prometheus</li>
+                  <li>Grafana</li>
+                  <li>Loki</li>
+                  <li>OpenTelemetry</li>
+                </ul>
+                <p class="proyecto__resultado">
+                  Ruido de alertas a la baja y tiempo de detección medido, no supuesto.
+                </p>
+              </article>
+            </li>
+
+            <li>
+              <article class="proyecto">
+                <p class="proyecto__meta">
+                  <span class="tag">Logística</span>
+                  <span>2025 · 6 semanas</span>
+                </p>
+                <h3>Revisión de costos de una cuenta que creció sola</h3>
+                <p class="proyecto__desc">
+                  Una factura que subía todos los meses sin que nadie supiera por qué.
+                  Etiquetamos los recursos, atribuimos el gasto por equipo y apagamos lo que
+                  llevaba meses encendido sin usarse.
+                </p>
+                <ul class="proyecto__stack">
+                  <li>AWS</li>
+                  <li>Cost Explorer</li>
+                  <li>Terraform</li>
+                </ul>
+                <p class="proyecto__resultado">
+                  Gasto mensual a la baja y un responsable por cada línea de la factura.
+                </p>
+              </article>
+            </li>
+          </ul>
+
+          <p class="text-muted" style="margin-top: 2rem">
+            ¿Tienes un caso parecido? <a href="/contacto/">Cuéntanos qué tienes hoy</a> y
+            te respondemos con un diagnóstico acotado.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer id="footer"></footer>
+  </body>
+</html>

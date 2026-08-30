@@ -4,7 +4,7 @@ import { get } from '../lib/config.js'
 const LINKS = [
   { href: '/', texto: 'Inicio' },
   { href: '/about/', texto: 'Acerca de' },
-  { href: '/blog/', texto: 'Blog' },
+  { href: '/portafolio/', texto: 'Portafolio' },
   { href: '/contacto/', texto: 'Contacto' },
 ]
 

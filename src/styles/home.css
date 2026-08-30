@@ -1,166 +1,75 @@
 /* ============================================================
-   Portada — estilos exclusivos de "/"
-   Se carga solo desde src/home.js: nada de esto llega a /about/,
-   /blog/ ni /contacto/. Todas las clases van con prefijo `h-` y las
-   anulaciones de tokens cuelgan de `body.home`.
+   Portada — lo que solo existe en "/"
+
+   Va encima de jv.css, que trae los tokens y las piezas comunes. Aquí
+   queda lo que no se repite en ninguna otra página: el hero con la
+   escena, la franja de plataformas, la sección de IA, el eje central
+   con sus nodos y todo el dibujo del stack.
 
    Dirección: eje central. Un único filete vertical recorre la página
    de arriba abajo y el contenido cuelga alternando a un lado y otro,
-   con un punto en cada nodo. Escala grande, mucho aire y pesos
-   ligeros, a tono con el logotipo vertical JV / CLOUD.
-   Único color, el corporativo #234d7f.
+   con un punto en cada nodo.
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&display=swap");
-
-body.home {
-  /* La portada es blanca siempre, también con el sistema en modo oscuro. */
-  color-scheme: light;
-
-  --azul: #234d7f;
-  --azul-700: #1a3c64;
-  --azul-300: #91b1d2;
-  --azul-100: #dbe6f1;
-  --azul-50: #f2f6fa;
-
-  --tinta: #171b21;
-  --gris: #6a7684;
-  --gris-claro: #9aa4b1;
-  --linea: #e8eaee;
-
-  --display: "Jost", "Century Gothic", "Futura", system-ui, sans-serif;
-
-  /* Tokens compartidos: nav, footer y .btn se retiñen sin duplicar reglas.
-     Al declararlos en body ganan sobre el :root oscuro de main.css. */
-  --bg: #ffffff;
-  --bg-alt: #fbfbfc;
-  --surface: #ffffff;
-  --border: var(--linea);
-  --text: var(--tinta);
-  --text-muted: var(--gris);
-  --brand: var(--azul);
-  --brand-strong: var(--azul-700);
-  --brand-soft: var(--azul-50);
-  --brand-line: var(--azul-100);
-  /* main.css aclara estos dos en modo oscuro; aquí la página es blanca
-     siempre, así que vuelven a su valor. */
-  --logo-ink: var(--azul);
+/* ---------------------------------------------------------- portada
+   Texto a la izquierda, escena del stack a la derecha. */
+.h-hero {
+  padding-block: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3.5rem);
+  /* La escena se sale del contenedor; esto evita la barra horizontal
+     sin crear un contenedor de scroll (a diferencia de overflow:hidden). */
+  overflow-x: clip;
 }
 
-/* Botones más callados, a tono con el logotipo. */
-body.home .btn {
-  box-shadow: none;
-  font-weight: 500;
-  letter-spacing: .01em;
-  padding: .8rem 1.7rem;
+.h-hero__grid {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 3rem);
+  align-items: center;
+  /* Cuánto se sale la escena del contenedor. Lo heredan el bloque visual
+     (para sangrar) y el rótulo (para volver a alinearse con la página). */
+  --sangrado: 0px;
 }
-body.home .btn--primary { color: #fff; }
-body.home .btn--primary:hover { transform: none; background: var(--azul-700); }
-body.home .btn--ghost { border-color: var(--linea); }
-body.home .btn--ghost:hover { transform: none; background: var(--azul-50); border-color: var(--azul-100); }
-
-body.home .container { max-width: 1040px; }
-
-/* ---------------------------------------------------------- tipografía
-   `:where()` deja este reset en especificidad (0,0,1): le gana a main.css
-   por orden de carga, pero pierde ante cualquier regla de componente. */
-body:where(.home) :where(h1, h2, h3) {
-  font-family: var(--display);
-  font-weight: 300;
-  letter-spacing: -.015em;
-  line-height: 1.1;
-  margin: 0;
-  text-wrap: balance;
+@media (min-width: 1000px) {
+  .h-hero__grid {
+    /* Columna de texto un poco más ancha y separación más corta: el
+       titular respiraba mal. La escena cede unos 20px, que con el
+       sangrado no se notan, y el texto gana cerca de 40. */
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1.12fr);
+    gap: 2rem;
+    /* Hasta el borde derecho de la ventana, con tope para que en
+       pantallas muy anchas no se desmadre. */
+    --sangrado: min(220px, max(0px, (100vw - 1040px) / 2 + 1.25rem));
+  }
+  /* La escena gana tamaño sin empujar el texto, que sigue alineado con
+     el resto de la página. */
+  .h-hero__visual { margin-right: calc(-1 * var(--sangrado)); }
 }
 
-/* Rótulo diminuto y muy espaciado: el mismo gesto que "C L O U D". */
-.h-label {
-  margin: 0;
-  color: var(--azul);
-  font-family: var(--display);
-  font-size: .7rem;
-  font-weight: 400;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-}
-
-.h-num {
+/* El hero no repite el logotipo: el nav es sticky y ya lo lleva justo
+   encima. En su lugar, un filete corto bajo el eyebrow sostiene el bloque y
+   le da un arranque, que era lo que hacía el logotipo. */
+.h-hero .h-label { margin-bottom: 1.5rem; }
+.h-hero .h-label::after {
+  content: "";
   display: block;
-  font-family: var(--display);
-  font-weight: 300;
-  font-size: .82rem;
-  letter-spacing: .18em;
-  color: var(--gris-claro);
+  width: 64px;
+  height: 1px;
+  margin-top: 1.1rem;
+  background: var(--azul-300);
 }
-
-.h-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .5rem 1.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.h-tags li {
-  color: var(--gris-claro);
-  font-family: var(--display);
-  font-size: .72rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-
-.h-acciones {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem 1.75rem;
-}
-
-.h-enlace {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  color: var(--tinta);
-  font-weight: 500;
-  text-decoration: none;
-  border-bottom: 1px solid var(--linea);
-  padding-bottom: 3px;
-  transition: border-color .2s ease, color .2s ease;
-}
-.h-enlace::after { content: "→"; font-size: .9em; transition: transform .2s ease; }
-.h-enlace:hover { color: var(--azul); border-color: var(--azul); text-decoration: none; }
-.h-enlace:hover::after { transform: translateX(3px); }
-
-.h-correo {
-  display: inline-block;
-  color: var(--azul);
-  font-family: var(--display);
-  font-weight: 300;
-  letter-spacing: .01em;
-  text-decoration: none;
-  border-bottom: 1px solid var(--azul-300);
-  padding-bottom: .12em;
-  transition: border-color .2s ease;
-}
-.h-correo:hover { border-color: var(--azul); text-decoration: none; }
-
-/* ---------------------------------------------------------- portada */
-.h-hero { padding-block: clamp(3rem, 6vw, 5rem) 0; text-align: center; }
-.h-hero__logo { height: clamp(70px, 7vw, 92px); width: auto; margin: 0 auto 2.25rem; }
-.h-hero .h-label { margin-bottom: 1.75rem; }
 .h-hero h1 {
-  margin: 0 auto;
-  max-width: 15ch;
-  font-size: clamp(2.8rem, 1.3rem + 6vw, 6rem);
+  margin: 0;
+  max-width: 16ch;
+  /* Titular descriptivo y algo más contenido: a 3.6rem se partía en
+     cinco líneas dentro de su columna, y una escala menos gritona lee
+     más institucional. */
+  font-size: clamp(2rem, 1.1rem + 2.7vw, 3.2rem);
   font-weight: 200;
   letter-spacing: -.03em;
-  line-height: 1;
+  line-height: 1.03;
 }
 .h-hero h1 strong { font-weight: 400; color: var(--azul); }
-.h-hero__lead { margin: 2.25rem auto 0; max-width: 38ch; color: var(--gris); font-size: 1.1rem; }
-.h-hero .h-acciones { margin-top: 2.5rem; }
-.h-hero__cierre { padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+.h-hero__lead { margin: 1.75rem 0 0; max-width: 42ch; color: var(--gris); font-size: 1.06rem; }
+.h-hero .h-acciones { justify-content: flex-start; margin-top: 2.25rem; }
 
 /* ---------------------------------------------------------- plataformas */
 .h-plataformas { border-block: 1px solid var(--linea); padding-block: 1.6rem; }
@@ -179,6 +88,62 @@ body:where(.home) :where(h1, h2, h3) {
   font-size: .76rem;
   letter-spacing: .22em;
   text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------- ia */
+/* La red neuronal manda en el centro y el texto se reparte a los lados: dos
+   bloques a la izquierda y dos a la derecha, para que la rejilla cierre.
+   En móvil se apila —lienzo primero, después los bloques en orden. */
+.h-seccion.h-ia { text-align: left; }
+.h-ia .h-seccion__cab { text-align: center; }
+
+.h-ia__grid {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* Cuadrado: cinco capas a lo ancho y ocho nodos a lo alto piden sitio en las
+   dos direcciones. El componente lee de aquí el tamaño con el que dibuja. */
+.h-ia__lienzo {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+}
+.h-red { display: block; width: 100%; height: 100%; }
+
+.h-ia__item h3 { margin: .55rem 0 .5rem; font-size: 1.15rem; font-weight: 400; }
+.h-ia__item p { margin: 0; color: var(--gris); font-size: .96rem; }
+.h-ia__item .h-tags { margin-top: .9rem; }
+
+.h-ia__item--nota p { color: var(--tinta); }
+.h-ia__item--nota p + p { margin-top: 1rem; }
+
+@media (min-width: 880px) {
+  .h-ia__grid {
+    /* El centro se lleva casi el doble que cada lado: con las columnas más
+       parejas la red se quedaba en unos 360px y no sostenía la sección. Las
+       calles también se estrechan, que son ~110px que van a parar al lienzo. */
+    grid-template-columns: 1fr minmax(320px, 1.9fr) 1fr;
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+    row-gap: clamp(2.5rem, 5vw, 4rem);
+  }
+  /* El lienzo ocupa la columna del medio en las dos filas y los cuatro bloques
+     se colocan a mano en las esquinas: en el DOM van en orden de lectura, que
+     es el que sirve en móvil, no en el orden de las esquinas.
+
+     Ojo con la numeración: el lienzo es el primer hijo de la rejilla, así que
+     los bloques son los hijos 2 a 5, y los de la izquierda son los pares. */
+  .h-ia__lienzo { grid-column: 2; grid-row: 1 / span 2; max-width: none; }
+  .h-ia__item:nth-child(2) { grid-column: 1; grid-row: 1; text-align: right; }
+  .h-ia__item:nth-child(3) { grid-column: 3; grid-row: 1; }
+  .h-ia__item:nth-child(4) { grid-column: 1; grid-row: 2; text-align: right; }
+  .h-ia__item:nth-child(5) { grid-column: 3; grid-row: 2; }
+
+  /* Los bloques de la izquierda pegan su contenido al borde derecho, contra
+     la red. */
+  .h-ia__item:nth-child(even) .h-tags { justify-content: flex-end; }
 }
 
 /* ---------------------------------------------------------- el eje */
@@ -260,65 +225,171 @@ body:where(.home) :where(h1, h2, h3) {
   .h-nodo:nth-child(odd) .h-tags { justify-content: flex-end; }
 }
 
-/* ---------------------------------------------------------- secciones */
-.h-seccion {
-  padding-block: clamp(3rem, 7vw, 5.5rem);
-  border-top: 1px solid var(--linea);
-  text-align: center;
-}
-.h-seccion__cab { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
-.h-seccion__cab h2 { margin-top: 1.25rem; font-size: clamp(1.9rem, 1.35rem + 2.2vw, 3rem); font-weight: 200; }
 
-.h-tres { display: grid; gap: 2.5rem; list-style: none; margin: 0; padding: 0; }
-@media (min-width: 880px) { .h-tres { grid-template-columns: repeat(3, 1fr); gap: 3rem; } }
-.h-tres > li { padding-top: 1.25rem; border-top: 1px solid var(--azul-300); }
-.h-tres h3 { margin: .85rem 0 .6rem; font-size: 1.2rem; font-weight: 400; }
-.h-tres p { margin: 0; color: var(--gris); font-size: .96rem; }
-
-/* ---------------------------------------------------------- blog */
-.h-post { display: block; max-width: 48ch; margin-inline: auto; color: inherit; text-decoration: none; }
-.h-post h3 {
-  margin: .7rem 0;
-  font-size: clamp(1.35rem, 1.15rem + 1vw, 1.95rem);
-  transition: color .2s ease;
-}
-.h-post p { margin: 0; color: var(--gris); }
-.h-post:hover { text-decoration: none; }
-.h-post:hover h3 { color: var(--azul); }
-
-.h-mas {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  margin-top: 2rem;
-  color: var(--tinta);
-  font-weight: 500;
-  text-decoration: none;
-}
-.h-mas::after { content: "→"; transition: transform .2s ease; }
-.h-mas:hover { color: var(--azul); }
-.h-mas:hover::after { transform: translateX(4px); }
-
-/* ---------------------------------------------------------- cierre */
-.h-cierre {
-  padding-block: clamp(4rem, 10vw, 8rem);
-  border-top: 1px solid var(--linea);
-  text-align: center;
-}
-.h-cierre__logo { height: clamp(80px, 9vw, 108px); width: auto; margin: 0 auto 2.5rem; }
-.h-cierre h2 { font-size: clamp(2.4rem, 1.5rem + 3.8vw, 4.6rem); font-weight: 200; }
-.h-cierre p { margin: 1.75rem auto 0; max-width: 42ch; color: var(--gris); }
-.h-cierre .h-correo { margin-top: 2.25rem; font-size: clamp(1.25rem, 1rem + 1.4vw, 2rem); }
-.h-cierre .h-acciones { margin-top: 2.5rem; }
-
-/* ---------------------------------------------------------- aparición */
-.h-reveal {
+/* --- rótulo flotante ---------------------------------------------- */
+/* Los tres textos entran juntos, cuando cae la primera tecnología: hasta
+   entonces "Utilizamos" se quedaba solo, encabezando un hueco vacío. Se
+   oculta con opacidad y no con display, para que en móvil —donde el rótulo
+   va en el flujo— el sitio ya esté reservado y nada dé un salto. */
+.h-stack__hud {
+  position: absolute;
+  top: 0;
+  right: var(--sangrado, 0px);
+  text-align: right;
+  pointer-events: none;
   opacity: 0;
-  transform: translateY(12px);
-  transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .3, 1);
+  transition: opacity .6s ease;
 }
-.h-reveal.is-visible { opacity: 1; transform: none; }
+.h-stack__hud.is-visible { opacity: 1; }
+.h-stack__eyebrow {
+  margin: 0;
+  color: var(--navy-70);
+  font-family: var(--display);
+  font-size: .68rem;
+  font-weight: 400;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+.h-stack__tech {
+  margin: .35rem 0 .4rem;
+  min-height: 1.2em;
+  overflow: hidden;
+  color: var(--azul);
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 1rem + 1.3vw, 2rem);
+  font-weight: 300;
+  letter-spacing: .01em;
+  line-height: 1.2;
+}
+.h-stack__tech span { display: inline-block; }
+.h-stack__tech span.in { animation: h-tech-in .55s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes h-tech-in {
+  from { opacity: 0; transform: translateY(.6em); filter: blur(4px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+.h-stack__contador {
+  margin: 0;
+  color: var(--navy-70);
+  font-family: var(--display);
+  font-size: .74rem;
+  font-weight: 300;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
 
-@media (prefers-reduced-motion: reduce) {
-  .h-reveal { opacity: 1; transform: none; transition: none; }
+/* --- piso ---------------------------------------------------------- */
+.h-stack .floor-top { fill: var(--navy-06); stroke: var(--navy-25); stroke-width: 1; }
+.h-stack .floor-side { fill: var(--navy-12); stroke: var(--navy-25); stroke-width: 1; stroke-linejoin: round; }
+.h-stack .floor-grid { fill: none; stroke: var(--navy-12); stroke-width: 1; }
+/* Logotipo del piso. El SVG de marca trae el azul corporativo en atributos de
+   presentación; estas reglas ganan sobre ellos y lo bajan al tono del suelo,
+   para que sea una marca pintada y no un elemento más de la escena. */
+.h-stack .floor-logo path { fill: var(--navy-25); }
+.h-stack .floor-logo line { stroke: var(--navy-25); }
+
+/* --- cajas isométricas genéricas ----------------------------------- */
+.h-stack .f-top { fill: #fff; stroke: var(--navy); stroke-width: 1.3; stroke-linejoin: round; }
+.h-stack .f-left { fill: var(--navy-12); stroke: var(--navy); stroke-width: 1.3; stroke-linejoin: round; }
+.h-stack .f-right { fill: var(--navy-25); stroke: var(--navy); stroke-width: 1.3; stroke-linejoin: round; }
+.h-stack .led { fill: var(--navy-25); }
+.h-stack .led.on { fill: var(--navy); }
+.h-stack .vent { stroke: var(--navy-45); stroke-width: 1; stroke-linecap: round; }
+.h-stack .screen { fill: var(--navy); stroke: var(--navy); stroke-width: 1.3; stroke-linejoin: round; }
+.h-stack .screen-inner { fill: #2f5c90; }
+.h-stack .screen-line { stroke: var(--navy-45); stroke-width: 2; stroke-linecap: round; }
+.h-stack .sombra { fill: var(--navy-12); }
+
+/* --- pistas y señal ------------------------------------------------ */
+.h-stack .trace { fill: none; stroke: var(--navy-45); stroke-width: 1.3; stroke-dasharray: 4 5; }
+.h-stack .signal { fill: var(--navy); }
+
+/* --- chasis del servidor ------------------------------------------- */
+.h-stack .b-floor { fill: var(--navy-25); }
+.h-stack .b-back-l { fill: var(--navy-06); }
+.h-stack .b-back-r { fill: var(--navy-12); }
+.h-stack .b-front-l { fill: #fff; stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; }
+.h-stack .b-front-r { fill: var(--navy-06); stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; }
+.h-stack .rim { fill: #fff; }
+.h-stack .rim.hot { fill: var(--navy-12); }
+.h-stack .rim-edge { fill: none; stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.h-stack .plinth-top { fill: var(--navy-25); stroke: var(--navy); stroke-width: 1.3; stroke-linejoin: round; }
+.h-stack .plinth-side { fill: var(--navy-45); stroke: var(--navy); stroke-width: 1.3; stroke-linejoin: round; }
+.h-stack .b-port { fill: var(--navy-12); stroke: var(--navy-70); stroke-width: .9; stroke-linejoin: round; }
+.h-stack .b-vent { stroke: var(--navy-45); stroke-width: 1; stroke-linecap: round; }
+.h-stack .b-handle { fill: none; stroke: var(--navy); stroke-width: 1.5; stroke-linecap: round; }
+.h-stack .b-power { fill: #fff; stroke: var(--navy); stroke-width: 1.2; }
+.h-stack .b-power-dot { fill: var(--navy); }
+.h-stack .b-glow { fill: none; }
+.h-stack .b-glow.on { fill: var(--navy); }
+.h-stack .base-label {
+  fill: var(--navy); font-size: 9px; font-weight: 400;
+  letter-spacing: .22em; text-transform: uppercase; text-anchor: middle;
+}
+
+/* --- capas (cada tecnología) --------------------------------------- */
+.h-stack .layer .top { fill: #fff; stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; }
+.h-stack .layer .left { fill: var(--navy-12); stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; }
+.h-stack .layer .right { fill: var(--navy-25); stroke: var(--navy); stroke-width: 1.5; stroke-linejoin: round; }
+.h-stack .layer .name {
+  fill: var(--navy); font-size: 13px; font-weight: 400;
+  letter-spacing: .06em; text-anchor: middle; dominant-baseline: central;
+}
+.h-stack .layer .bay { fill: var(--navy-12); stroke: var(--navy-70); stroke-width: .8; }
+.h-stack .layer .uled { fill: var(--navy-25); }
+.h-stack .layer .uled.on { fill: var(--navy); }
+/* Al asentarse, la capa se invierte un instante. */
+.h-stack .layer.settle .uled { fill: #fff; }
+.h-stack .layer.settle .top { fill: var(--navy); }
+.h-stack .layer.settle .name { fill: #fff; }
+
+/* --- IA, APIs y equipos -------------------------------------------- */
+/* IA, INTEGRACIÓN, RESPALDOS, MONITOREO y APIS. El tamaño va en unidades
+   del viewBox (900 de ancho), así que lo que se ve depende de cuánto se
+   encoja la escena: a 14px se leen alrededor de 11px reales en escritorio.
+   Crecen hacia arriba desde su objeto (van con la línea de base 8 unidades
+   por encima), así que agrandarlos no los acerca al dibujo. */
+.h-stack .scene-label {
+  fill: var(--navy-70); font-size: 14px; font-weight: 400;
+  letter-spacing: .22em; text-transform: uppercase; text-anchor: middle;
+}
+.h-stack .pin { stroke: var(--navy); stroke-width: 1.5; stroke-linecap: round; }
+.h-stack .sinapsis { stroke: var(--navy-45); stroke-width: .8; }
+.h-stack .neurona { fill: #fff; stroke: var(--navy); stroke-width: 1; }
+.h-stack .neurona.salida { fill: var(--navy); }
+.h-stack .pulso { fill: none; stroke: var(--navy); stroke-width: 1; }
+.h-stack .hex { stroke: var(--navy); stroke-width: 1.3; stroke-linejoin: round; }
+.h-stack .hex.c1 { fill: var(--navy-06); }
+.h-stack .hex.c2 { fill: var(--navy-12); }
+.h-stack .hex.c3 { fill: var(--navy-25); }
+.h-stack .hex.c4 { fill: var(--navy-45); }
+.h-stack .hex-top { fill: #fff; }
+.h-stack .api-label {
+  fill: var(--navy); font-size: 11px; font-weight: 500;
+  letter-spacing: .12em; text-anchor: middle; dominant-baseline: central;
+}
+.h-stack .tecla { fill: var(--navy-06); stroke: var(--navy-70); stroke-width: .5; }
+.h-stack .trackpad { fill: #fff; stroke: var(--navy-70); stroke-width: .7; }
+.h-stack .altavoz { stroke: var(--navy-25); stroke-width: .6; }
+.h-stack .tel-canto { fill: var(--navy-45); stroke: var(--navy); stroke-width: 1.2; }
+.h-stack .tel-cuerpo { fill: #fff; stroke: var(--navy); stroke-width: 1.2; }
+.h-stack .tel-camara { fill: #fff; }
+.h-stack .tel-barra { stroke: #fff; stroke-width: 1.2; stroke-linecap: round; }
+
+/* Cuando el hero se apila, el rótulo deja de flotar sobre la escena y
+   pasa a colocarse debajo: si no, queda suelto en el aire vacío que la
+   ilustración tiene por arriba. */
+@media (max-width: 999px) {
+  .h-stack__hud { position: static; text-align: left; margin-top: .5rem; }
+}
+
+/* Apilado: sangra solo el lienzo, para no arrastrar el rótulo con él.
+   Va al final a propósito: `.h-stack__lienzo { width: 100% }` está más
+   arriba y con la misma especificidad lo anularía. */
+@media (max-width: 999px) {
+  .h-stack__lienzo { width: calc(100% + 2.5rem); margin-inline: -1.25rem; }
+
+  /* Aquí la escena se encoge casi a la mitad, así que los rótulos necesitan
+     más unidades para acabar en el mismo tamaño real. 18px es el techo:
+     "RESPALDOS" queda a pocas unidades del chasis del servidor. */
+  .h-stack .scene-label { font-size: 18px; }
 }

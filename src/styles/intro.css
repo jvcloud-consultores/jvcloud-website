@@ -1,0 +1,134 @@
+/* ============================================================
+   Portada — telón de entrada
+
+   El logotipo se dibuja solo (contorno → relleno → guion → CLOUD) y
+   después la pantalla se abre en dos justo por la línea del guion.
+
+   El marcado vive en index.html y no en JS a propósito: así el telón
+   está pintado desde el primer frame, antes incluso de que llegue el
+   bundle. src/components/intro.js solo se ocupa de la salida.
+   ============================================================ */
+
+#intro {
+  --intro-tinta: var(--azul, #234d7f);
+  --intro-fondo: #ffffff;
+
+  background: var(--intro-fondo);
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Ya se vio en esta pestaña: ni se pinta. Lo decide el script en línea
+   del <head>, antes del primer pintado, para que no asome. */
+html[data-intro="off"] #intro { display: none; }
+
+/* Mientras el telón está arriba la página no se desplaza. El atributo lo
+   pone el JS al arrancar, así que si el bundle nunca llega el scroll
+   tampoco se queda bloqueado. */
+html:is([data-intro="on"], [data-intro="saliendo"]),
+html:is([data-intro="on"], [data-intro="saliendo"]) body { overflow: hidden; }
+
+.intro__logo {
+  position: relative;
+  width: min(48vmin, 280px);
+  height: auto;
+  overflow: visible;
+  transition: opacity .4s ease, transform .4s ease;
+}
+
+/* JV: primero se dibuja el contorno, después se rellena. */
+.intro__jv path {
+  fill: var(--intro-tinta);
+  fill-opacity: 0;
+  stroke: var(--intro-tinta);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation:
+    intro-trazo 1.7s cubic-bezier(.65, 0, .35, 1) .1s forwards,
+    intro-tinta .5s ease 1.5s forwards;
+}
+@keyframes intro-trazo { to { stroke-dashoffset: 0; } }
+@keyframes intro-tinta { to { fill-opacity: 1; } }
+
+/* El guion crece desde el centro. */
+.intro__guion {
+  stroke: var(--intro-tinta);
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scaleX(0);
+  animation: intro-guion .8s cubic-bezier(.2, .8, .2, 1) 1.8s forwards;
+}
+@keyframes intro-guion { to { transform: scaleX(1); } }
+
+/* CLOUD: letra por letra. */
+.intro__cloud path {
+  fill: var(--intro-tinta);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: translateY(8px);
+  animation: intro-letra .7s cubic-bezier(.2, .8, .2, 1) forwards;
+}
+.intro__cloud path:nth-child(1) { animation-delay: 2.50s; }
+.intro__cloud path:nth-child(2) { animation-delay: 2.64s; }
+.intro__cloud path:nth-child(3) { animation-delay: 2.78s; }
+.intro__cloud path:nth-child(4) { animation-delay: 2.92s; }
+.intro__cloud path:nth-child(5) { animation-delay: 3.06s; }
+@keyframes intro-letra { to { opacity: 1; transform: translateY(0); } }
+
+/* Aviso de que se puede saltar; aparece tarde para no competir con el
+   logotipo y se va con el resto del telón. */
+.intro__saltar {
+  position: absolute;
+  bottom: clamp(1.5rem, 5vh, 3rem);
+  margin: 0;
+  color: var(--gris-claro, #9aa4b1);
+  font-family: var(--display, system-ui, sans-serif);
+  font-size: .78rem;
+  font-weight: 300;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: intro-saltar .6s ease 2s forwards;
+}
+@keyframes intro-saltar { to { opacity: 1; } }
+
+/* ---------------------------------------------------------- salida */
+/* En dos tiempos, y no todo a la vez, para no ver el logotipo encima del
+   contenido mientras ambos están a medio camino: primero se apaga el
+   logotipo (.4 s) y solo entonces se funde el telón (.7 s desde .35 s).
+   Como el telón es blanco y la portada también, fundirlo es exactamente
+   lo mismo que encender la página: no hace falta tocarle la opacidad al
+   contenido, que además dejaría al nav sin su propia transición. */
+[data-intro="saliendo"] #intro {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .7s ease .35s;
+}
+[data-intro="saliendo"] .intro__logo { opacity: 0; transform: scale(.96); }
+[data-intro="saliendo"] .intro__saltar { opacity: 0; transition: opacity .4s ease; animation: none; }
+
+/* Red de seguridad: si el JS no llega a ejecutarse (bundle caído, error),
+   el telón se aparta solo y la página queda utilizable igual. */
+@media (prefers-reduced-motion: no-preference) {
+  #intro { animation: intro-rescate 0s linear 9s forwards; }
+  @keyframes intro-rescate { to { visibility: hidden; pointer-events: none; } }
+}
+
+/* Movimiento reducido: sin coreografía. El logotipo se ve completo y el
+   telón se retira enseguida (de eso se encarga el JS). */
+@media (prefers-reduced-motion: reduce) {
+  .intro__jv path { animation: none; fill-opacity: 1; stroke-dashoffset: 0; }
+  .intro__guion { animation: none; transform: none; }
+  .intro__cloud path { animation: none; opacity: 1; transform: none; }
+  .intro__saltar { animation: none; opacity: 1; }
+  #intro, .intro__logo { transition-duration: .01s; transition-delay: 0s; }
+}

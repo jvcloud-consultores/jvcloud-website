@@ -20,8 +20,11 @@ const DEFAULTS = {
   domain: 'jvcloud.cl',
   contact: { email: 'contacto@jvcloud.cl', phone: '', city: '' },
   social: {},
-  features: { showBlog: true, showContactForm: true },
-  announcement: '',
+  features: { showContactForm: true },
+  // Barra de aviso sobre el nav. `enabled: false` o `text: ''` la apagan.
+  announcement: { enabled: false, text: '', cta: { label: '', href: '/contacto/' } },
+  // Telón de entrada de la portada. `repeat`: always | session | once.
+  intro: { repeat: 'session' },
 }
 
 /** Variables de build (prefijo VITE_). Solo valores públicos. */
@@ -97,7 +100,7 @@ export function get(ruta, porDefecto = '') {
  *   <a data-config="contact.email" data-config-attr="href" data-config-prefix="mailto:"></a>
  *   <img data-config="social.github" data-config-attr="src">
  *
- * Los elementos con `data-config-if="features.showBlog"` se ocultan si el
+ * Los elementos con `data-config-if="features.showContactForm"` se ocultan si el
  * valor es falsy.
  */
 export function applyConfig(raiz = document) {

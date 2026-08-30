@@ -1,0 +1,224 @@
+/* ============================================================
+   JVCloud — lenguaje visual de las páginas nuevas
+
+   Tokens y piezas compartidas del diseño que estrenó la portada:
+   página siempre blanca, tipografía display ligera, un único azul y
+   filetes de un píxel en lugar de cajas.
+
+   Se activa por página con `<body class="jv">`, así que las páginas que
+   todavía llevan el diseño anterior (/about/, /portafolio/) no se ven
+   afectadas. Lo exclusivo de la portada —hero, eje, escena del stack—
+   vive aparte, en home.css.
+
+   Todas las clases van con prefijo `h-`.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&display=swap");
+
+
+body.jv {
+  /* Estas páginas son blancas siempre, también con el sistema en oscuro. */
+  color-scheme: light;
+
+  --azul: #234d7f;
+  --azul-700: #1a3c64;
+  --azul-300: #91b1d2;
+  --azul-100: #dbe6f1;
+  --azul-50: #f2f6fa;
+
+  --tinta: #171b21;
+  --gris: #6a7684;
+  --gris-claro: #9aa4b1;
+  --linea: #e8eaee;
+
+  --display: "Jost", "Century Gothic", "Futura", system-ui, sans-serif;
+
+  /* Tokens compartidos: nav, footer y .btn se retiñen sin duplicar reglas.
+     Al declararlos en body ganan sobre el :root oscuro de main.css. */
+  --bg: #ffffff;
+  --bg-alt: #fbfbfc;
+  --surface: #ffffff;
+  --border: var(--linea);
+  --text: var(--tinta);
+  --text-muted: var(--gris);
+  --brand: var(--azul);
+  --brand-strong: var(--azul-700);
+  --brand-soft: var(--azul-50);
+  --brand-line: var(--azul-100);
+  /* main.css aclara estos dos en modo oscuro; aquí la página es blanca
+     siempre, así que vuelven a su valor. */
+  --logo-ink: var(--azul);
+}
+
+/* Botones más callados, a tono con el logotipo. */
+body.jv .btn {
+  box-shadow: none;
+  font-weight: 500;
+  letter-spacing: .01em;
+  padding: .8rem 1.7rem;
+}
+body.jv .btn--primary { color: #fff; }
+body.jv .btn--primary:hover { transform: none; background: var(--azul-700); }
+body.jv .btn--ghost { border-color: var(--linea); }
+body.jv .btn--ghost:hover { transform: none; background: var(--azul-50); border-color: var(--azul-100); }
+
+body.jv .container { max-width: 1040px; }
+
+/* ---------------------------------------------------------- tipografía
+   `:where()` deja este reset en especificidad (0,0,1): le gana a main.css
+   por orden de carga, pero pierde ante cualquier regla de componente. */
+body:where(.jv) :where(h1, h2, h3) {
+  font-family: var(--display);
+  font-weight: 300;
+  letter-spacing: -.015em;
+  line-height: 1.1;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* Rótulo diminuto y muy espaciado: el mismo gesto que "C L O U D". */
+.h-label {
+  margin: 0;
+  color: var(--azul);
+  font-family: var(--display);
+  font-size: .7rem;
+  font-weight: 400;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+}
+
+.h-num {
+  display: block;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: .82rem;
+  letter-spacing: .18em;
+  color: var(--gris-claro);
+}
+
+.h-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.h-tags li {
+  color: var(--gris-claro);
+  font-family: var(--display);
+  font-size: .72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.h-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem 1.75rem;
+}
+
+.h-enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--tinta);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid var(--linea);
+  padding-bottom: 3px;
+  transition: border-color .2s ease, color .2s ease;
+}
+.h-enlace::after { content: "→"; font-size: .9em; transition: transform .2s ease; }
+.h-enlace:hover { color: var(--azul); border-color: var(--azul); text-decoration: none; }
+.h-enlace:hover::after { transform: translateX(3px); }
+
+.h-correo {
+  display: inline-block;
+  color: var(--azul);
+  font-family: var(--display);
+  font-weight: 300;
+  letter-spacing: .01em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--azul-300);
+  padding-bottom: .12em;
+  transition: border-color .2s ease;
+}
+.h-correo:hover { border-color: var(--azul); text-decoration: none; }
+
+
+/* ---------------------------------------------------------- secciones */
+.h-seccion {
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+  border-top: 1px solid var(--linea);
+  text-align: center;
+}
+.h-seccion__cab { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.h-seccion__cab h2 { margin-top: 1.25rem; font-size: clamp(1.9rem, 1.35rem + 2.2vw, 3rem); font-weight: 200; }
+
+.h-tres { display: grid; gap: 2.5rem; list-style: none; margin: 0; padding: 0; }
+@media (min-width: 880px) { .h-tres { grid-template-columns: repeat(3, 1fr); gap: 3rem; } }
+.h-tres > li { padding-top: 1.25rem; border-top: 1px solid var(--azul-300); }
+.h-tres h3 { margin: .85rem 0 .6rem; font-size: 1.2rem; font-weight: 400; }
+.h-tres p { margin: 0; color: var(--gris); font-size: .96rem; }
+
+/* ---------------------------------------------------------- cierre */
+.h-cierre {
+  padding-block: clamp(4rem, 10vw, 8rem);
+  border-top: 1px solid var(--linea);
+  text-align: center;
+}
+.h-cierre__logo { height: clamp(80px, 9vw, 108px); width: auto; margin: 0 auto 2.5rem; }
+.h-cierre h2 { font-size: clamp(2.4rem, 1.5rem + 3.8vw, 4.6rem); font-weight: 200; }
+.h-cierre p { margin: 1.75rem auto 0; max-width: 42ch; color: var(--gris); }
+.h-cierre .h-correo { margin-top: 2.25rem; font-size: clamp(1.25rem, 1rem + 1.4vw, 2rem); }
+.h-cierre .h-acciones { margin-top: 2.5rem; }
+
+
+/* ---------------------------------------------------------- aparición */
+.h-reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .3, 1);
+}
+.h-reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .h-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ============================================================
+   Escena del stack tecnológico (portada, columna derecha)
+   Se dibuja desde src/components/stack.js. La paleta es la misma
+   marca #234d7f mezclada con blanco en seis pasos; la tipografía,
+   la display del sitio. Todo el SVG es decorativo.
+   ============================================================ */
+.h-stack {
+  --navy: var(--azul);
+  --navy-70: #6583a6;
+  --navy-45: #9cafc5;
+  --navy-25: #c8d3df;
+  --navy-12: #e5eaf0;
+  --navy-06: #f2f4f7;
+
+  position: relative;
+  width: 100%;
+}
+.h-stack__lienzo {
+  width: 100%;
+  aspect-ratio: 900 / 720;
+  /* Aísla la escena en su propia capa: evita que el resto de la página
+     se re-rasterice en cada fotograma. */
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.h-stack svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  font-family: var(--display);
+}
+

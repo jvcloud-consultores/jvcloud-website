@@ -14,33 +14,168 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <!-- Open Graph. Lo consumen Facebook, LinkedIn, WhatsApp, Slack, Telegram y
+         casi cualquier cosa que despliegue una tarjeta al pegar un enlace.
+         `og:url` tiene que ser absoluta y coincidir con el canonical. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="JVCloud Consultores" />
-    <meta property="og:title" content="JVCloud Consultores" />
-    <meta property="og:description" content="Arquitectura cloud, automatización y operación continua." />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:title" content="JVCloud Consultores · Consultoría cloud independiente" />
+    <meta property="og:description" content="Diseñamos y operamos plataformas en AWS, Azure y Google Cloud —y la inteligencia artificial que corre sobre ellas— con criterios de ingeniería." />
     <meta property="og:url" content="https://jvcloud.cl/" />
     <meta property="og:image" content="https://jvcloud.cl/images/og-cover.png" />
+    <meta property="og:image:secure_url" content="https://jvcloud.cl/images/og-cover.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JVCloud Consultores · consultoría cloud independiente" />
+
+    <!-- Twitter Card. X cae a las etiquetas og: cuando falta una twitter:, pero
+         declararlas permite afinar el texto por red sin tocar el resto.
+         Sin `twitter:site` ni `twitter:creator`: no hay cuenta en X que citar. -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JVCloud Consultores · Consultoría cloud independiente" />
+    <meta name="twitter:description" content="Diseñamos y operamos plataformas en AWS, Azure y Google Cloud —y la inteligencia artificial que corre sobre ellas— con criterios de ingeniería." />
+    <meta name="twitter:image" content="https://jvcloud.cl/images/og-cover.png" />
+    <meta name="twitter:image:alt" content="JVCloud Consultores · consultoría cloud independiente" />
+
+
+    <!-- Las hojas van enlazadas y no importadas desde el JS: así bloquean el
+         primer pintado y la página nunca asoma sin estilos. Importadas, en
+         `npm run dev` llegarían con el bundle y se vería un parpadeo en cada
+         navegación. El orden manda: main.css es la base, jv.css el diseño
+         nuevo y la última es la de esta página. -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="stylesheet" href="/src/styles/jv.css" />
+    <link rel="stylesheet" href="/src/styles/home.css" />
+    <link rel="stylesheet" href="/src/styles/intro.css" />
 
     <script type="module" src="/src/home.js"></script>
+
+    <!-- ¿Toca telón de entrada? La decisión se toma aquí, en línea y antes
+         del primer pintado, para que cuando no toque no llegue ni a asomar.
+         Se mira solo si la carga anterior dejó marca; cada cuánto se deja
+         (y dónde) lo decide `intro.repeat` en config.json, que para cuando
+         se lee ya es tarde. Ver src/components/intro.js. -->
+    <script>
+      try {
+        if (sessionStorage.getItem('jvcloud:intro-visto') || localStorage.getItem('jvcloud:intro-visto')) {
+          document.documentElement.dataset.intro = 'off'
+        }
+      } catch (e) { /* sin almacenamiento: se muestra igual */ }
+    </script>
   </head>
-  <body class="home">
+  <body class="home jv">
+    <!-- ======================================================== intro -->
+    <!-- El logotipo se dibuja solo y después el telón se funde y deja ver
+         la portada. Va escrito aquí, y no lo genera el JS, para que esté
+         pintado en el primer frame: src/components/intro.js solo se
+         encarga de retirarlo. Es puramente decorativo. -->
+    <div id="intro" aria-hidden="true">
+      <svg class="intro__logo" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg" focusable="false">
+        <g class="intro__jv" transform="translate(101.22,300)">
+          <path pathLength="1" d="M111.28 -181.22V-47.32Q111.28 -24.96 97.5 -11.57Q83.72 1.82 61.1 1.82Q38.22 1.82 24.44 -11.83Q10.66 -25.48 10.66 -49.14H34.32Q34.58 -35.88 41.21 -27.56Q47.84 -19.24 61.1 -19.24Q74.36 -19.24 80.86 -27.17Q87.36 -35.1 87.36 -47.32V-181.22Z"/>
+          <path pathLength="1" d="M309.58 -181.22 241.2 0L213.9 0L145.52 -181.22H170.74L227.68 -24.96L284.62 -181.22Z"/>
+        </g>
+        <line class="intro__guion" x1="225" y1="350" x2="295" y2="350" stroke-width="6" stroke-linecap="round"/>
+        <g class="intro__cloud" transform="translate(108.096,440)">
+          <path d="M25.024 -45.184Q32.32 -45.184 37.76 -41.664Q43.2 -38.144 45.696 -31.68H38.72Q36.864 -35.712 33.376 -37.888Q29.888 -40.064 25.024 -40.064Q20.352 -40.064 16.64 -37.888Q12.928 -35.712 10.816 -31.712Q8.704 -27.712 8.704 -22.336Q8.704 -17.024 10.816 -13.024Q12.928 -9.024 16.64 -6.848Q20.352 -4.672 25.024 -4.672Q29.888 -4.672 33.376 -6.816Q36.864 -8.96 38.72 -12.992H45.696Q43.2 -6.592 37.76 -3.104Q32.32 0.384 25.024 0.384Q18.816 0.384 13.728 -2.528Q8.64 -5.44 5.696 -10.624Q2.752 -15.808 2.752 -22.336Q2.752 -28.864 5.696 -34.08Q8.64 -39.296 13.728 -42.24Q18.816 -45.184 25.024 -45.184Z"/>
+          <path d="M82.16 -4.736H97.776V0H76.336V-44.608H82.16Z"/>
+          <path d="M123.808 -22.336Q123.808 -28.864 126.784 -34.08Q129.76 -39.296 134.88 -42.208Q140 -45.12 146.208 -45.12Q152.48 -45.12 157.6 -42.208Q162.72 -39.296 165.664 -34.112Q168.608 -28.928 168.608 -22.336Q168.608 -15.744 165.664 -10.56Q162.72 -5.376 157.6 -2.464Q152.48 0.448 146.208 0.448Q140 0.448 134.88 -2.464Q129.76 -5.376 126.784 -10.592Q123.808 -15.808 123.808 -22.336ZM162.656 -22.336Q162.656 -27.712 160.512 -31.712Q158.368 -35.712 154.656 -37.888Q150.944 -40.064 146.208 -40.064Q141.472 -40.064 137.76 -37.888Q134.048 -35.712 131.904 -31.712Q129.76 -27.712 129.76 -22.336Q129.76 -17.024 131.904 -12.992Q134.048 -8.96 137.792 -6.784Q141.536 -4.608 146.208 -4.608Q150.88 -4.608 154.624 -6.784Q158.368 -8.96 160.512 -12.992Q162.656 -17.024 162.656 -22.336Z"/>
+          <path d="M203.984 -44.608V-16.384Q203.984 -10.432 206.896 -7.552Q209.808 -4.672 214.992 -4.672Q220.112 -4.672 223.024 -7.552Q225.936 -10.432 225.936 -16.384V-44.608H231.76V-16.448Q231.76 -10.88 229.52 -7.072Q227.28 -3.264 223.472 -1.408Q219.664 0.448 214.928 0.448Q210.192 0.448 206.384 -1.408Q202.576 -3.264 200.368 -7.072Q198.16 -10.88 198.16 -16.448V-44.608Z"/>
+          <path d="M301.056 -22.208Q301.056 -15.36 298.208 -10.336Q295.36 -5.312 290.016 -2.656Q284.672 0 277.376 0H263.488V-44.608H277.376Q284.672 -44.608 290.016 -41.888Q295.36 -39.168 298.208 -34.112Q301.056 -29.056 301.056 -22.208ZM295.104 -22.208Q295.104 -30.528 290.528 -35.2Q285.952 -39.872 277.376 -39.872H269.312V-4.8H277.376Q286.016 -4.8 290.56 -9.376Q295.104 -13.952 295.104 -22.208Z"/>
+        </g>
+      </svg>
+
+      <p class="intro__saltar">Clic para saltar</p>
+    </div>
+
+    <div id="aviso"></div>
     <header id="nav"></header>
 
     <main id="contenido">
       <!-- ======================================================== portada -->
       <section class="h-hero">
-        <div class="container h-hero__cierre">
-          <img class="h-hero__logo" src="/images/logo.svg" alt="" width="103" height="110" />
-          <p class="h-label">Consultoría cloud independiente</p>
-          <h1>Infraestructura cloud que <strong>no te despierta</strong> de madrugada</h1>
-          <p class="h-hero__lead" data-config="description">
-            Diseñamos, migramos y operamos plataformas en AWS, Azure y Google Cloud.
-            Menos incidentes, costos bajo control y despliegues que se pueden repetir.
-          </p>
-          <div class="h-acciones">
-            <a class="btn btn--primary" href="/contacto/">Conversemos</a>
-            <a class="h-enlace" href="#servicios">Qué hacemos</a>
+        <div class="container h-hero__grid">
+          <div class="h-hero__texto">
+            <!-- Sin logotipo: el nav es sticky y ya lo muestra a 52px justo
+                 encima, así que aquí solo se repetía. -->
+            <p class="h-label">Consultoría cloud independiente</p>
+            <h1>Arquitectura, despliegue, IA, automatización y operación de <strong>infraestructura cloud</strong></h1>
+            <p class="h-hero__lead" data-config="description">
+              Diseñamos y operamos plataformas en AWS, Azure y Google Cloud —y la inteligencia
+              artificial que corre sobre ellas— con criterios de ingeniería: entornos
+              reproducibles, despliegues automatizados, monitoreo con responsables definidos
+              y costos bajo control.
+            </p>
+            <div class="h-acciones">
+              <a class="btn btn--primary" href="#servicios">Ver servicios</a>
+              <a class="h-enlace" href="#ia">Sobre Inteligencia Artificial</a>
+            </div>
+          </div>
+
+          <div class="h-hero__visual">
+            <!-- La escena la dibuja src/components/stack.js. Es decorativa:
+                 la lista de abajo es la que leen buscadores y lectores de
+                 pantalla, y además es de donde el componente saca los
+                 nombres, así que no hay dos fuentes que mantener. -->
+            <div class="h-stack" id="stack"></div>
+            <h2 class="visually-hidden">Tecnologías que utilizamos</h2>
+            <ul class="visually-hidden" data-tecnologias>
+              <li>Laravel</li>
+              <li>Vue</li>
+              <li>React</li>
+              <li>Node.js</li>
+              <li>Python</li>
+              <li>PHP</li>
+              <li>TypeScript</li>
+              <li>Go</li>
+              <li>Azure</li>
+              <li>AWS</li>
+              <li>IBM Cloud</li>
+              <li>Cloudflare</li>
+              <li>DigitalOcean</li>
+              <li>MySQL</li>
+              <li>PostgreSQL</li>
+              <li>MariaDB</li>
+              <li>Redis</li>
+              <li>MongoDB</li>
+              <li>SQLite</li>
+              <li>Docker</li>
+              <li>Kubernetes</li>
+              <li>Nginx</li>
+              <li>Apache</li>
+              <li>Kong</li>
+              <li>Linux</li>
+              <li>Ubuntu</li>
+              <li>Debian</li>
+              <li>Git</li>
+              <li>GitHub</li>
+              <li>GitHub Actions</li>
+              <li>Terraform</li>
+              <li>Ansible</li>
+              <li>Prometheus</li>
+              <li>Grafana</li>
+              <li>Loki</li>
+              <li>Uptime Kuma</li>
+              <li>Playwright</li>
+              <li>Selenium</li>
+              <li>Vite</li>
+              <li>Tailwind</li>
+              <li>Inertia</li>
+              <li>Livewire</li>
+              <li>Telegram API</li>
+              <li>WhatsApp API</li>
+              <li>Gemini</li>
+              <li>OpenAI</li>
+              <li>Claude</li>
+              <li>Transbank</li>
+              <li>SII / DTE</li>
+              <li>WordPress</li>
+              <li>Stripe</li>
+              <li>RabbitMQ</li>
+              <li>Elasticsearch</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -107,6 +242,60 @@
         </div>
       </section>
 
+      <!-- ======================================================== ia -->
+      <section id="ia" class="h-seccion h-ia">
+        <div class="container h-reveal">
+          <div class="h-seccion__cab">
+            <p class="h-label">Inteligencia artificial</p>
+            <h2>Dónde entra la IA</h2>
+          </div>
+
+          <div class="h-ia__grid">
+            <!-- La red la dibuja src/components/red.js. Es decorativa: lo que
+                 la sección cuenta está en los bloques de alrededor. -->
+            <div class="h-ia__lienzo" id="red"></div>
+
+            <div class="h-ia__item">
+              <span class="h-num" aria-hidden="true">01</span>
+              <h3>Infraestructura para modelos</h3>
+              <p>Dónde corre la inferencia, cuánto cuesta cada llamada y qué pasa el día que el proveedor no responde. Las mismas preguntas que le hacemos a cualquier otra pieza de la plataforma.</p>
+              <ul class="h-tags">
+                <li>Inferencia</li>
+                <li>Límites de gasto</li>
+                <li>Plan de respaldo</li>
+              </ul>
+            </div>
+
+            <div class="h-ia__item">
+              <span class="h-num" aria-hidden="true">02</span>
+              <h3>Integración con tus datos</h3>
+              <p>Conectar modelos a lo que tu empresa ya tiene, respetando los permisos que ya existen y dejando registro de qué se consultó. Sin sacar los datos de donde deben estar.</p>
+              <ul class="h-tags">
+                <li>Datos propios</li>
+                <li>Permisos</li>
+                <li>Trazabilidad</li>
+              </ul>
+            </div>
+
+            <div class="h-ia__item">
+              <span class="h-num" aria-hidden="true">03</span>
+              <h3>Medir antes de creer</h3>
+              <p>Una demo que funciona no es un sistema que funciona. Definimos con qué casos se evalúa la respuesta, cómo se compara entre versiones y quién decide si mejoró o empeoró.</p>
+              <ul class="h-tags">
+                <li>Casos de prueba</li>
+                <li>Evaluación</li>
+                <li>Revisión humana</li>
+              </ul>
+            </div>
+
+            <div class="h-ia__item h-ia__item--nota">
+              <p>¿Tienes un caso en mente y no sabes si la IA aporta algo?</p>
+              <p><a class="h-enlace" href="/contacto/">Cuéntanos</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ======================================================== principios -->
       <section class="h-seccion">
         <div class="container h-reveal">
@@ -163,24 +352,6 @@
               <p>Todo queda en tu cuenta y tu repositorio: tu equipo lo opera sin nosotros.</p>
             </li>
           </ol>
-        </div>
-      </section>
-
-      <!-- ======================================================== blog -->
-      <section class="h-seccion" data-config-if="features.showBlog">
-        <div class="container h-reveal">
-          <div class="h-seccion__cab">
-            <p class="h-label">Bitácora</p>
-            <h2>Del blog</h2>
-          </div>
-          <a class="h-post" href="/blog/primer-post/">
-            <span class="h-num" aria-hidden="true">
-              <time datetime="2026-08-20">20 de agosto de 2026</time> · Infraestructura
-            </span>
-            <h3>Cómo publicamos este sitio con Vite y GitHub Pages</h3>
-            <p>Un sitio estático multipágina, sin framework, desplegado automáticamente en cada push a main.</p>
-          </a>
-          <p><a class="h-mas" href="/blog/">Ver todos los artículos</a></p>
         </div>
       </section>
 

@@ -1,7 +1,7 @@
 {
   "siteName": "JVCloud Consultores",
   "tagline": "Arquitectura cloud, automatización y operación continua",
-  "description": "Consultoría cloud independiente: diseñamos, migramos y operamos infraestructura en AWS, Azure y Google Cloud.",
+  "description": "Diseñamos y operamos plataformas en AWS, Azure y Google Cloud —y la inteligencia artificial que corre sobre ellas— con criterios de ingeniería: entornos reproducibles, despliegues automatizados, monitoreo con responsables definidos y costos bajo control.",
   "domain": "jvcloud.cl",
   "contact": {
     "email": "contacto@jvcloud.cl",
@@ -13,8 +13,17 @@
     "github": "https://github.com/jvcloud-consultores"
   },
   "features": {
-    "showBlog": true,
     "showContactForm": true
   },
-  "announcement": ""
+  "intro": {
+    "repeat": "always"
+  },
+  "announcement": {
+    "enabled": true,
+    "text": "Cuéntanos qué necesitas y te respondemos con una estimación acotada.",
+    "cta": {
+      "label": "Cotiza",
+      "href": "/contacto/"
+    }
+  }
 }

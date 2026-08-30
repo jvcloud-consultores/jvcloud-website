@@ -36,8 +36,8 @@ npm install
 | `npm run build`   | Compila el sitio a `dist/`                                       |
 | `npm run preview` | Sirve `dist/` localmente para revisar el build (`localhost:4173`) |
 
-> `npm run preview` es la forma correcta de verificar rutas como `/blog/` antes
-> de desplegar: reproduce cómo se sirven las páginas en producción.
+> `npm run preview` es la forma correcta de verificar rutas como `/portafolio/`
+> antes de desplegar: reproduce cómo se sirven las páginas en producción.
 
 ---
 
@@ -62,8 +62,7 @@ jvcloud-website/
 │   └── assets/                    # imágenes procesadas por Vite (import desde JS)
 ├── index.html                     # /
 ├── about/index.html               # /about/
-├── blog/index.html                # /blog/
-├── blog/primer-post/index.html    # /blog/primer-post/
+├── portafolio/index.html         # /portafolio/
 ├── contacto/index.html            # /contacto/
 ├── vite.config.js
 ├── package.json
@@ -75,8 +74,15 @@ jvcloud-website/
 ### Cómo funciona
 
 Cada página es un HTML completo e independiente. La navegación entre páginas usa
-enlaces normales (`<a href="/blog/">`): no hay router en JavaScript, así que cada
+enlaces normales (`<a href="/about/">`): no hay router en JavaScript, así que cada
 URL carga por sí sola y funciona aunque el JS falle.
+
+**El CSS se enlaza desde el `<head>`, no se importa desde el JS.** Cada página
+declara sus hojas en orden —`main.css` de base, `jv.css` si usa el diseño nuevo y
+la suya propia al final— para que bloqueen el primer pintado. Importadas desde un
+módulo, en `npm run dev` llegarían con el bundle y la página asomaría sin estilos
+un instante en cada navegación. Vite las reescribe a los assets compilados en el
+build, así que el orden que pones en el HTML es el que manda en producción.
 
 Todos los HTML incluyen:
 
@@ -112,17 +118,18 @@ glob sobre `**/index.html` y arma `rollupOptions.input` sola. El build imprime l
 páginas encontradas:
 
 ```
-[jvcloud] páginas detectadas: about, blog, blog/primer-post, contacto, index
+[jvcloud] páginas detectadas: about, contacto, index, portafolio
 ```
 
-## Agregar un post al blog
+## Agregar un proyecto al portafolio
 
-1. Crea `blog/mi-articulo/index.html` (copia `blog/primer-post/index.html` como base).
-2. Actualiza título, fecha (`<time datetime="...">`), meta y contenido.
-3. Agrega un `<li>` en la lista de [`blog/index.html`](blog/index.html) apuntando a
-   `/blog/mi-articulo/`.
+Los proyectos viven todos en [`portafolio/index.html`](portafolio/index.html):
+copia un `<li>` de la lista `.proyectos` y cambia el contenido. No hay página de
+detalle ni configuración que tocar.
 
-La URL final es `https://jvcloud.cl/blog/mi-articulo/`.
+Si algún proyecto llega a merecer su propia página, crea
+`portafolio/mi-proyecto/index.html` y envuelve su `<article>` en un enlace; Vite
+la detecta sola y la URL final es `https://jvcloud.cl/portafolio/mi-proyecto/`.
 
 ---
 
@@ -145,7 +152,7 @@ Desde el HTML se puede usar sin escribir JavaScript:
    data-config-attr="href"
    data-config-prefix="mailto:">Escríbenos</a>
 
-<section data-config-if="features.showBlog">…</section>
+<section data-config-if="features.showContactForm">…</section>
 ```
 
 Desde JavaScript:
@@ -154,11 +161,32 @@ Desde JavaScript:
 import { getConfig, get } from './lib/config.js'
 
 get('contact.email')       // 'contacto@jvcloud.cl'
-getConfig().features       // { showBlog: true, showContactForm: true }
+getConfig().features       // { showContactForm: true }
 ```
 
 Si `config.json` falla o no existe, el sitio sigue funcionando con los valores por
 defecto definidos en `src/lib/config.js`.
+
+#### Telón de entrada de la portada
+
+`intro.repeat` decide cada cuánto se ve la animación del logotipo:
+
+| Valor | Cuándo se muestra |
+| --- | --- |
+| `"always"` | en cada carga de la portada |
+| `"session"` | una vez por pestaña (por defecto) |
+| `"once"` | una vez por navegador, hasta que se borren los datos del sitio |
+
+Con una salvedad: el telón se monta antes del primer pintado y `config.json` se
+lee con `fetch()`, así que la decisión de saltarlo se toma con la marca que dejó
+la carga anterior, no con la config. `intro.repeat` decide dónde se escribe esa
+marca, de modo que **un cambio de valor se nota en la carga siguiente**, no en la
+que lo lee. Para probarlo sin esperar, pestaña nueva o borrar la marca:
+
+```js
+sessionStorage.removeItem('jvcloud:intro-visto')
+localStorage.removeItem('jvcloud:intro-visto')
+```
 
 ### 2. Variables de entorno `VITE_*` — se incrustan **en el build**
 

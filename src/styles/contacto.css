@@ -1,0 +1,90 @@
+/* ============================================================
+   Contacto — estilos exclusivos de "/contacto/"
+   Va encima de jv.css, que trae los tokens y las piezas comunes.
+   Clases con prefijo `c-`.
+   ============================================================ */
+
+/* --- cabecera de página ------------------------------------------- */
+.c-portada { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem); }
+.c-portada .h-label { margin-bottom: 1.5rem; }
+.c-portada h1 {
+  max-width: 14ch;
+  font-size: clamp(2.4rem, 1.5rem + 3.4vw, 4rem);
+  font-weight: 200;
+  letter-spacing: -.035em;
+  line-height: 1.03;
+}
+.c-portada__lead { margin: 1.75rem 0 0; max-width: 46ch; color: var(--gris); font-size: 1.06rem; }
+
+/* --- cuerpo: formulario a la izquierda, datos a la derecha --------- */
+.c-cuerpo { padding-block: 0 clamp(3.5rem, 8vw, 6rem); border-top: 1px solid var(--linea); }
+.c-grid { display: grid; gap: clamp(2.5rem, 6vw, 4.5rem); padding-top: clamp(2.5rem, 5vw, 4rem); }
+@media (min-width: 880px) {
+  .c-grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+}
+
+.c-bloque__cab { margin-bottom: 2rem; }
+.c-bloque__cab h2 { margin-top: .9rem; font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); font-weight: 200; }
+
+/* --- formulario ----------------------------------------------------
+   Campos con un solo filete abajo en vez de caja: es el mismo gesto que
+   el resto del diseño, que separa con líneas de un píxel y no con marcos. */
+.c-form { display: grid; gap: 1.75rem; }
+
+.c-campo { display: grid; gap: .5rem; }
+.c-campo label {
+  color: var(--gris);
+  font-family: var(--display);
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.c-campo label span { text-transform: none; letter-spacing: 0; color: var(--gris-claro); }
+
+.c-campo input,
+.c-campo textarea {
+  width: 100%;
+  padding: .55rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--linea);
+  border-radius: 0;
+  background: transparent;
+  color: var(--tinta);
+  font: inherit;
+  transition: border-color .2s ease;
+}
+.c-campo textarea { min-height: 8rem; resize: vertical; line-height: 1.6; }
+.c-campo input:hover,
+.c-campo textarea:hover { border-color: var(--azul-300); }
+.c-campo input:focus,
+.c-campo textarea:focus { outline: none; border-color: var(--azul); border-bottom-width: 2px; padding-bottom: calc(.55rem - 1px); }
+/* El navegador marca en rojo en cuanto se toca el campo; sin `:not(:focus)`
+   avisaría mientras aún se está escribiendo. */
+.c-campo input:user-invalid:not(:focus),
+.c-campo textarea:user-invalid:not(:focus) { border-color: #c0392b; }
+
+.c-pista { margin: 0; color: var(--gris-claro); font-size: .86rem; }
+
+.c-form__pie { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+.c-estado { margin: 0; min-height: 1.4em; font-size: .92rem; color: var(--gris); }
+.c-estado[data-estado="error"] { color: #c0392b; }
+.c-estado[data-estado="ok"] { color: var(--azul); }
+
+/* --- datos directos ------------------------------------------------ */
+.c-datos { display: grid; gap: 2.25rem; align-content: start; }
+
+.c-lista { display: grid; gap: 1.5rem; margin: 0; }
+.c-lista dt {
+  margin-bottom: .35rem;
+  color: var(--gris-claro);
+  font-family: var(--display);
+  font-size: .72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.c-lista dd { margin: 0; color: var(--tinta); }
+
+.c-nota { padding-top: 1.25rem; border-top: 1px solid var(--azul-300); }
+.c-nota h3 { margin: 0 0 .6rem; font-size: 1.15rem; font-weight: 400; }
+.c-nota p { margin: 0; color: var(--gris); font-size: .96rem; }
