@@ -4,6 +4,75 @@
    Clases con prefijo `a-`.
    ============================================================ */
 
+/* --- banner de nubes -----------------------------------------------
+   Cielo animado sobre el título de la página. El marcado está en el HTML
+   —tres capas de nubes y el logotipo— y aquí solo se le da tamaño,
+   movimiento y profundidad de campo.
+
+   El efecto de distancia no lo hace una sola cosa: las capas de atrás van
+   más lentas, sus nubes son más pequeñas y pálidas (eso está en el SVG) y
+   además se desenfocan, que es lo que hace el ojo con lo que está lejos. */
+.a-banner {
+  position: relative;
+  height: clamp(220px, 27vw, 380px);
+  overflow: hidden;
+  background: linear-gradient(#ffffff 55%, #f6f9fc);
+}
+@media (max-width: 560px) {
+  /* Más baja en el móvil: con la franja alta y la pantalla estrecha, las
+     nubes se estirarían a lo alto hasta dejar de parecerlo. */
+  .a-banner { height: 165px; }
+}
+.a-banner__defs { position: absolute; }
+
+/* Cada capa es el doble de ancho y lleva el dibujo dos veces, una al lado
+   de la otra; recorrer media capa deja la segunda copia donde estaba la
+   primera, así que el ciclo se cierra sobre sí mismo. */
+.a-banner__capa {
+  position: absolute;
+  inset: 0;
+  width: 200%;
+  display: flex;
+  animation: a-deriva linear infinite;
+  will-change: transform;
+}
+.a-banner__capa svg { width: 50%; height: 100%; flex: none; }
+
+.a-banner__capa--lejana { animation-duration: 110s; filter: blur(2.5px); }
+.a-banner__capa--media { animation-duration: 65s; filter: blur(.8px); }
+.a-banner__capa--cercana { animation-duration: 40s; }
+
+@keyframes a-deriva {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.a-banner__logo {
+  position: absolute;
+  inset: 0;
+  height: 52%;
+  width: auto;
+  margin: auto;
+  /* Halo blanco: el logotipo cruza por delante de las nubes y sin él pierde
+     contorno justo cuando pasa una. */
+  filter: drop-shadow(0 2px 16px rgb(255 255 255 / 95%));
+  animation: a-banner-entra 1.6s ease-out both;
+}
+
+@keyframes a-banner-entra {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .a-banner__capa,
+  .a-banner__logo { animation: none; }
+}
+
+/* La portada arranca pegada al banner, sin el respiro de arriba: son una
+   sola cabecera. */
+.a-banner + .a-portada { padding-top: clamp(2rem, 4vw, 3rem); }
+
 /* --- cabecera de página ------------------------------------------- */
 .a-portada { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem); }
 .a-portada .h-label { margin-bottom: 1.5rem; }
@@ -62,12 +131,19 @@
 
 /* --- cita ----------------------------------------------------------
    Sin comillas ni caja: un filete a la izquierda y la display en su peso
-   más ligero, que es como el resto del sitio destaca sin gritar. */
+   más ligero, que es como el resto del sitio destaca sin gritar.
+
+   Va en un <figure> y no en un <blockquote> suelto porque lleva autoría: el
+   pie queda fuera de la cita, que es la forma de decir quién habla sin meter
+   su nombre dentro de lo citado. */
 .a-cita {
   margin: 2rem 0 0;
   padding-left: clamp(1.25rem, 3vw, 2rem);
   border-left: 1px solid var(--azul-300);
   max-width: 34ch;
+}
+.a-cita blockquote {
+  margin: 0;
   color: var(--tinta);
   font-family: var(--display);
   font-size: clamp(1.3rem, 1.05rem + 1.1vw, 1.9rem);
@@ -75,6 +151,12 @@
   line-height: 1.3;
   letter-spacing: -.02em;
 }
+.a-cita figcaption {
+  margin-top: .9rem;
+  color: var(--gris);
+  font-size: .88rem;
+}
+.a-cita cite { font-style: italic; }
 
 /* --- cierre del último bloque -------------------------------------- */
 .a-contacto { display: grid; justify-items: start; gap: 1.5rem; }

@@ -3,16 +3,13 @@ import { get } from '../lib/config.js'
 
 /**
  * Links de la navegación principal. Agregar uno aquí lo publica en todas las
- * páginas. Contacto no está en la lista: a esa página se llega por el botón
- * "Contáctanos" de la portada y por el footer.
+ * páginas.
  */
 const LINKS = [
   { href: '/', texto: 'Inicio' },
-  // No hay página de servicios: es una sección de la portada, así que el link
-  // lleva a su ancla. Desde otra página navega a "/" y baja hasta ella.
-  { href: '/#servicios', texto: 'Servicios' },
   { href: '/about/', texto: 'Acerca de' },
   { href: '/portafolio/', texto: 'Portafolio' },
+  { href: '/contacto/', texto: 'Contacto' },
 ]
 
 /** Normaliza la ruta actual: /about/index.html y /about -> /about/ */
@@ -154,8 +151,9 @@ function activarPanel(nav) {
   boton.addEventListener('click', () => (abierto ? cerrar({ devolverFoco: true }) : abrir()))
 
   // Al elegir un link el telón se va antes de que el navegador atienda el
-  // click: así los anclas de la misma página (#servicios) encuentran la
-  // página ya desbloqueada y pueden desplazarse.
+  // click: así un ancla de la misma página encuentra la página ya
+  // desbloqueada y puede desplazarse. Hoy no hay ninguna en el menú, pero el
+  // día que se agregue funciona sin acordarse de esto.
   panel.addEventListener('click', (evento) => {
     if (evento.target.closest('a[href]')) cerrar()
   })

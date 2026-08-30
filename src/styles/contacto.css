@@ -42,27 +42,46 @@
 }
 .c-campo label span { text-transform: none; letter-spacing: 0; color: var(--gris-claro); }
 
+/* Campo con fondo teñido y filete abajo. Sobre blanco, el filete solo —de un
+   píxel y casi del color del papel— no dejaba ver dónde se escribe: el
+   formulario parecía una lista de rótulos sueltos. El fondo dibuja el área
+   pulsable y el filete mantiene el gesto del resto del diseño, que separa con
+   líneas y no con marcos. */
 .c-campo input,
 .c-campo textarea {
   width: 100%;
-  padding: .55rem 0;
+  padding: .7rem .85rem;
   border: 0;
-  border-bottom: 1px solid var(--linea);
-  border-radius: 0;
-  background: transparent;
+  border-bottom: 2px solid var(--azul-300);
+  border-radius: 6px 6px 0 0;
+  background: var(--azul-50);
   color: var(--tinta);
   font: inherit;
-  transition: border-color .2s ease;
+  transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 .c-campo textarea { min-height: 8rem; resize: vertical; line-height: 1.6; }
+.c-campo ::placeholder { color: var(--gris-claro); }
+
 .c-campo input:hover,
-.c-campo textarea:hover { border-color: var(--azul-300); }
+.c-campo textarea:hover { background: var(--azul-100); }
+
+/* El foco se ve por tres vías a la vez —filete oscuro, halo y fondo— porque
+   aquí no hay contorno del navegador que lo indique. */
 .c-campo input:focus,
-.c-campo textarea:focus { outline: none; border-color: var(--azul); border-bottom-width: 2px; padding-bottom: calc(.55rem - 1px); }
+.c-campo textarea:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--azul);
+  box-shadow: 0 0 0 3px var(--azul-100);
+}
+
 /* El navegador marca en rojo en cuanto se toca el campo; sin `:not(:focus)`
    avisaría mientras aún se está escribiendo. */
 .c-campo input:user-invalid:not(:focus),
-.c-campo textarea:user-invalid:not(:focus) { border-color: #c0392b; }
+.c-campo textarea:user-invalid:not(:focus) {
+  border-color: #c0392b;
+  background: #fdf3f2;
+}
 
 .c-pista { margin: 0; color: var(--gris-claro); font-size: .86rem; }
 

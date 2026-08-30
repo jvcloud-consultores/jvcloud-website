@@ -43,6 +43,52 @@
 
 .p-proyecto__ficha { align-content: start; display: grid; gap: .5rem; }
 .p-proyecto__ficha .h-num { margin-bottom: .35rem; }
+
+/* Pictograma del rubro, encabezando la ficha. Material Symbols Rounded
+   incrustados como SVG —una petición menos y ningún parpadeo de fuente—, en un
+   solo color y con el nombre del símbolo anotado al lado en el HTML.
+
+   De contorno y en el peso 200, no en el 400 con relleno de la portada: esta es
+   una lista de seis franjas seguidas y el dibujo tiene que pesar menos que su
+   título. El 200 además es el mismo trazo fino de la tipografía —los títulos
+   van en 200 y 300— y de los filetes de un píxel que separan cada proyecto.
+
+   El contorno es igual un relleno con huecos (`fill-rule` del propio trazo), no
+   un `stroke`: se tiñe con `fill` y no hay grosor de línea que ajustar. Un poco
+   más grande que los de la portada, porque la línea fina se lee menos.
+
+   `justify-self: start` lo deja pegado al inicio de la columna en vez de
+   estirarse con la celda, que es lo que haría un SVG en una rejilla.
+
+   En el azul de marca y no en el gris de la ficha: es lo único con color en
+   esa columna y lo que da ritmo a la lista al recorrerla de un vistazo. */
+.p-proyecto__icono {
+  justify-self: start;
+  width: 34px;
+  height: 34px;
+  margin-bottom: .25rem;
+  fill: var(--azul);
+}
+
+/* Entra creciendo cuando la franja asoma, igual que en la portada. */
+.p-proyecto__icono {
+  opacity: 0;
+  transform: scale(.82);
+  transition: opacity .45s ease, transform .45s cubic-bezier(.2, .7, .3, 1);
+  transition-delay: 120ms;
+}
+.h-reveal.is-visible .p-proyecto__icono { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* La regla global recorta la duración, no la espera: sin esto el icono se
+     quedaría invisible ese rato igual. */
+  .p-proyecto__icono {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0s;
+  }
+}
 .p-proyecto__fecha { margin: 0; color: var(--gris-claro); font-size: .92rem; }
 
 .p-proyecto__cuerpo h2 {

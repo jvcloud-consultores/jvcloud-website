@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Acerca de · JVCloud Consultores</title>
-    <meta name="description" content="Quiénes somos, cómo trabajamos y con qué herramientas: JVCloud Consultores, consultoría cloud independiente en Chile." />
+    <meta name="description" content="Quiénes somos, cómo trabajamos y con qué herramientas: JVCloud Consultores, consultoría cloud independiente en Chile desde 2019." />
     <link rel="canonical" href="https://jvcloud.cl/about/" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/images/icon.svg" type="image/svg+xml" />
@@ -18,7 +18,7 @@
     <meta property="og:site_name" content="JVCloud Consultores" />
     <meta property="og:locale" content="es_CL" />
     <meta property="og:title" content="Acerca de · JVCloud Consultores" />
-    <meta property="og:description" content="Un equipo pequeño de ingenieros de infraestructura que trabaja con pocos clientes a la vez, para poder meterse de verdad en sus problemas." />
+    <meta property="og:description" content="Ingenieros de infraestructura trabajando juntos desde 2019. Tomamos el problema por entero: la arquitectura, la operación y lo que cuesta sostenerla." />
     <meta property="og:url" content="https://jvcloud.cl/about/" />
     <meta property="og:image" content="https://jvcloud.cl/images/og-cover.png" />
     <meta property="og:image:secure_url" content="https://jvcloud.cl/images/og-cover.png" />
@@ -32,7 +32,7 @@
          Sin `twitter:site` ni `twitter:creator`: no hay cuenta en X que citar. -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Acerca de · JVCloud Consultores" />
-    <meta name="twitter:description" content="Un equipo pequeño de ingenieros de infraestructura que trabaja con pocos clientes a la vez, para poder meterse de verdad en sus problemas." />
+    <meta name="twitter:description" content="Ingenieros de infraestructura trabajando juntos desde 2019. Tomamos el problema por entero: la arquitectura, la operación y lo que cuesta sostenerla." />
     <meta name="twitter:image" content="https://jvcloud.cl/images/og-cover.png" />
     <meta name="twitter:image:alt" content="JVCloud Consultores · consultoría cloud independiente" />
 
@@ -52,14 +52,135 @@
     <header id="nav"></header>
 
     <main id="contenido">
+      <!-- ======================================================== banner -->
+      <!-- Cielo con nubes en tres planos. La profundidad se construye con
+           cuatro cosas a la vez: las de atrás son más pequeñas, más pálidas,
+           más lentas y están desenfocadas.
+
+           Cada capa mide el doble de ancho y lleva el dibujo repetido dos
+           veces; al desplazarla la mitad, la segunda copia queda exactamente
+           donde estaba la primera y el ciclo empalma sin salto. Ninguna nube
+           cruza el borde de la franja: partida en el borde, reaparecería
+           cortada justo en la costura.
+
+           Las nubes se estiran con el ancho (`preserveAspectRatio="none"`) en
+           vez de ajustarse: ajustadas dejarían franjas vacías a los lados que
+           se verían pasar como un hueco.
+
+           Es decoración: el nombre del sitio ya está en la barra y en el
+           título, así que todo el bloque va oculto para lectores de pantalla. -->
+      <div class="a-banner" aria-hidden="true">
+        <svg class="a-banner__defs" width="0" height="0" focusable="false">
+          <defs>
+            <!-- Tintes del azul de marca, más claros arriba: es lo que da
+                 volumen a cada lomo sin dibujar una sola sombra. -->
+            <linearGradient id="a-g-lejana" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f4f7fb" />
+              <stop offset="1" stop-color="#e7eef6" />
+            </linearGradient>
+            <linearGradient id="a-g-media" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#e9f0f7" />
+              <stop offset="1" stop-color="#d7e2f0" />
+            </linearGradient>
+            <linearGradient id="a-g-cercana" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#dce6f2" />
+              <stop offset="1" stop-color="#c5d5e9" />
+            </linearGradient>
+            <!-- Tres siluetas para que no se repita la misma nube. -->
+            <g id="a-nube-a">
+              <rect x="0" y="60" width="280" height="55" rx="27" />
+              <circle cx="55" cy="55" r="38" />
+              <circle cx="105" cy="32" r="48" />
+              <circle cx="160" cy="28" r="52" />
+              <circle cx="215" cy="50" r="40" />
+              <circle cx="250" cy="68" r="30" />
+            </g>
+            <g id="a-nube-b">
+              <rect x="0" y="55" width="200" height="50" rx="25" />
+              <circle cx="50" cy="48" r="35" />
+              <circle cx="100" cy="28" r="45" />
+              <circle cx="150" cy="50" r="36" />
+            </g>
+            <g id="a-nube-c">
+              <rect x="0" y="65" width="340" height="48" rx="24" />
+              <circle cx="60" cy="58" r="34" />
+              <circle cx="115" cy="38" r="46" />
+              <circle cx="175" cy="30" r="52" />
+              <circle cx="240" cy="42" r="44" />
+              <circle cx="295" cy="60" r="32" />
+            </g>
+          </defs>
+        </svg>
+
+        <div class="a-banner__capa a-banner__capa--lejana">
+          <svg viewBox="0 0 1600 400" preserveAspectRatio="none" focusable="false">
+            <g fill="url(#a-g-lejana)">
+            <use href="#a-nube-a" transform="translate(70 40) scale(0.5)" />
+            <use href="#a-nube-c" transform="translate(430 150) scale(0.55)" />
+            <use href="#a-nube-b" transform="translate(780 60) scale(0.45)" />
+            <use href="#a-nube-a" transform="translate(980 200) scale(0.5)" />
+            <use href="#a-nube-c" transform="translate(1230 90) scale(0.5)" />
+            <use href="#a-nube-b" transform="translate(1450 230) scale(0.5)" />
+            </g>
+          </svg>
+          <svg viewBox="0 0 1600 400" preserveAspectRatio="none" focusable="false">
+            <g fill="url(#a-g-lejana)">
+            <use href="#a-nube-a" transform="translate(70 40) scale(0.5)" />
+            <use href="#a-nube-c" transform="translate(430 150) scale(0.55)" />
+            <use href="#a-nube-b" transform="translate(780 60) scale(0.45)" />
+            <use href="#a-nube-a" transform="translate(980 200) scale(0.5)" />
+            <use href="#a-nube-c" transform="translate(1230 90) scale(0.5)" />
+            <use href="#a-nube-b" transform="translate(1450 230) scale(0.5)" />
+            </g>
+          </svg>
+        </div>
+        <div class="a-banner__capa a-banner__capa--media">
+          <svg viewBox="0 0 1600 400" preserveAspectRatio="none" focusable="false">
+            <g fill="url(#a-g-media)">
+            <use href="#a-nube-a" transform="translate(150 150) scale(0.8)" />
+            <use href="#a-nube-b" transform="translate(560 60) scale(0.75)" />
+            <use href="#a-nube-c" transform="translate(830 200) scale(0.85)" />
+            <use href="#a-nube-a" transform="translate(1270 90) scale(0.9)" />
+            </g>
+          </svg>
+          <svg viewBox="0 0 1600 400" preserveAspectRatio="none" focusable="false">
+            <g fill="url(#a-g-media)">
+            <use href="#a-nube-a" transform="translate(150 150) scale(0.8)" />
+            <use href="#a-nube-b" transform="translate(560 60) scale(0.75)" />
+            <use href="#a-nube-c" transform="translate(830 200) scale(0.85)" />
+            <use href="#a-nube-a" transform="translate(1270 90) scale(0.9)" />
+            </g>
+          </svg>
+        </div>
+        <div class="a-banner__capa a-banner__capa--cercana">
+          <svg viewBox="0 0 1600 400" preserveAspectRatio="none" focusable="false">
+            <g fill="url(#a-g-cercana)">
+            <use href="#a-nube-c" transform="translate(40 230) scale(1.3)" />
+            <use href="#a-nube-a" transform="translate(620 260) scale(1.15)" />
+            <use href="#a-nube-b" transform="translate(1150 240) scale(1.2)" />
+            </g>
+          </svg>
+          <svg viewBox="0 0 1600 400" preserveAspectRatio="none" focusable="false">
+            <g fill="url(#a-g-cercana)">
+            <use href="#a-nube-c" transform="translate(40 230) scale(1.3)" />
+            <use href="#a-nube-a" transform="translate(620 260) scale(1.15)" />
+            <use href="#a-nube-b" transform="translate(1150 240) scale(1.2)" />
+            </g>
+          </svg>
+        </div>
+
+        <img class="a-banner__logo" src="/images/logo.svg" alt="" width="308" height="330" />
+      </div>
+
       <!-- ======================================================== portada -->
       <section class="a-portada">
         <div class="container">
           <p class="h-label">Acerca de</p>
-          <h1>Consultoría cloud sin humo</h1>
+          <h1>Primero la operación</h1>
           <p class="a-portada__lead">
-            Somos un equipo pequeño de ingenieros de infraestructura. Trabajamos con pocos
-            clientes a la vez para poder meternos de verdad en sus problemas.
+            Somos un equipo de ingenieros de infraestructura, trabajando juntos desde 2019.
+            Tomamos el problema de cada cliente por entero: la arquitectura, la operación y
+            lo que cuesta sostenerla.
           </p>
         </div>
       </section>
@@ -73,10 +194,10 @@
           </div>
           <div class="a-bloque__cuerpo">
             <p>
-              La mayoría de los problemas de infraestructura no se resuelven con más
-              herramientas, sino con decisiones explícitas: qué se automatiza, quién
-              responde una alerta a las 3 AM y cuánto cuesta cada ambiente. Ese es el
-              trabajo que hacemos.
+              Rara vez falta una herramienta más. Lo que falta son decisiones tomadas
+              a tiempo y por escrito: qué se automatiza, quién contesta una alerta a
+              las 3 AM y cuánto cuesta mantener cada ambiente encendido. Ahí es donde
+              trabajamos.
             </p>
           </div>
         </div>
@@ -117,7 +238,7 @@
         <div class="container a-grid h-reveal">
           <div class="a-bloque__cab">
             <p class="h-num" aria-hidden="true">03</p>
-            <h2>Stack habitual</h2>
+            <h2>Con qué trabajamos</h2>
           </div>
           <div class="a-bloque__cuerpo">
             <ul class="h-tres">
@@ -127,7 +248,8 @@
               </li>
               <li>
                 <h3>Plataforma</h3>
-                <p>Contenedores y GitLab CI.</p>
+                <p>Docker, Ansible e integración continua. Lo que se despliega a mano no se
+                  repite igual dos veces.</p>
               </li>
               <li>
                 <h3>Observabilidad</h3>
@@ -147,13 +269,25 @@
           </div>
           <div class="a-bloque__cuerpo">
             <p>
-              JVCloud nace de años operando plataformas en producción, del lado de quien
-              recibe la llamada cuando algo se cae. Esa perspectiva define cómo diseñamos:
-              primero la operación, después la arquitectura bonita.
+              La idea es de 2016: juntar en un mismo lugar la experiencia de gente que ya
+              llevaba años en infraestructura y sistemas. En 2019 eso tomó forma de empresa
+              y nació JVCloud Consultores, dedicada a infraestructura cloud y a todo lo que
+              la rodea en TI.
             </p>
-            <blockquote class="a-cita">
-              Un sistema que nadie sabe operar es un incidente esperando fecha.
-            </blockquote>
+            <p>
+              Desde entonces hemos trabajado en proyectos, prestación de servicios y
+              asesorías externas, y también desde dentro de otras empresas del mismo rubro.
+              Estar en los dos lados —el de quien asesora y el de quien opera— define cómo
+              diseñamos: primero cómo se opera, después cómo se dibuja.
+            </p>
+            <figure class="a-cita">
+              <blockquote>
+                Si se tiene el porqué de la vida, se soporta casi cualquier cómo.
+              </blockquote>
+              <figcaption>
+                Friedrich Nietzsche, <cite>Crepúsculo de los ídolos</cite>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -167,8 +301,9 @@
           </div>
           <div class="a-bloque__cuerpo a-contacto">
             <p>
-              Si tienes una migración pendiente, una cuenta cloud que creció sin control o
-              simplemente quieres una segunda opinión, escríbenos.
+              Escríbenos con lo que tengas: una migración por delante, una infraestructura
+              heredada que nadie ha revisado o una decisión técnica que prefieres contrastar
+              antes de tomarla.
             </p>
             <p class="h-persona" data-config-if="contact.name">
               <span class="h-persona__nombre" data-config="contact.name">Josue Olivares</span>

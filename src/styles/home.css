@@ -215,38 +215,46 @@
   .h-nodo:nth-child(odd)::before { right: -4.5px; left: auto; }
   .h-nodo:nth-child(even)::before { left: -4.5px; }
 }
-/* Pictograma de cada nodo: el mismo trazo fino de los dibujos de "A quiénes
-   servimos". Va como inline-block, no como bloque, para que obedezca solo la
-   alineación que el eje ya impone a cada lado —a la derecha en la columna
-   izquierda, a la izquierda en la otra— sin una regla por lado. */
+/* Pictograma de cada nodo: Material Symbols Rounded de contorno y en el peso
+   200, en el azul de marca —los mismos que la ficha de cada proyecto en el
+   portafolio—. Van incrustados como SVG y no con la fuente de iconos de
+   Google: para seis piezas, una petición más y un parpadeo mientras carga la
+   fuente no compensan. El nombre de cada símbolo queda anotado en el HTML.
+
+   El 200 es el trazo de la tipografía de esta web —los títulos van en 200 y
+   300— y el que hace juego con los filetes de un píxel. La variante rellena
+   del 400, que es la que traían antes, era lo único macizo de la página.
+
+   Un solo color, que es como está pensado el sistema: el peso óptico ya viene
+   igualado entre unos y otros, y eso es lo que se gana frente a dibujarlos.
+
+   Va como inline-block, no como bloque, para que obedezca solo la alineación
+   que el eje ya impone a cada lado —a la derecha en la columna izquierda, a la
+   izquierda en la otra— sin una regla por lado. */
 .h-nodo__icono {
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   margin-bottom: .3rem;
-  color: var(--azul-300);
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.25;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  fill: var(--azul);
 }
 
-/* Se dibujan al entrar la sección, uno detrás de otro siguiendo el eje. */
-.h-nodo__icono > * {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset .9s cubic-bezier(.45, 0, .25, 1);
-  transition-delay: calc(var(--i, 0) * 110ms + 200ms);
+/* Entran al asomar la sección, uno detrás de otro siguiendo el eje. El trazo
+   ya no se dibuja —no hay trazo que dibujar—, así que aparecen creciendo. */
+.h-nodo__icono {
+  opacity: 0;
+  transform: scale(.82);
+  transition: opacity .45s ease, transform .45s cubic-bezier(.2, .7, .3, 1);
+  transition-delay: calc(var(--i, 0) * 90ms + 150ms);
 }
-.h-reveal.is-visible .h-nodo__icono > * { stroke-dashoffset: 0; }
+.h-reveal.is-visible .h-nodo__icono { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Dibujados desde el principio: la espera de --i los dejaría invisibles un
+  /* A la vista desde el principio: la espera de --i los dejaría invisibles un
      rato aunque la regla global recorte la duración. */
-  .h-nodo__icono > * {
-    stroke-dasharray: none;
-    stroke-dashoffset: 0;
+  .h-nodo__icono {
+    opacity: 1;
+    transform: none;
     transition: none;
     transition-delay: 0s;
   }
