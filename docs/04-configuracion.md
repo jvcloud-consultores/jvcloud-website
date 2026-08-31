@@ -154,6 +154,26 @@ El campo trampa (`sitio-web`, oculto en el HTML) viaja tal cual: es el Worker
 quien decide qué hacer con él. Su `name` tiene que ser igual al `honeypot`
 declarado allá.
 
+#### Largo de los campos
+
+El Worker **recorta en silencio** lo que pase de su límite (`valor.slice`), así
+que el formulario frena antes con un `maxlength` del mismo tamaño. Si no, el
+mensaje llegaría cortado a la mitad sin que nadie se enterara.
+
+| Campo | Máximo |
+| --- | --- |
+| `nombre` | 100 |
+| `email` | 100 |
+| `empresa` | 100 |
+| `mensaje` | 1000 |
+
+Los números viven en dos lados y tienen que calzar: `LARGO_MAXIMO` en
+`src/formularios.js` del Worker y los `maxlength` de
+[`contacto/index.html`](../contacto/index.html). **Al cambiarlos allá, cambiarlos
+acá.** El contador bajo el mensaje no repite el número: lo lee del `maxlength`
+del propio campo y se pone rojo en el último 10%, para que el tope no llegue
+como una tecla que dejó de responder.
+
 ### Medición de uso (Microsoft Clarity)
 
 Mapas de calor y grabaciones de sesión. Apagada por defecto:

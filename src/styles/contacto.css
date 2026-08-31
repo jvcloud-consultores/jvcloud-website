@@ -90,6 +90,18 @@
 
 .c-pista { margin: 0; color: var(--gris-claro); font-size: .86rem; }
 
+/* Pista a la izquierda, contador a la derecha y en la misma línea base. */
+.c-campo__pie { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.c-cuenta {
+  margin: 0;
+  color: var(--gris-claro);
+  font-size: .82rem;
+  /* Cifras del mismo ancho: si no, el contador tirita con cada tecla. */
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.c-cuenta[data-cerca] { color: var(--rojo); }
+
 /* --- pie del formulario: acción, confirmación y estado ---------------
    En columna y no en fila: el bloque de confirmación reemplaza al botón y
    ocupa el ancho completo, y el renglón de estado se lee debajo de lo que

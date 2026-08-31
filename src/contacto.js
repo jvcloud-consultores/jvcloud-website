@@ -56,9 +56,41 @@ function endpointValido(valor) {
   return ''
 }
 
+/**
+ * Contador de caracteres de los campos con límite.
+ *
+ * El número no se escribe acá: sale del `maxlength` del campo, que es el que
+ * de verdad manda y el que tiene que calzar con LARGO_MAXIMO del Worker. Así
+ * hay un solo lugar que actualizar cuando cambien los límites.
+ *
+ * @param {HTMLFormElement} form
+ */
+function activarContadores(form) {
+  for (const salida of form.querySelectorAll('[data-cuenta-de]')) {
+    const campo = form.querySelector(`#${salida.dataset.cuentaDe}`)
+    const limite = Number(campo?.getAttribute('maxlength'))
+    if (!campo || !limite) continue
+
+    const pintar = () => {
+      const usados = campo.value.length
+      salida.textContent = `${usados}/${limite}`
+      // Se avisa recién en el último 10%: antes, el contador es un dato de
+      // fondo y no tiene por qué llamar la atención.
+      salida.toggleAttribute('data-cerca', usados >= limite * 0.9)
+    }
+
+    campo.addEventListener('input', pintar)
+    // También después de un envío: form.reset() no dispara 'input'.
+    form.addEventListener('reset', () => setTimeout(pintar))
+    pintar()
+  }
+}
+
 function activarFormulario() {
   const form = document.getElementById('form-contacto')
   if (!form) return
+
+  activarContadores(form)
 
   const estado = document.getElementById('estado-form')
   const boton = form.querySelector('button[type="submit"]')
@@ -100,6 +132,7 @@ function activarFormulario() {
    */
   const mostrarExito = (mensaje) => {
     form.reset()
+    form.dispatchEvent(new Event('reset'))
     if (estado) {
       estado.textContent = ''
       estado.dataset.estado = ''
