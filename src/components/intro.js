@@ -24,6 +24,9 @@
  * borra), y por eso un cambio en config.json se nota a partir de la
  * siguiente carga, no en la que lo lee.
  *
+ * Se va solo a los ~4 s. Antes de eso se puede cortar con un clic en el aviso
+ * "Clic para saltar" —solo ahí— o con Escape, espacio o Enter.
+ *
  * Al terminar dispara `intro:done` en document, por si algo de la página
  * quiere esperar a que la pantalla esté despejada.
  */
@@ -149,7 +152,14 @@ export function renderIntro(destino = document.getElementById('intro')) {
 
   const temporizador = setTimeout(salir, reducido ? AUTO_MS_REDUCIDO : AUTO_MS)
 
-  destino.addEventListener('click', salir, { signal: escuchas.signal })
+  // Solo el aviso "Clic para saltar" corta el telón, no el telón entero: con
+  // toda la pantalla escuchando, cualquier clic perdido —o el que ya venía
+  // dado en la pestaña— se llevaba la animación por delante sin querer.
+  destino.querySelector('.intro__saltar')
+    ?.addEventListener('click', salir, { signal: escuchas.signal })
+
+  // Por teclado sigue valiendo desde cualquier parte: el aviso es un <p> y no
+  // recibe foco, así que no habría forma de accionarlo sin ratón.
   window.addEventListener('keydown', (evento) => {
     if (evento.key === 'Escape' || evento.key === ' ' || evento.key === 'Enter') salir()
   }, { signal: escuchas.signal })

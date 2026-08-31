@@ -20,7 +20,6 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  cursor: pointer;
 }
 
 /* Ya se vio en esta pestaña: ni se pinta. Lo decide el script en línea
@@ -84,21 +83,40 @@ html:is([data-intro="on"], [data-intro="saliendo"]) body { overflow: hidden; }
 @keyframes intro-letra { to { opacity: 1; transform: translateY(0); } }
 
 /* Aviso de que se puede saltar; aparece tarde para no competir con el
-   logotipo y se va con el resto del telón. */
+   logotipo y se va con el resto del telón.
+
+   Es lo único que corta el telón al hacer clic —el resto de la pantalla no
+   escucha—, así que carga con el `cursor: pointer` y con un área de golpe
+   propia: el relleno la agranda más allá de las letras, que en dos líneas de
+   texto de .78rem serían un blanco muy chico. El `bottom` descuenta ese mismo
+   relleno para que el aviso siga apoyado donde estaba.
+
+   Sin selección de texto: en un elemento hecho para clicar, arrastrar encima
+   deja el texto resaltado en vez de accionarlo. */
 .intro__saltar {
   position: absolute;
-  bottom: clamp(1.5rem, 5vh, 3rem);
+  bottom: calc(clamp(1.5rem, 5vh, 3rem) - .7rem);
   margin: 0;
+  padding: .7rem 1.2rem;
   color: var(--gris-claro, #9aa4b1);
   font-family: var(--display, system-ui, sans-serif);
   font-size: .78rem;
   font-weight: 300;
   letter-spacing: .16em;
   text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
   opacity: 0;
   animation: intro-saltar .6s ease 2s forwards;
+  transition: color .2s ease;
 }
 @keyframes intro-saltar { to { opacity: 1; } }
+
+/* Al apuntarlo toma el azul de marca: la única confirmación de que ahí sí
+   pasa algo, ahora que el resto del telón no responde. */
+@media (hover: hover) {
+  .intro__saltar:hover { color: var(--intro-tinta); }
+}
 
 /* ---------------------------------------------------------- salida */
 /* En dos tiempos, y no todo a la vez, para no ver el logotipo encima del
