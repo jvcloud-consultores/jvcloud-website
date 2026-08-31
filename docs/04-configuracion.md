@@ -41,6 +41,8 @@ funcionando con los valores por defecto definidos en ese mismo módulo.
 | `features.showContactForm` | Muestra u oculta el formulario de contacto |
 | `herramientas` | Lista de nombres de la sección "Herramientas" y de la escena del stack. Es la única fuente: vacía, la sección no se pinta |
 | `announcement.*` | Barra de aviso sobre el menú. Ver abajo |
+| `formulario.*` | A dónde envía el formulario de contacto y su verificación anti-bots. Ver abajo |
+| `analytics.*` | Medición de uso (Microsoft Clarity). Ver abajo |
 | `intro.repeat` | Cada cuánto se ve el telón de entrada. Ver abajo |
 
 ### Enlaces que se derivan solos
@@ -92,6 +94,95 @@ número en un solo lugar.
 ```
 
 `enabled: false` o `text: ""` la apagan.
+
+### Formulario de contacto
+
+```json
+"formulario": {
+  "endpoint": "https://form-endpoint.jvcloud-consultores.workers.dev/f/jvcloud",
+  "turnstile": {
+    "enabled": true,
+    "siteKey": "0x4AAAAAAEinhOtwxs0khmGW",
+    "action": "jvcloud",
+    "theme": "light"
+  }
+}
+```
+
+| Clave | Qué hace |
+| --- | --- |
+| `endpoint` | A dónde se hace el POST. Es el Worker del proyecto `cloudflare-configs`, ruta `/f/jvcloud`: valida, limita a 5 envíos por minuto y por IP, filtra bots y avisa por Telegram |
+| `turnstile.enabled` | El interruptor del desafío anti-bots. Apagado, el script de Cloudflare ni se pide |
+| `turnstile.siteKey` | Clave **pública** del widget (Dashboard → Turnstile). Viaja en el HTML: no es un secreto. El secret vive sólo en el Worker |
+| `turnstile.action` | Tiene que calzar exacto con la `accion` declarada para este formulario en el Worker |
+| `turnstile.theme` | `light`, porque estas páginas son blancas siempre. Con `auto` el widget seguiría al sistema del visitante |
+
+**Sin `endpoint` el formulario no queda muerto:** cae al `mailto:` de siempre,
+con nombre, correo, empresa y mensaje ya redactados. Lo mismo si el valor no es
+una URL `https` válida — se ignora con una advertencia en consola, para que una
+errata no mande los datos del visitante a cualquier parte.
+
+Lo que ve quien envía: el botón se pone a girar y dice "Enviando…", la
+confirmación reemplaza al botón y además salta un aviso flotante al centro
+abajo, que es donde está mirando. Los errores del Worker se traducen a
+castellano en `ERRORES_ENVIO`, dentro de
+[`src/contacto.js`](../src/contacto.js); la tabla de códigos está en el README
+de `cloudflare-configs`.
+
+> **El orden importa para encender Turnstile.** Primero el sitio manda el token
+> (esto), y **después** se pone `turnstile: true` en `src/formularios.js` del
+> Worker, con el secret ya cargado. Al revés, el formulario rechaza todo con
+> 403. Mientras el Worker lo tenga apagado, el token viaja y se descarta: no
+> molesta.
+
+Para probar contra el Worker en local, apunta el endpoint a `wrangler dev`
+(`http` sólo se acepta en localhost):
+
+```json
+"endpoint": "http://127.0.0.1:8787/f/jvcloud"
+```
+
+> **En local, el widget no carga.** El de jvcloud.cl no tiene `localhost` entre
+> sus hostnames autorizados, así que en `npm run dev` y en `npm run preview`
+> responde el error `400020` y el formulario avisa de inmediato ("No pudimos
+> cargar la verificación anti-bots…") en vez de dejar enviar. Para probar
+> envíos en el equipo: o agregas `localhost` al widget en el dashboard de
+> Turnstile, o pones `formulario.turnstile.enabled: false` mientras
+> desarrollas.
+
+El campo trampa (`sitio-web`, oculto en el HTML) viaja tal cual: es el Worker
+quien decide qué hacer con él. Su `name` tiene que ser igual al `honeypot`
+declarado allá.
+
+### Medición de uso (Microsoft Clarity)
+
+Mapas de calor y grabaciones de sesión. Apagada por defecto:
+
+```json
+"analytics": {
+  "clarity": {
+    "enabled": false,
+    "projectId": "",
+    "onlyInProduction": true,
+    "respectDoNotTrack": true
+  }
+}
+```
+
+| Clave | Qué hace |
+| --- | --- |
+| `enabled` | El interruptor. En `false` no se le pide nada a Clarity |
+| `projectId` | El id del proyecto, en [clarity.microsoft.com](https://clarity.microsoft.com) → Settings → Overview. Es público: viaja en la URL del script |
+| `onlyInProduction` | `true` no mide en `npm run dev` ni en `preview`: las visitas de quien programa ensucian las grabaciones |
+| `respectDoNotTrack` | `true` no carga nada si el navegador manda *Do Not Track* o *Global Privacy Control* |
+
+Para encenderla: crear el proyecto en Clarity, copiar el id, ponerlo en
+`projectId` y dejar `enabled: true`. No hace falta recompilar: es `config.json`.
+
+El módulo es [`src/lib/medicion.js`](../src/lib/medicion.js) y **no** se llama
+`analytics.js` a propósito: esa ruta la bloquea EasyPrivacy —encendida por
+defecto en uBlock Origin—, y en desarrollo eso cortaría el import y con él todo
+lo que cuelga de `main.js`.
 
 ### Telón de entrada
 
@@ -152,8 +243,10 @@ Solo las variables con prefijo `VITE_` llegan al navegador. Se leen con
 
 ```js
 import.meta.env.VITE_SITE_NAME
-import.meta.env.VITE_API_URL
 ```
+
+Hoy es la única que usa el sitio. Todo lo demás —incluido el destino del
+formulario— vive en `config.json`, justamente para no tener que recompilar.
 
 ### En local
 
@@ -188,6 +281,9 @@ El procedimiento está en [01 · GitHub](01-github.md), paso 5.
 | Texto de la barra de aviso | `public/config.json` → `announcement` |
 | Lista de herramientas | `public/config.json` → `herramientas` |
 | Apagar el widget de WhatsApp | `public/config.json` → `whatsapp.enabled` |
+| A dónde se envía el formulario | `public/config.json` → `formulario.endpoint` |
+| Apagar la verificación anti-bots | `public/config.json` → `formulario.turnstile.enabled` |
+| Encender o apagar la medición | `public/config.json` → `analytics.clarity` |
 | El menú | [`src/components/nav.js`](../src/components/nav.js), array `LINKS` |
 | El footer | [`src/components/footer.js`](../src/components/footer.js) |
 | Textos de una página | Su `index.html` |

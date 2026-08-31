@@ -1,4 +1,5 @@
 import { loadConfig, applyConfig, env } from './lib/config.js'
+import { initAnalytics } from './lib/medicion.js'
 import { renderAviso } from './components/aviso.js'
 import { renderNav } from './components/nav.js'
 import { renderFooter } from './components/footer.js'
@@ -15,7 +16,7 @@ import { renderWhatsapp } from './components/whatsapp.js'
 async function iniciar() {
   // La config se carga antes de pintar nav y footer para que el nombre del
   // sitio y los datos de contacto salgan correctos desde el primer render.
-  await loadConfig()
+  const config = await loadConfig()
 
   renderAviso()
   renderNav()
@@ -27,8 +28,13 @@ async function iniciar() {
 
   document.documentElement.dataset.ready = 'true'
 
+  // Medición de uso (Clarity), si config.json la trae encendida. Va al final a
+  // propósito: es lo único que no se ve, y su script —async— no tiene por qué
+  // competir con lo que sí se dibuja.
+  initAnalytics(config)
+
   if (!env.isProd) {
-    console.info('[jvcloud] modo %s · API: %s', env.mode, env.apiUrl || '(sin definir)')
+    console.info('[jvcloud] modo %s', env.mode)
   }
 }
 

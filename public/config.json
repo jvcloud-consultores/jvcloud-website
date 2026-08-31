@@ -90,6 +90,23 @@
     "RabbitMQ",
     "Elasticsearch"
   ],
+  "formulario": {
+    "endpoint": "https://form-endpoint.jvcloud-consultores.workers.dev/f/jvcloud",
+    "turnstile": {
+      "enabled": true,
+      "siteKey": "0x4AAAAAAEiodK6zUJfhz77-",
+      "action": "jvcloud",
+      "theme": "light"
+    }
+  },
+  "analytics": {
+    "clarity": {
+      "enabled": true,
+      "projectId": "yasuewlwcz",
+      "onlyInProduction": true,
+      "respectDoNotTrack": true
+    }
+  },
   "intro": {
     "repeat": "daily"
   },

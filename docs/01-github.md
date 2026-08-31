@@ -95,8 +95,8 @@ Repositorio → **Settings** → **Actions** → **General**:
 
 ## 5. Crear las variables del build
 
-El sitio incrusta dos valores públicos durante la compilación, así que tienen
-que existir en el runner de Actions.
+El sitio incrusta un valor público durante la compilación, así que tiene que
+existir en el runner de Actions.
 
 Repositorio → **Settings** → **Secrets and variables** → **Actions** → pestaña
 **Variables** → **New repository variable**:
@@ -104,14 +104,17 @@ Repositorio → **Settings** → **Secrets and variables** → **Actions** → p
 | Nombre | Valor |
 | --- | --- |
 | `VITE_SITE_NAME` | `JVCloud Consultores` |
-| `VITE_API_URL` | `https://api.jvcloud.cl` |
+
+Nada más: el resto —incluido el destino del formulario de contacto— se
+configura en `public/config.json`, que se lee en el navegador y no necesita
+build.
 
 > **Variables, no Secrets.** Todo lo que empieza con `VITE_` termina en texto
 > plano dentro del sitio compilado, que es público por definición. Guardarlos
 > como secretos daría una falsa sensación de protección sin protección real. Ver
 > [04 · Configuración](04-configuracion.md).
 
-Si no las creas, el build igual pasa: las variables llegan vacías y el sitio usa
+Si no la creas, el build igual pasa: la variable llega vacía y el sitio usa
 los valores por defecto de `src/lib/config.js`. No es un error visible, y por eso
 conviene revisarlo ahora y no cuando alguien note el dato faltante.
 

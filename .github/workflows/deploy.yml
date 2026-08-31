@@ -37,7 +37,6 @@ jobs:
         env:
           # Definidas en Settings -> Secrets and variables -> Actions -> Variables.
           # Solo valores públicos: terminan en texto plano dentro de dist/.
-          VITE_API_URL: ${{ vars.VITE_API_URL }}
           VITE_SITE_NAME: ${{ vars.VITE_SITE_NAME }}
         run: npm run build
 

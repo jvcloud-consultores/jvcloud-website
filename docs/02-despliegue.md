@@ -15,7 +15,7 @@ GitHub Actions ── .github/workflows/deploy.yml
       │
       ├─ job "build"
       │    checkout → Node 24 (según .nvmrc) → npm ci → npm run build
-      │    con VITE_SITE_NAME y VITE_API_URL desde las Variables del repo
+      │    con VITE_SITE_NAME desde las Variables del repo
       │    → sube dist/ como artefacto de Pages
       │
       └─ job "deploy"

@@ -101,6 +101,11 @@ body {
 
 img, svg, video { max-width: 100%; height: auto; display: block; }
 
+/* El atributo `hidden` del navegador lo pisa cualquier `display` de autor
+   —.btn es inline-flex, por ejemplo—, así que ocultar algo desde JS con
+   `el.hidden = true` no hacía nada. Esta regla se lo devuelve. */
+[hidden] { display: none !important; }
+
 a { color: var(--brand); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
 

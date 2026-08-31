@@ -4,6 +4,11 @@
    Clases con prefijo `c-`.
    ============================================================ */
 
+/* Colores de estado del formulario. Sólo se usan acá: el resto del sitio no
+   tiene ni errores ni confirmaciones que pintar. Calibrados sobre papel
+   blanco, que es lo único que hay en estas páginas. */
+.c-cuerpo, .c-flotante { --verde: #1f7a4d; --rojo: #c0392b; }
+
 /* --- cabecera de página ------------------------------------------- */
 .c-portada { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem); }
 .c-portada .h-label { margin-bottom: 1.5rem; }
@@ -79,16 +84,124 @@
    avisaría mientras aún se está escribiendo. */
 .c-campo input:user-invalid:not(:focus),
 .c-campo textarea:user-invalid:not(:focus) {
-  border-color: #c0392b;
+  border-color: var(--rojo);
   background: #fdf3f2;
 }
 
 .c-pista { margin: 0; color: var(--gris-claro); font-size: .86rem; }
 
-.c-form__pie { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
+/* --- pie del formulario: acción, confirmación y estado ---------------
+   En columna y no en fila: el bloque de confirmación reemplaza al botón y
+   ocupa el ancho completo, y el renglón de estado se lee debajo de lo que
+   acaba de pasar, no al costado. */
+.c-form__pie { display: grid; gap: .9rem; justify-items: start; }
+
+/* Contenedor del widget de Turnstile. Vacío —con la verificación apagada—
+   desaparece: si no, el `gap` del formulario dejaría un renglón en blanco. */
+.c-turnstile:empty { display: none; }
+
 .c-estado { margin: 0; min-height: 1.4em; font-size: .92rem; color: var(--gris); }
-.c-estado[data-estado="error"] { color: #c0392b; }
-.c-estado[data-estado="ok"] { color: var(--azul); }
+.c-estado[data-estado="error"] { color: var(--rojo); }
+.c-estado[data-estado="ok"] { color: var(--verde); }
+
+/* Botón trabajando: aro girando delante del texto. El `pointer-events: none`
+   corta el segundo clic incluso en el instante entre el submit y el disabled.
+   Con "reducir movimiento" el aro no gira: queda quieto, y el estado igual se
+   entiende porque el rótulo cambia a "Enviando…". */
+.btn[data-cargando] { pointer-events: none; opacity: .85; }
+.btn[data-cargando]::before {
+  content: '';
+  flex: none;
+  width: 1em; height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: c-girar .7s linear infinite;
+}
+@keyframes c-girar { to { transform: rotate(1turn); } }
+
+/* Lo que queda donde estaba el botón cuando el mensaje ya salió. El aviso
+   flotante se va solo a los pocos segundos; esto se queda, para que la
+   confirmación siga a la vista de quien mira después. */
+.c-exito {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .85rem;
+  width: 100%;
+  padding: .95rem 1.15rem;
+  background: var(--azul-50);
+  border: 1px solid var(--azul-100);
+  border-radius: var(--radius);
+}
+.c-exito__icono { flex: none; width: 2rem; height: 2rem; }
+.c-exito__icono .trazo { fill: none; stroke: var(--verde); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.c-exito__texto { flex: 1 1 12rem; }
+.c-exito__titulo { margin: 0; font-weight: 500; }
+.c-exito__detalle { margin: .15rem 0 0; font-size: .9rem; color: var(--gris); }
+.c-otro {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--azul);
+  font: inherit;
+  font-size: .9rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.c-otro:hover { color: var(--azul-700); }
+
+/* --- aviso flotante ------------------------------------------------
+   La respuesta del envío, encima de todo y al centro abajo: al enviar, la
+   vista está justo ahí. El renglón de estado se queda como registro; esto es
+   el golpe de atención. Lo monta y lo quita src/contacto.js. */
+.c-flotante {
+  position: fixed;
+  /* Sobre el widget de WhatsApp (90), que en móviles ocupa con su caja —aunque
+     el panel esté cerrado— justo la zona donde asoma el aviso: por debajo, el
+     clic para cerrarlo no llegaba. */
+  z-index: 95;
+  left: 50%;
+  bottom: clamp(1rem, 4vw, 2.5rem);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  width: max-content;
+  max-width: min(30rem, calc(100vw - 2rem));
+  padding: .9rem 1.2rem;
+  background: #fff;
+  color: var(--tinta);
+  border: 1px solid var(--linea);
+  /* El canto de color dice de qué se trata antes de leer nada. */
+  border-left: 4px solid var(--verde);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+.c-flotante p { margin: 0; font-size: .95rem; line-height: 1.4; }
+.c-flotante__icono { flex: none; width: 1.6rem; height: 1.6rem; }
+.c-flotante__icono .trazo { fill: none; stroke: var(--verde); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.c-flotante__icono .relleno { fill: var(--verde); }
+.c-flotante[data-tipo="error"] { border-left-color: var(--rojo); }
+.c-flotante[data-tipo="error"] .c-flotante__icono .trazo { stroke: var(--rojo); }
+.c-flotante[data-tipo="error"] .c-flotante__icono .relleno { fill: var(--rojo); }
+
+/* Entra desde abajo; al salir se desvanece. Las dos son animaciones y no
+   transiciones para que la regla global de "reducir movimiento" las apague. */
+.c-flotante { animation: c-aviso-entra .35s cubic-bezier(.2, .8, .2, 1); }
+.c-flotante[data-yendose] { animation: c-aviso-sale .3s ease-in forwards; }
+@keyframes c-aviso-entra { from { opacity: 0; transform: translate(-50%, 1.25rem); } }
+@keyframes c-aviso-sale { to { opacity: 0; transform: translate(-50%, .5rem); } }
+
+/* En pantallas angostas el aviso llega hasta donde está el botón flotante de
+   WhatsApp (abajo a la derecha, z-index más alto), así que sube por encima de
+   él. En pantallas anchas no se tocan y se queda abajo del todo. */
+@media (max-width: 640px) {
+  .c-flotante { bottom: calc(max(1.25rem, env(safe-area-inset-bottom)) + 4.5rem); }
+}
 
 /* --- datos directos ------------------------------------------------ */
 .c-datos { display: grid; gap: 2.25rem; align-content: start; }

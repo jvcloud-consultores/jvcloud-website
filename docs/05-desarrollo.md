@@ -63,6 +63,8 @@ jvcloud-website/
 │   │   ├── cinta.js  red.js  stack.js                  # piezas de la portada
 │   ├── lib/
 │   │   ├── config.js              # carga /config.json + import.meta.env
+│   │   ├── turnstile.js           # widget anti-bots del formulario (config.json)
+│   │   ├── medicion.js            # Microsoft Clarity, encendido desde config.json
 │   │   └── apariciones.js         # animaciones al asomar (.h-reveal)
 │   ├── styles/
 │   │   ├── main.css               # base

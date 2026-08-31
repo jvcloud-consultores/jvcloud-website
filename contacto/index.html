@@ -98,15 +98,48 @@
                 <p class="c-pista">Mientras más contexto, mejor: nube actual, tamaño del equipo y qué te está doliendo.</p>
               </div>
 
-              <!-- Trampa antispam: los bots la rellenan, las personas no la ven. -->
+              <!-- Acá se dibuja el widget de Turnstile, si config.json lo trae
+                   encendido (formulario.turnstile). Vacío no ocupa nada:
+                   apagarlo no deja hueco en el formulario. -->
+              <div class="c-turnstile" data-turnstile></div>
+
+              <!-- Trampa antispam: los bots la rellenan, las personas no la ven.
+                   El `name` tiene que ser igual al campo `honeypot` declarado
+                   para este formulario en src/formularios.js del proyecto
+                   cloudflare-configs: el Worker responde "recibido" (falso)
+                   cuando llega rellena, así el bot no aprende que lo pillaron. -->
               <div class="visually-hidden" aria-hidden="true">
                 <label for="sitio-web">No completar</label>
                 <input id="sitio-web" name="sitio-web" type="text" tabindex="-1" autocomplete="off" />
               </div>
 
               <div class="c-form__pie">
-                <button class="btn btn--primary" type="submit">Enviar mensaje</button>
-                <p class="c-estado" id="estado-form" role="status" aria-live="polite"></p>
+                <!-- El texto va en su propio <span> para poder cambiarlo a
+                     "Enviando…" sin tocar el aro de carga, que lo dibuja el CSS
+                     con ::before. -->
+                <button class="btn btn--primary" type="submit">
+                  <span class="btn__texto">Enviar mensaje</span>
+                </button>
+
+                <!-- Ocupa el lugar del botón cuando el mensaje ya salió: sin
+                     esto el formulario quedaba sin nada donde estaba la acción. -->
+                <div class="c-exito" hidden>
+                  <svg class="c-exito__icono" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                    <circle class="trazo" cx="24" cy="24" r="18" />
+                    <path class="trazo" d="M15 24.5 L21 30.5 L33 18" />
+                  </svg>
+                  <div class="c-exito__texto">
+                    <p class="c-exito__titulo">Mensaje enviado</p>
+                    <p class="c-exito__detalle">Te respondemos dentro de 24 horas hábiles.</p>
+                  </div>
+                  <button class="c-otro" type="button">Enviar otro mensaje</button>
+                </div>
+
+                <!-- Sin role="status": el mismo texto sale en el aviso flotante,
+                     que es quien lo anuncia. Con los dos declarados como región
+                     viva, un lector de pantalla lo leía dos veces. Acá queda
+                     como registro visible mientras el visitante corrige. -->
+                <p class="c-estado" id="estado-form"></p>
               </div>
             </form>
           </div>

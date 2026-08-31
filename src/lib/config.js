@@ -54,6 +54,30 @@ const DEFAULTS = {
   herramientas: [],
   // Barra de aviso sobre el nav. `enabled: false` o `text: ''` la apagan.
   announcement: { enabled: false, text: '', cta: { label: '', href: '/contacto/' } },
+  // Formulario de contacto. `endpoint` es el Worker de `cloudflare-configs`
+  // (POST https://<worker>/f/jvcloud), que valida, filtra bots y avisa por
+  // Telegram. Vacío no deja el formulario muerto: cae al `mailto:` de siempre.
+  formulario: {
+    endpoint: '',
+    // Turnstile: apagado mientras no haya sitekey. El secret vive en el Worker,
+    // nunca acá. `action` tiene que calzar con la `accion` declarada para este
+    // formulario en el Worker; si no calzan, siteverify acepta el token y el
+    // Worker igual lo rechaza.
+    // `theme` se fija en 'light' porque estas páginas son blancas siempre: con
+    // 'auto' el widget seguiría al sistema del visitante y a algunos les
+    // saldría oscuro sobre papel blanco.
+    turnstile: { enabled: false, siteKey: '', action: 'jvcloud', theme: 'light' },
+  },
+  // Medición de uso. Apagada por defecto: se enciende desde config.json y sin
+  // recompilar (ver src/lib/medicion.js).
+  analytics: {
+    clarity: {
+      enabled: false,
+      projectId: '',
+      onlyInProduction: true,
+      respectDoNotTrack: true,
+    },
+  },
   // Telón de entrada de la portada.
   // `repeat`: always | session | once | daily (una vez, y no vuelve en un día).
   intro: { repeat: 'session' },
@@ -62,7 +86,6 @@ const DEFAULTS = {
 /** Variables de build (prefijo VITE_). Solo valores públicos. */
 export const env = Object.freeze({
   siteName: import.meta.env.VITE_SITE_NAME || DEFAULTS.siteName,
-  apiUrl: import.meta.env.VITE_API_URL || '',
   mode: import.meta.env.MODE,
   isProd: import.meta.env.PROD,
 })
