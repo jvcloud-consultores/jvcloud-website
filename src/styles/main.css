@@ -930,7 +930,19 @@ html[data-menu="abierto"] body { overflow: hidden; }
   justify-items: end;
   gap: .75rem;
   font-family: inherit;
+  /* El panel cerrado se esconde con `visibility`, así que sigue ocupando su
+     caja: el contenedor mide lo que el panel (~320×375) y ese rectángulo
+     invisible se planta sobre la página. En móvil llegaba hasta los botones
+     de la portada y se quedaba con sus toques. El contenedor en sí no tiene
+     nada que escuchar —solo el botón y el panel—, así que deja pasar y ellos
+     lo recuperan. */
+  pointer-events: none;
 }
+
+/* Lo único que sí escucha. El panel, mientras está cerrado, tampoco: de eso
+   ya se encarga su `visibility: hidden`. */
+.wa__fab,
+.wa__panel { pointer-events: auto; }
 
 /* --------------------------------------------------- botón redondo */
 .wa__fab {
