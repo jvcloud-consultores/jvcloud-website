@@ -24,7 +24,6 @@ export function renderFooter(destino = document.getElementById('footer')) {
   const telefono = get('contact.phone')
   const telHref = get('contact.phoneHref')
   const whatsapp = get('contact.whatsappHref')
-  const telegram = get('contact.telegramHref')
   const ciudad = get('contact.city')
   const linkedin = get('social.linkedin')
   const github = get('social.github')
@@ -35,7 +34,6 @@ export function renderFooter(destino = document.getElementById('footer')) {
 
   const redes = [
     whatsapp && `<li><a href="${escapar(whatsapp)}" rel="noopener noreferrer" target="_blank">WhatsApp</a></li>`,
-    telegram && `<li><a href="${escapar(telegram)}" rel="noopener noreferrer" target="_blank">Telegram</a></li>`,
     linkedin && `<li><a href="${escapar(linkedin)}" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>`,
     github && `<li><a href="${escapar(github)}" rel="noopener noreferrer" target="_blank">GitHub</a></li>`,
   ].filter(Boolean).join('')

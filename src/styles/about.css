@@ -164,3 +164,20 @@
 /* El nombre pertenece al correo de abajo, así que se le pega en vez de
    quedarse a la distancia general de la columna. */
 .a-contacto .h-persona { margin-bottom: -1rem; }
+
+/* El número y su atajo de WhatsApp son un solo dato: van agrupados para que
+   el `gap` de la columna no los separe tanto como a los bloques de arriba.
+   El número queda un escalón por debajo del correo —que es el contacto
+   principal—, pero en tinta y con filete, no en gris suelto. */
+.a-contacto__tel { display: grid; justify-items: start; gap: .85rem; }
+.a-contacto__tel p { margin: 0; }
+.a-contacto__tel p:first-child a {
+  color: var(--tinta);
+  font-size: clamp(1.05rem, .95rem + .4vw, 1.25rem);
+  text-decoration: none;
+  border-bottom: 1px solid var(--linea);
+  padding-bottom: 2px;
+  transition: color .2s ease, border-color .2s ease;
+}
+.a-contacto__tel p:first-child a:hover { color: var(--azul); border-color: var(--azul); }
+.a-contacto__tel .h-canales { margin: 0; }

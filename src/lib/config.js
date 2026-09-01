@@ -27,8 +27,6 @@ const DEFAULTS = {
     phone: '',
     city: '',
     hours: '',
-    // Telegram con el mismo número del teléfono. `false` quita el enlace.
-    telegram: false,
   },
   // Widget flotante de WhatsApp (abajo a la derecha). `enabled: false` lo apaga
   // entero, botón y panel. `agents` es la lista de personas del panel: cada una
@@ -117,7 +115,6 @@ function enlaceWhatsapp(telefono, mensaje) {
  * Rellena los valores que no se escriben a mano en config.json:
  *
  *   contact.phoneHref     -> "tel:+56968604006"
- *   contact.telegramHref  -> "https://t.me/+56968604006"
  *   whatsapp.agents[].href -> "https://wa.me/56968604006?text=Hola…"
  *   contact.whatsappHref  -> el enlace del primer contacto, que es el que
  *                            usan el pie de página y la página de contacto.
@@ -129,20 +126,6 @@ function derivar(cfg) {
   const contact = { ...cfg.contact }
   const digitos = String(contact.phone ?? '').replace(/\D/g, '')
   if (digitos && !contact.phoneHref) contact.phoneHref = `tel:+${digitos}`
-
-  // Telegram sobre el mismo número: t.me/+<internacional>. Si en
-  // `social.telegram` hay un usuario (@jvcloud) o una URL, esa manda: un alias
-  // es mejor enlace que un teléfono, y no todo el mundo quiere publicarlo.
-  const alias = cfg.social?.telegram
-  if (!contact.telegramHref) {
-    if (alias) {
-      contact.telegramHref = /^https?:\/\//.test(alias)
-        ? alias
-        : `https://t.me/${String(alias).replace(/^@/, '')}`
-    } else if (digitos && contact.telegram) {
-      contact.telegramHref = `https://t.me/+${digitos}`
-    }
-  }
 
   const whatsapp = { ...cfg.whatsapp }
   // Sin lista de contactos, el del bloque `contact` es el único.

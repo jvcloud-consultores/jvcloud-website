@@ -135,6 +135,65 @@ body:where(.jv) :where(h1, h2, h3) {
 .h-enlace:hover { color: var(--azul); border-color: var(--azul); text-decoration: none; }
 .h-enlace:hover::after { transform: translateX(3px); }
 
+/* ------------------------------------------------- atajos del teléfono
+   Un solo número con dos formas de usarlo: llamar o escribir por WhatsApp.
+   El atajo va debajo del número, como pastilla: así dice a qué aplicación
+   lleva sin repetirlo y tiene su propia área de toque, que un enlace de
+   texto pegado al número no daría.
+
+   Vive acá, y no en contacto.css, porque lo usan las dos páginas que
+   publican el número: "/contacto/" y el cierre de la portada. En plural
+   —`.h-canales`— porque la fila admite más de uno si algún día se suma otro
+   canal. */
+.h-canales {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: .75rem 0 0;
+}
+
+.h-canal {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  /* Alto suficiente para el pulgar: con menos relleno la pastilla quedaba
+     en 35px y el mínimo cómodo ronda los 44. */
+  padding: .7rem 1rem;
+  border: 1px solid var(--linea);
+  border-radius: 999px;
+  color: var(--gris);
+  font-family: var(--display);
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color .2s ease, border-color .2s ease, background-color .2s ease;
+}
+.h-canal svg { flex: none; width: 17px; height: 17px; transition: fill .2s ease; }
+
+/* El glifo va en el verde de la marca desde el principio, no en gris: es lo
+   que hace que la pastilla se lea como "WhatsApp" de un vistazo, y el mismo
+   verde ya está en el botón flotante. En gris claro pasaba desapercibido. */
+.h-canal--wa svg { fill: #25d366; }
+
+/* Al apuntarlo se enciende el filete y un fondo apenas teñido, y el rótulo
+   pasa a tinta. El texto no toma el verde: a .72rem sobre blanco ese verde da
+   3.2:1 de contraste y se leería peor, no mejor —en el icono no importa,
+   porque es una forma reconocible y no algo que haya que leer—.
+
+   El `border-radius` se repite en el foco porque la regla global de
+   `:focus-visible` lo fija en 4px y le cuadraba las esquinas a la pastilla. */
+.h-canal:hover,
+.h-canal:focus-visible { color: var(--tinta); }
+.h-canal:focus-visible { border-radius: 999px; }
+
+.h-canal--wa:hover,
+.h-canal--wa:focus-visible {
+  border-color: #25d366;
+  background: color-mix(in srgb, #25d366 8%, transparent);
+}
+
 /* Nombre y cargo de quien contesta. Va donde se muestran los datos de
    contacto: un correo suelto no dice con quién se habla. */
 .h-persona {
@@ -355,9 +414,20 @@ body:where(.jv) :where(h1, h2, h3) {
 .h-cierre .h-persona + p { margin-top: .4rem; }
 .h-cierre .h-persona + p .h-correo { margin-top: 0; }
 .h-cierre .h-correo { margin-top: 2.25rem; font-size: clamp(1.25rem, 1rem + 1.4vw, 2rem); }
-.h-cierre__tel { margin-top: .75rem; font-size: 1.05rem; }
-.h-cierre__tel a { color: var(--gris); text-decoration: none; transition: color .2s ease; }
-.h-cierre__tel a:hover { color: var(--azul); }
+/* El número compartía tamaño con el pie de página y color con el texto
+   corrido, así que al lado del correo —que va en azul y al doble de cuerpo—
+   se leía como una nota al pie. Sube a tinta y a un cuerpo intermedio: sigue
+   por debajo del correo, que es el contacto principal, pero ya se ve. */
+.h-cierre__tel { margin-top: 1rem; font-size: clamp(1.2rem, 1.05rem + .6vw, 1.5rem); }
+.h-cierre__tel a {
+  color: var(--tinta);
+  text-decoration: none;
+  border-bottom: 1px solid var(--linea);
+  padding-bottom: 2px;
+  transition: color .2s ease, border-color .2s ease;
+}
+.h-cierre__tel a:hover { color: var(--azul); border-color: var(--azul); }
+.h-cierre .h-canales { justify-content: center; margin-top: 1.25rem; }
 .h-cierre .h-acciones { margin-top: 2.5rem; }
 
 
