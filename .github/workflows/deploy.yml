@@ -38,6 +38,9 @@ jobs:
           # Definidas en Settings -> Secrets and variables -> Actions -> Variables.
           # Solo valores públicos: terminan en texto plano dentro de dist/.
           VITE_SITE_NAME: ${{ vars.VITE_SITE_NAME }}
+          # Opcional. Contacto extra del footer: "Nombre,Teléfono".
+          # Si la Variable no existe llega vacía y no se pinta nada.
+          VITE_FOOTER_CONTACTO: ${{ vars.VITE_FOOTER_CONTACTO }}
         run: npm run build
 
       - name: Subir artefacto de Pages

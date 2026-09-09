@@ -95,7 +95,7 @@ Repositorio → **Settings** → **Actions** → **General**:
 
 ## 5. Crear las variables del build
 
-El sitio incrusta un valor público durante la compilación, así que tiene que
+El sitio incrusta valores públicos durante la compilación, así que tienen que
 existir en el runner de Actions.
 
 Repositorio → **Settings** → **Secrets and variables** → **Actions** → pestaña
@@ -104,6 +104,16 @@ Repositorio → **Settings** → **Secrets and variables** → **Actions** → p
 | Nombre | Valor |
 | --- | --- |
 | `VITE_SITE_NAME` | `JVCloud Consultores` |
+
+Y una **opcional**, que solo hay que crear si se quiere el contacto extra del
+pie de página (nombre, una coma, el teléfono):
+
+| Nombre | Valor |
+| --- | --- |
+| `VITE_FOOTER_CONTACTO` | `Nombre Apellido,+56 9 0000 0000` |
+
+Si no existe, el footer se pinta igual y esa línea no aparece: no hay que
+crearla ni dejarla vacía. Ver [04 · Configuración](04-configuracion.md).
 
 Nada más: el resto —incluido el destino del formulario de contacto— se
 configura en `public/config.json`, que se lee en el navegador y no necesita

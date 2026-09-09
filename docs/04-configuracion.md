@@ -265,8 +265,31 @@ Solo las variables con prefijo `VITE_` llegan al navegador. Se leen con
 import.meta.env.VITE_SITE_NAME
 ```
 
-Hoy es la única que usa el sitio. Todo lo demás —incluido el destino del
-formulario— vive en `config.json`, justamente para no tener que recompilar.
+Hoy el sitio usa dos:
+
+| Variable | Para qué |
+| --- | --- |
+| `VITE_SITE_NAME` | Nombre del sitio. Manda sobre `siteName` de `config.json`. |
+| `VITE_FOOTER_CONTACTO` | Contacto extra del pie de página. **Opcional.** |
+
+Todo lo demás —incluido el destino del formulario— vive en `config.json`,
+justamente para no tener que recompilar.
+
+### `VITE_FOOTER_CONTACTO` (opcional)
+
+Un contacto suelto que se pinta **solo en el footer**, debajo del último
+contacto de la primera columna. Se escribe en una línea, `Nombre,Teléfono`:
+primero el nombre, una coma, y después el número.
+
+```bash
+VITE_FOOTER_CONTACTO="Juan Pérez,+56 9 1234 5678"
+```
+
+El nombre sale como texto y el teléfono como enlace `tel:` (los dígitos se
+sacan solos del número, se escriba como se escriba). Vive aparte a propósito:
+no entra en `config.json`, no toca el bloque `contact`, ni el widget de
+WhatsApp, ni la página de contacto, ni el formulario. Si la variable no existe,
+está vacía o le falta la coma, el footer simplemente no muestra esa línea.
 
 ### En local
 

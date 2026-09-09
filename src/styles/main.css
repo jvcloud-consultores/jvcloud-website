@@ -884,6 +884,9 @@ html[data-menu="abierto"] body { overflow: hidden; }
    una sola regla no se separan al retocar una de las dos. */
 .footer__persona,
 .footer__muted { color: var(--text-muted); margin: 0 0 .25rem; }
+/* Contacto extra del footer (VITE_FOOTER_CONTACTO): va debajo del último
+   contacto, con un respiro que lo separe del bloque de arriba. */
+.footer__extra { margin-top: .9rem; }
 .footer__title { font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin: 0 0 .7rem; font-weight: 700; }
 .footer__list { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
 .footer__list a { color: var(--text); text-decoration: none; }

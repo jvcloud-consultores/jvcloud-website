@@ -1,5 +1,5 @@
 import logo from '../assets/logo.svg?raw'
-import { get } from '../lib/config.js'
+import { env, get } from '../lib/config.js'
 
 const LINKS = [
   { href: '/', texto: 'Inicio' },
@@ -25,6 +25,9 @@ export function renderFooter(destino = document.getElementById('footer')) {
   const telHref = get('contact.phoneHref')
   const whatsapp = get('contact.whatsappHref')
   const ciudad = get('contact.city')
+  // Contacto aparte, definido en VITE_FOOTER_CONTACTO ("Nombre,Teléfono").
+  // Solo existe acá: no entra en config.json ni en el resto del sitio.
+  const extra = env.footerContacto
   const linkedin = get('social.linkedin')
   const github = get('social.github')
 
@@ -47,6 +50,10 @@ export function renderFooter(destino = document.getElementById('footer')) {
         ${persona ? `<p class="footer__persona">${escapar(persona)}</p>` : ''}
         ${email ? `<p><a href="mailto:${escapar(email)}">${escapar(email)}</a></p>` : ''}
         ${telefono ? `<p><a href="${escapar(telHref || `tel:${telefono.replace(/\D/g, '')}`)}">${escapar(telefono)}</a></p>` : ''}
+        ${extra ? `<p class="footer__persona footer__extra">${escapar(extra.nombre)}</p>
+        <p>${extra.href
+          ? `<a href="${escapar(extra.href)}">${escapar(extra.telefono)}</a>`
+          : escapar(extra.telefono)}</p>` : ''}
       </div>
       <div class="footer__col">
         <h2 class="footer__title">Sitio</h2>

@@ -81,9 +81,38 @@ const DEFAULTS = {
   intro: { repeat: 'session' },
 }
 
+/**
+ * Contacto suelto del pie de página (VITE_FOOTER_CONTACTO). Opcional.
+ *
+ * Se escribe en una sola línea, "Nombre,Teléfono": primero el nombre, una coma,
+ * y después el número.
+ *
+ *   VITE_FOOTER_CONTACTO="Juan Pérez,+56 9 1234 5678"
+ *
+ * Vive aparte del bloque `contact` a propósito: solo se pinta en el footer, y
+ * no toca WhatsApp, la página de contacto ni el formulario. Sin definir, vacía
+ * o mal escrita (sin nombre o sin número), devuelve null y el footer se pinta
+ * igual, sin esa línea.
+ */
+function contactoFooter(crudo) {
+  const partes = String(crudo ?? '').split(',')
+  const nombre = (partes[0] ?? '').trim()
+  const telefono = partes.slice(1).join(',').trim()
+  if (!nombre || !telefono) return null
+
+  const digitos = telefono.replace(/\D/g, '')
+  return Object.freeze({
+    nombre,
+    telefono,
+    href: digitos ? `tel:+${digitos}` : '',
+  })
+}
+
 /** Variables de build (prefijo VITE_). Solo valores públicos. */
 export const env = Object.freeze({
   siteName: import.meta.env.VITE_SITE_NAME || DEFAULTS.siteName,
+  // Contacto extra del footer, ver contactoFooter().
+  footerContacto: contactoFooter(import.meta.env.VITE_FOOTER_CONTACTO),
   mode: import.meta.env.MODE,
   isProd: import.meta.env.PROD,
 })
